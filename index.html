@@ -99,30 +99,27 @@
       <div id="panel-story" class="hidden space-y-4">
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-3">
           
-          <!-- 頂部頁碼與操作提示 -->
-          <div class="flex items-center justify-between pb-1 border-b border-stone-100">
+          <!-- 頂部書名與頁碼標籤 -->
+          <div class="flex items-center justify-between pb-2 border-b border-stone-100">
             <div class="flex items-center space-x-2">
               <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-xs"></span>
-              <span class="text-xs font-serif font-bold text-stone-900 tracking-wider">繪本故事展</span>
-              <span id="storyPageBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold">第 1 / 7 頁</span>
+              <div>
+                <span class="text-xs font-serif font-black text-amber-950 tracking-wide block">《新園的甜甜時光機》</span>
+                <span class="text-[9px] text-stone-500">甘蔗、五分車與砂糖棧單</span>
+              </div>
             </div>
-            <!-- 更換此頁照片 -->
-            <button onclick="triggerStoryPhotoUpload()" class="tap-scale px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-[10px] font-medium flex items-center gap-1 border border-stone-200">
-              <svg class="w-3 h-3 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-              <span>更換此頁照片</span>
-            </button>
+            <span id="storyPageBadge" class="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold">第 1 / 7 頁</span>
           </div>
 
           <!-- 主繪本圖片展示框（點擊放大） -->
           <div onclick="openStoryLightbox()" class="w-full aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
-            <img id="storyMainImg" src="https://placehold.co/800x500/fef2f2/991b1b?text=第1頁%EF%BC%9A仙隆宮神農大帝開墾記+(點擊放大)" alt="繪本故事圖" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+            <img id="storyMainImg" src="sugar/sugar0001.jpg" onerror="this.src='https://placehold.co/800x500/fef3c7/78350f?text=%E6%96%B0%E5%9C%92%E7%9A%84%E7%94%9c%E7%94%9c%E6%99%82%E5%85%89%E6%A9%9F'" alt="繪本故事圖" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
             <div class="absolute inset-0 bg-stone-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
               <span class="px-2.5 py-1 rounded-full bg-stone-900/80 text-white text-[10px] backdrop-blur-xs flex items-center gap-1 shadow">
                 <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
                 點擊全螢幕放大
               </span>
             </div>
-            <span id="storyImgBadge" class="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-md bg-stone-900/70 backdrop-blur-sm text-[9px] text-white font-medium">第 1 頁繪本</span>
           </div>
 
           <!-- 7 顆進度指示圓點 -->
@@ -137,17 +134,20 @@
           </div>
 
           <!-- 故事文字說明卡片 -->
-          <div class="bg-amber-50/60 rounded-xl p-3.5 border border-amber-200/80 space-y-1.5">
+          <div class="bg-amber-50/70 rounded-xl p-3.5 border border-amber-200/80 space-y-2">
             <div class="flex items-center justify-between">
               <h3 id="storyTitle" class="font-serif font-black text-sm text-stone-900">
-                第一幕：仙隆宮 · 拓墾鯉魚山
+                【第一頁】阿公的秘密藏寶盒
               </h3>
-              <span id="storyEra" class="text-[10px] font-bold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded">
-                明代天啟年間 (1621-1627)
+              <span id="storyEra" class="text-[10px] font-bold text-amber-800 bg-amber-100/90 px-2 py-0.5 rounded">
+                對應圖片：sugar0001.jpg
               </span>
             </div>
-            <p id="storyDesc" class="text-xs text-stone-700 leading-relaxed">
-              仙隆宮主祀神農大帝。據廟中碑文與口傳，先民早至明代天啟年間、晚至崇禎時期抵達當地，於鯉魚山東方辛勤開墾，並祭祀隨身奉祀的五穀仙帝以求平安豐收，奠下新園聚落的基石。
+            <p id="storyDesc" class="text-xs text-stone-800 leading-relaxed whitespace-pre-line font-sans">
+              在屏東新園鄉的老家裡，陽光溫柔地灑在溪畔與綠意盎然的蔗田上。
+              阿明好奇地看著阿公從古樸的木盒裡，小心翼翼地拿出一張泛黃的舊紙張。
+              「阿公，這是你的藏寶圖嗎？」阿明睜大眼睛問道。
+              阿公笑著摸了摸阿明的頭說：「這可比寶藏還神奇喔！這是我們新園蔗農以前的『神奇卡片』——砂糖棧單。」
             </p>
           </div>
 
@@ -165,7 +165,10 @@
 
           <!-- 7 張微縮圖快速跳頁列 -->
           <div class="pt-2 border-t border-stone-100 space-y-1.5">
-            <div class="text-[10px] font-bold text-stone-400">微縮圖快速跳頁</div>
+            <div class="flex justify-between items-center text-[10px] text-stone-400 font-bold px-0.5">
+              <span>微縮圖快速跳頁</span>
+              <span>共 7 幕</span>
+            </div>
             <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-1">
               <button onclick="goToStoryPage(0)" id="thumb-0" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border-2 border-amber-600 ring-2 ring-amber-400/40 relative">
                 <img src="sugar/sugar0001.jpg" onerror="this.src='https://placehold.co/100x80/fef2f2/991b1b?text=01'" class="w-full h-full object-cover">
@@ -976,7 +979,6 @@
 
     <!-- 隱藏原生檔案上傳器 -->
     <input type="file" id="photoUploadInput" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
-    <input type="file" id="storyPhotoUploadInput" accept="image/*" class="hidden" onchange="handleStoryPhotoUpload(event)">
   </div>
 
   <script>
@@ -984,51 +986,51 @@
     const storyPages = [
       {
         page: 1,
-        title: "第一幕：仙隆宮 · 拓墾鯉魚山",
-        era: "明朝天啟年間 (1621-1627)",
-        desc: "仙隆宮主祀神農大帝。據廟中碑文與口傳，先民早至明代天啟年間、晚至崇禎時期抵達當地，於鯉魚山東方辛勤開墾，並祭祀隨身奉祀的五穀仙帝以求平安豐收，奠定新園庄頭的農耕信仰基石。",
+        title: "【第一頁】阿公的秘密藏寶盒",
+        era: "新園老家回憶",
+        desc: "在屏東新園鄉的老家裡，陽光溫柔地灑在溪畔與綠意盎然的蔗田上。\n阿明好奇地看著阿公從古樸的木盒裡，小心翼翼地拿出一張泛黃的舊紙張。\n「阿公，這是你的藏寶圖嗎？」阿明睜大眼睛問道。\n阿公笑著摸了摸阿明的頭說：「這可比寶藏還神奇喔！這是我們新園蔗農以前的『神奇卡片』——砂糖棧單。」",
         img: "sugar/sugar0001.jpg"
       },
       {
         page: 2,
-        title: "第二幕：新惠宮 · 渡口與遷村記",
-        era: "清朝乾隆年間 (1755年創建)",
-        desc: "新惠宮主祀媽祖，創建於清乾隆二十年（1755年），是新園三十六庄的信仰中心。清康熙年間已有新園古街渡口，為船隊溯溪北上中途要津；後因下淡水溪洪水氾濫，居民於同治六年（1867年）經歷了第一次大遷村。",
+        title: "【第二頁】時光鐵道上的五分車",
+        era: "甘蔗鐵道記憶",
+        desc: "「噹！噹！噹！」平交道的警示燈亮了起來，一列黃色的台糖五分車正慢速駛來！\n阿明穿著雨鞋，興奮地指著車頭後方滿載的粗壯甘蔗。\n車頂飄出陣陣帶著甜香的白煙，彷彿化作一顆顆發光的方糖。\n阿公看著手中的棧單，眼神裡滿是回憶：「以前新園的田野間，天天都能聽到這卡嗒卡嗒的車輪聲呢！」",
         img: "sugar/sugar0002.jpg"
       },
       {
         page: 3,
-        title: "第三幕：澄灜宮 · 鹽糖王爺傳奇",
-        era: "清乾隆年間迄今",
-        desc: "澄灜宮居民俗稱王爺廟，主祀鹽府千歲，並陪祀糖府千歲、池府千歲。其中「鹽」與「糖」千歲稱呼由來與其生前官職或歷史淵源密切相關，為全臺灣少見以鹽、糖為神尊名號之特殊王爺信仰。",
+        title: "【第三頁】神奇的紙張換物資",
+        era: "砂糖棧單的價值",
+        desc: "時光列車帶著他們停靠在一座熱鬧的糖業站點前。\n阿公把砂糖棧單遞給櫃檯裡的阿姨，桌上擺著算盤與票券，身後則是一箱箱白米、豆油與整齊的花布。\n「阿公，那張紙可以買東西嗎？」阿明驚奇地問。\n「是呀！農夫辛苦種甘蔗送到糖廠，憑著這張棧單，就能換回一家人整年要用的柴米油鹽，它就像是我們辛勤耕耘的甜蜜存摺。」",
         img: "sugar/sugar0003.jpg"
       },
       {
         page: 4,
-        title: "第四幕：新式製糖 · 東洋第一工場",
-        era: "日治時期 (1895-1945)",
-        desc: "總督府於1905年實施原料採取區域制，壟斷原料並取締傳統糖廍。四大會社崛起，自1899年蘇雲梯先生南昌製糖（阿緱製糖前身）到屏東糖廠日榨3600噸東洋最大廠區、1910酒精工場與1937高達70公尺的大煙囪，產值一度佔全臺工業75%。",
+        title: "【第四頁】夕陽下的甘蔗香",
+        era: "蔗田與鄉野滋味",
+        desc: "夕陽西下，高屏溪畔被染成了溫暖的橘金色，五分車在蔗田邊歇息。\n阿明咬了一口脆甜多汁的甘蔗，甜滋滋的滋味立刻在嘴裡化開，臉上滿是幸福的笑容。\n身旁的阿公看著遠方連綿的蔗田，輕輕擦了擦汗，笑著說：\n「東北季風吹過的時候，蔗葉沙沙作響，整座新園就像是一座散發糖香的甜蜜之鄉。」",
         img: "sugar/sugar0004.jpg"
       },
       {
         page: 5,
-        title: "第五幕：五分車鳴笛 · 東港線沿革",
-        era: "糖鐵演進 (1908-1977)",
-        desc: "新園境內帶有「廍」字的舊地名訴說糖廍地景。1908年開設烏龍線與東港專用線，隨後發展出甘棠門支線（阿緱-東港）、舊東港幹線（屏東-鹽埔子）與東港幹線（屏東-新園）等兼具運蔗與載客的營業線，串起萬丹、仙公廟至新園的生活脈動。",
+        title: "【第五頁】走進屏東糖廠文物館",
+        era: "現代文史傳承",
+        desc: "畫面轉回現代，阿公牽著阿明來到了「屏東糖廠文物館」。\n玻璃展示櫃裡，正莊重地陳列著阿公當年珍藏的「砂糖棧單」與老式油燈。\n牆上的地圖標記著新園的土地，阿明和好多小朋友聚在糖廠模型前，聽阿公指著微縮的工廠與鐵道，講述當年甘蔗如何變成一袋袋砂糖的奇妙過程。",
         img: "sugar/sugar0005.jpg"
       },
       {
         page: 6,
-        title: "第六幕：周阿伯的口述 · 溪埔甘蔗與期貨",
-        era: "民國40~50年代 (1950s-1960s)",
-        desc: "周阿伯回憶：昔日下淡水溪浮覆地種植了大片甘蔗。糖販將糖寄存在糖廠並代保火險，領取『農產糖寄託存單』作為憑證，需要時再提領，成為臺灣最早的期貨實務，記錄了蔗農與糖廠唇齒相依的珍貴歲月。",
+        title: "【第六頁】重逢新園號老火車",
+        era: "鐵道記憶再現",
+        desc: "展館正中央，停放著修復得閃閃發亮的「新園號」台糖五分車頭！\n牆上的老照片記錄著當年蔗農揮汗採收與牛車運送的真實歷史。\n阿明推著小小的運蔗木推車，彷彿自己也成了一名小小列車長，和身邊的小朋友們一起分享這份跨越幾十年的鐵道記憶。",
         img: "sugar/sugar0006.jpg"
       },
       {
         page: 7,
-        title: "第七幕：煙囪歸於平靜 · 園味覺醒",
-        era: "戰後轉型 (1977-1997迄今)",
-        desc: "歷經蔗渣造紙、紙漿廠60米煙囪矗立，面對國際糖價自千美元降至60美元，1977年停駛東港客運線，1994年紙漿廠停閉，至1997年10月屏東糖廠製糖工場正式停壓結束製糖。昔日蔗香化為文化記憶，在新意中迎來園味覺醒。",
+        title: "【第七頁】甜蜜的果實與傳承",
+        era: "園味覺醒與展望",
+        desc: "展廳的一角陳列著黑糖、砂糖、冰糖與糖漿，阿明捧著雪白晶瑩的冰糖，雙眼閃爍著光芒。\n牆上的「時光加工廠」圖解訴說著每一顆糖得來不易的旅程。\n阿公笑著對阿明說：「雖然現在五分車不再天天奔馳，但新園土地上的甜、農夫們的踏實與努力，都寫在砂糖棧單裡，永遠甜在我們的心中。」",
         img: "sugar/sugar0007.jpg"
       }
     ];
@@ -1043,18 +1045,16 @@
       const era = document.getElementById('storyEra');
       const desc = document.getElementById('storyDesc');
       const badge = document.getElementById('storyPageBadge');
-      const imgBadge = document.getElementById('storyImgBadge');
 
       mainImg.src = current.img;
       mainImg.onerror = function() {
-        this.src = `https://placehold.co/800x500/fef2f2/991b1b?text=第${current.page}頁%EF%BC%9A${encodeURIComponent(current.title)}+(點擊換圖)`;
+        this.src = `https://placehold.co/800x500/fef3c7/78350f?text=${encodeURIComponent(current.title)}`;
       };
 
       title.textContent = current.title;
       era.textContent = current.era;
       desc.textContent = current.desc;
       badge.textContent = `第 ${current.page} / ${storyPages.length} 頁`;
-      imgBadge.textContent = `第 ${current.page} 頁繪本`;
 
       // 更新 7 顆圓點狀態
       const dots = document.querySelectorAll('.story-dot');
@@ -1107,28 +1107,7 @@
     // 繪本主圖放大檢視
     function openStoryLightbox() {
       const current = storyPages[currentStoryIndex];
-      openLightboxCustom(current.img, `${current.title} (${current.era})`);
-    }
-
-    // 換繪本當前頁照片
-    function triggerStoryPhotoUpload() {
-      document.getElementById('storyPhotoUploadInput').click();
-    }
-
-    function handleStoryPhotoUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          storyPages[currentStoryIndex].img = e.target.result;
-          updateStoryUI();
-          // 同步微縮圖
-          const thumbImg = document.querySelector(`#thumb-${currentStoryIndex} img`);
-          if (thumbImg) thumbImg.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
-      event.target.value = '';
+      openLightboxCustom(current.img, `${current.title}`);
     }
 
     // 錄音播放狀態切換微互動

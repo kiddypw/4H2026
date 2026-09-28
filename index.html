@@ -98,13 +98,13 @@
       <!-- TAB 1: 年表紀事 (Timeline - 預設首頁) -->
       <div id="panel-timeline" class="space-y-4">
         
-        <!-- 橫向滑動時代篩選膠囊列 -->
+        <!-- 橫向滑動時代篩選膠囊列（地圖集在前，補充資料在後） -->
         <div id="capsuleBar" class="bg-white rounded-2xl border border-stone-200 p-2 shrink-0 flex items-center space-x-2 overflow-x-auto no-scrollbar shadow-xs">
           <button onclick="filterMobileCategory('all', this)" class="category-pill active tap-scale px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-stone-900 text-white shadow-sm">
             全部檢視
           </button>
           <button onclick="filterMobileCategory('founding', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
-           明清時期
+            明清時期
           </button>
           <button onclick="filterMobileCategory('japanese', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
             日治新式製糖
@@ -115,12 +115,11 @@
           <button onclick="filterMobileCategory('postwar', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
             戰後台糖時期
           </button>
-          <button onclick="filterMobileCategory('global', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
-            大戰與名詞
-          </button>
           <button onclick="filterMobileCategory('maps', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 flex items-center gap-1">
-
             <span>地圖集 (10幅)</span>
+          </button>
+          <button onclick="filterMobileCategory('supplementary', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
+            補充資料
           </button>
         </div>
 
@@ -141,11 +140,9 @@
             <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 flex flex-col space-y-2.5">
               <div class="flex justify-between items-start">
                 <div>
-
                   <h3 class="font-serif font-black text-sm text-stone-900">新園時空圖譜</h3>
                   <p class="text-[10px] text-stone-500">新園時空與水系聚落歷史圖資</p>
                 </div>
-
               </div>
 
               <!-- 地圖展示框（支援點擊放大） -->
@@ -159,8 +156,6 @@
                 </div>
                 <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-md bg-stone-900/60 backdrop-blur-sm text-[9px] text-white font-medium">歷史地圖</span>
               </div>
-
-
             </div>
 
             <!-- 仙隆宮 -->
@@ -172,7 +167,6 @@
                   </span>
                   <h3 class="font-serif font-black text-base text-stone-900">仙隆宮</h3>
                 </div>
-                
               </div>
 
               <!-- 仙隆宮照片展示框 -->
@@ -201,7 +195,6 @@
                   </span>
                   <h3 class="font-serif font-black text-base text-stone-900">新惠宮</h3>
                 </div>
-
               </div>
 
               <!-- 新惠宮照片展示框 -->
@@ -241,7 +234,6 @@
                   </span>
                   <h3 class="font-serif font-black text-base text-stone-900">澄灜宮</h3>
                 </div>
-
               </div>
 
               <!-- 澄灜宮照片展示框 -->
@@ -453,8 +445,8 @@
                 </div>
                 
                 <!-- 錄音播放 ICON 按鈕與 HTML5 Audio 標籤 -->
-                <audio id="oralAudioPlayer" src="Voice/V01.wav" preload="none" onended="handleAudioEnded()"></audio>
-                <button id="oralAudioBtn" onclick="toggleAudioPlay(this)" class="tap-scale flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-250 transition-all text-[11px] font-medium shadow-2xs">
+                <audio id="oralAudioPlayer" src="Voice/V01.wav" preload="none" onended="handleAudioEnded('oralAudioBtn', 'audioIconContainer', 'audioPlayText', 'audioWaves')"></audio>
+                <button id="oralAudioBtn" onclick="toggleAudioPlay('oralAudioPlayer', 'oralAudioBtn', 'audioIconContainer', 'audioPlayText', 'audioWaves')" class="tap-scale flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-250 transition-all text-[11px] font-medium shadow-2xs">
                   <span id="audioIconContainer">
                     <svg class="w-3.5 h-3.5 text-amber-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
                   </span>
@@ -494,7 +486,6 @@
                 </button>
               </div>
 
-              <!-- 糖鐵影像框 1 -->
               <div onclick="openLightbox('img-railway', '新園糖鐵與口述歷史 影像展示（一）')" class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
                 <img id="img-railway" src="https://placehold.co/800x450/fefce8/854d0e?text=新園糖鐵與口述照片位置+一+(點擊放大)" alt="新園糖鐵與口述歷史照片" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                 <div class="absolute inset-0 bg-stone-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -520,7 +511,6 @@
                 </button>
               </div>
 
-              <!-- 糖鐵影像框 2 -->
               <div onclick="openLightbox('img-railway2', '新園糖鐵與口述歷史 影像展示（二）')" class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
                 <img id="img-railway2" src="https://placehold.co/800x450/fefce8/854d0e?text=新園糖鐵與口述照片位置+二+(點擊放大)" alt="新園糖鐵與口述歷史照片二" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                 <div class="absolute inset-0 bg-stone-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -613,63 +603,8 @@
           </div>
         </section>
 
-        <!-- SECTION 5: 國際情勢、名詞解釋 -->
-        <section class="mobile-section" data-cat="global">
-          <div class="flex items-center justify-between mb-2.5 px-1 pt-2">
-            <div class="flex items-center space-x-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-sm"></span>
-              <h2 class="text-xs font-bold uppercase tracking-wider text-blue-800">歷史背景與名詞</h2>
-            </div>
-            <span class="text-[10px] text-stone-400 font-medium">情勢註解</span>
-          </div>
-
-          <div class="grid grid-cols-1 gap-3">
-            <!-- 世界大戰 -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-2">
-              <h3 class="font-bold text-stone-900 text-xs flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
-                世界大戰歷史進程
-              </h3>
-              <div class="space-y-1.5 text-[11px]">
-                <div class="bg-blue-50/60 p-2.5 rounded-xl border border-blue-150 flex justify-between items-center">
-                  <span class="font-bold text-stone-900">第一次世界大戰</span>
-                  <span class="text-blue-800 font-semibold">1914.07-1918.11</span>
-                </div>
-                <div class="bg-blue-50/60 p-2.5 rounded-xl border border-blue-150">
-                  <div class="flex justify-between items-center font-bold text-stone-900">
-                    <span>第二次世界大戰</span>
-                    <span class="text-blue-800">1939.09-1945.09</span>
-                  </div>
-                  <div class="mt-1 pl-2 border-l-2 border-blue-400 text-stone-700">
-                    太平洋戰爭 1941 ➔ 戰區之一
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 糖業鐵道名詞 -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-2">
-              <h3 class="font-bold text-stone-900 text-xs flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
-                糖業鐵道專有名詞
-              </h3>
-              <div class="space-y-1.5 text-[11px]">
-                <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-200">
-                  <span class="font-bold text-blue-900">專用線：</span>
-                  或稱原料線，用牽引列車載運甘蔗到糖廠內
-                </div>
-                <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-200">
-                  <span class="font-bold text-blue-900">營業線：</span>
-                  或稱客運營業線，非糖季也能賺取利潤
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- SECTION 6: 【地圖集】10 幅地圖互動切換專題 -->
+        <!-- SECTION 5: 【地圖集】10 幅地圖互動切換專題（位置排在補充資料之前） -->
         <section class="mobile-section" data-cat="maps">
-
           <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-3">
             
             <!-- 頂部標題與頁碼標籤 -->
@@ -709,9 +644,8 @@
               <button onclick="goToMapPage(9)" class="map-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 10 幅"></button>
             </div>
 
-            <!-- 地圖說明文字卡片 (全面更新包含標題、附屬說明與圖例標註) -->
+            <!-- 地圖說明文字卡片 -->
             <div class="bg-emerald-50/70 rounded-xl p-3.5 border border-emerald-200/80 space-y-2.5">
-              <!-- 標題與圖檔名 -->
               <div>
                 <div class="flex items-center justify-between gap-1 mb-1">
                   <span id="mapFileName" class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-200/80 text-emerald-950">map0001.jpg</span>
@@ -799,6 +733,99 @@
           </div>
         </section>
 
+        <!-- SECTION 6: 補充資料（更名後，位置排在地圖集之後） -->
+        <section class="mobile-section" data-cat="supplementary">
+          <div class="flex items-center justify-between mb-2.5 px-1 pt-2">
+            <div class="flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-sm"></span>
+              <h2 class="text-xs font-bold uppercase tracking-wider text-blue-800">補充資料</h2>
+            </div>
+            <span class="text-[10px] text-stone-400 font-medium">口述、背景與名詞</span>
+          </div>
+
+          <div class="grid grid-cols-1 gap-3">
+            
+            <!-- 周阿伯口述歷史（完整複製一份） -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5 text-xs font-bold text-blue-900">
+                  <svg class="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                  <span>周阿伯口述歷史</span>
+                </div>
+                
+                <!-- 補充資料區專屬錄音播放按鈕與 Audio -->
+                <audio id="oralAudioPlayerSupp" src="Voice/V01.wav" preload="none" onended="handleAudioEnded('oralAudioBtnSupp', 'audioIconContainerSupp', 'audioPlayTextSupp', 'audioWavesSupp')"></audio>
+                <button id="oralAudioBtnSupp" onclick="toggleAudioPlay('oralAudioPlayerSupp', 'oralAudioBtnSupp', 'audioIconContainerSupp', 'audioPlayTextSupp', 'audioWavesSupp')" class="tap-scale flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200 transition-all text-[11px] font-medium shadow-2xs">
+                  <span id="audioIconContainerSupp">
+                    <svg class="w-3.5 h-3.5 text-blue-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
+                  </span>
+                  <span id="audioPlayTextSupp">播放錄音</span>
+                  <span id="audioWavesSupp" class="hidden flex items-end gap-0.5 h-3">
+                    <span class="w-0.5 h-2 bg-blue-600 animate-pulse"></span>
+                    <span class="w-0.5 h-3 bg-blue-600 animate-pulse delay-75"></span>
+                    <span class="w-0.5 h-1.5 bg-blue-600 animate-pulse delay-150"></span>
+                  </span>
+                </button>
+              </div>
+
+              <div class="space-y-2 text-xs">
+                <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-200 text-stone-700 text-[11px]">
+                  • 40~50年代下淡水溪浮覆地種植大片甘蔗
+                </div>
+
+                <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-200/60 text-stone-700 text-[11px] space-y-1">
+                  <div class="font-bold text-blue-950 text-xs">臺灣最早的期貨：</div>
+                  <p class="leading-relaxed">
+                    糖販原則上先暫存在糖廠，並代為投保火災險，核發「農產糖寄託存單」為憑據，蔗農需要用糖時再持單到糖廠領用。
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 世界大戰 -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-2">
+              <h3 class="font-bold text-stone-900 text-xs flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
+                世界大戰歷史進程
+              </h3>
+              <div class="space-y-1.5 text-[11px]">
+                <div class="bg-blue-50/60 p-2.5 rounded-xl border border-blue-150 flex justify-between items-center">
+                  <span class="font-bold text-stone-900">第一次世界大戰</span>
+                  <span class="text-blue-800 font-semibold">1914.07-1918.11</span>
+                </div>
+                <div class="bg-blue-50/60 p-2.5 rounded-xl border border-blue-150">
+                  <div class="flex justify-between items-center font-bold text-stone-900">
+                    <span>第二次世界大戰</span>
+                    <span class="text-blue-800">1939.09-1945.09</span>
+                  </div>
+                  <div class="mt-1 pl-2 border-l-2 border-blue-400 text-stone-700">
+                    太平洋戰爭 1941 ➔ 戰區之一
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 糖業鐵道名詞 -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-2">
+              <h3 class="font-bold text-stone-900 text-xs flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
+                糖業鐵道專有名詞
+              </h3>
+              <div class="space-y-1.5 text-[11px]">
+                <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-200">
+                  <span class="font-bold text-blue-900">專用線：</span>
+                  或稱原料線，用牽引列車載運甘蔗到糖廠內
+                </div>
+                <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-200">
+                  <span class="font-bold text-blue-900">營業線：</span>
+                  或稱客運營業線，非糖季也能賺取利潤
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
       </div>
 
       <!-- TAB 2: 繪本故事 (Picture Book Story - 7 Pages) -->
@@ -810,8 +837,8 @@
             <div class="flex items-center space-x-2">
               <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-xs"></span>
               <div>
-                <span class="text-xs font-serif font-black text-amber-950 tracking-wide block">《新園的甜甜時光機》</span>
-                <span class="text-[9px] text-stone-500">甘蔗、五分車與砂糖棧單</span>
+                <span class="text-xs font-serif font-black text-amber-950 tracking-wide block">《新園的甜甜時光機：甘蔗、五分車與砂糖棧單》</span>
+                <span class="text-[9px] text-stone-500">走讀新園歷史風華繪本</span>
               </div>
             </div>
             <span id="storyPageBadge" class="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold">第 1 / 7 頁</span>
@@ -1065,12 +1092,13 @@
               </div>
             </div>
 
-            <!-- 分支 5: 國際情勢與名詞 -->
+            <!-- 分支 5: 補充資料（原國際情勢、名詞） -->
             <div class="flex gap-3 text-xs">
               <div class="w-32 py-2 px-2.5 bg-blue-950/80 border border-blue-500/40 rounded-xl text-blue-200 shrink-0 text-center font-bold">
-                <span class="text-blue-400">國際情勢、名詞</span>
+                <span class="text-blue-400">補充資料</span>
               </div>
               <div class="flex-1 bg-stone-800/80 p-3 rounded-xl border border-stone-700/60 text-[11px] space-y-1 text-stone-300">
+                <div>• 周阿伯口述歷史：下淡水溪浮覆地甘蔗種植、砂糖期貨存單。</div>
                 <div>• 第一次世界大戰 (1914.07-1918.11)</div>
                 <div>• 第二次世界大戰 (1939.09-1945.09) ➔ 太平洋戰爭(1941)戰區之一</div>
                 <div>• 糖業鐵道名詞：專用線（原料線）、營業線（客運線）</div>
@@ -1431,54 +1459,48 @@
       openLightboxCustom(current.img, current.title);
     }
 
-    // 周阿伯口述錄音播放實作（指向 Voice/V01.jpg）
-    let isPlayingAudio = false;
+    // 周阿伯口述錄音播放通用實作（支援主區與補充資料雙播放器）
+    function resetAudioUI(btnId, iconId, textId, wavesId) {
+      const btn = document.getElementById(btnId);
+      const iconContainer = document.getElementById(iconId);
+      const textSpan = document.getElementById(textId);
+      const waves = document.getElementById(wavesId);
 
-    function resetAudioUI() {
-      const btn = document.getElementById('oralAudioBtn');
-      const iconContainer = document.getElementById('audioIconContainer');
-      const textSpan = document.getElementById('audioPlayText');
-      const waves = document.getElementById('audioWaves');
-
-      isPlayingAudio = false;
       if (iconContainer) {
-        iconContainer.innerHTML = '<svg class="w-3.5 h-3.5 text-amber-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>';
+        iconContainer.innerHTML = '<svg class="w-3.5 h-3.5 text-current" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>';
       }
       if (textSpan) textSpan.textContent = '播放錄音';
-      if (btn) btn.classList.remove('bg-amber-200', 'border-amber-400');
+      if (btn) btn.classList.remove('opacity-90', 'ring-2');
       if (waves) waves.classList.add('hidden');
     }
 
-    function handleAudioEnded() {
-      resetAudioUI();
+    function handleAudioEnded(btnId, iconId, textId, wavesId) {
+      resetAudioUI(btnId, iconId, textId, wavesId);
     }
 
-    function toggleAudioPlay(btn) {
-      const audio = document.getElementById('oralAudioPlayer');
-      const iconContainer = document.getElementById('audioIconContainer');
-      const textSpan = document.getElementById('audioPlayText');
-      const waves = document.getElementById('audioWaves');
+    function toggleAudioPlay(playerId, btnId, iconId, textId, wavesId) {
+      const audio = document.getElementById(playerId);
+      const btn = document.getElementById(btnId);
+      const iconContainer = document.getElementById(iconId);
+      const textSpan = document.getElementById(textId);
+      const waves = document.getElementById(wavesId);
 
       if (!audio) return;
 
-      if (!isPlayingAudio) {
+      if (audio.paused) {
         audio.play().then(() => {
-          isPlayingAudio = true;
-          iconContainer.innerHTML = '<svg class="w-3.5 h-3.5 text-amber-800" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>';
+          iconContainer.innerHTML = '<svg class="w-3.5 h-3.5 text-current" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>';
           textSpan.textContent = '暫停播放';
-          btn.classList.add('bg-amber-200', 'border-amber-400');
+          btn.classList.add('opacity-90', 'ring-2');
           waves.classList.remove('hidden');
         }).catch(err => {
-          console.warn('音訊播放失敗或檔案尚未載入:', err);
-          // 容錯展示：若檔案無法直接解碼，仍提供視覺反饋
-          isPlayingAudio = true;
+          console.warn('音訊播放提示:', err);
           textSpan.textContent = '播放中...';
-          btn.classList.add('bg-amber-200', 'border-amber-400');
           waves.classList.remove('hidden');
         });
       } else {
         audio.pause();
-        resetAudioUI();
+        resetAudioUI(btnId, iconId, textId, wavesId);
       }
     }
 
@@ -1518,17 +1540,21 @@
         panelMindmap.classList.remove('hidden');
       }
 
-      // 切換標籤時自動回到頂部
       const scrollBody = document.getElementById('appScrollBody');
       if (scrollBody) scrollBody.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 分類膠囊過濾切換
+    // 分類膠囊過濾切換（支援 supplementary 與 maps）
     function filterMobileCategory(category, element) {
       const pills = document.querySelectorAll('.category-pill');
       pills.forEach(p => {
-        p.className = 'category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200';
+        if (p.dataset && p.dataset.cat === 'maps') {
+          p.className = 'category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 flex items-center gap-1';
+        } else {
+          p.className = 'category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200';
+        }
       });
+
       element.className = 'category-pill active tap-scale px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-stone-900 text-white shadow-sm';
 
       const sections = document.querySelectorAll('.mobile-section');

@@ -54,6 +54,15 @@
     .lightbox-img {
       transition: transform 0.25s ease-out;
     }
+
+    /* 繪本切換淡入效果 */
+    .story-fade {
+      animation: fadeInStory 0.3s ease-out forwards;
+    }
+    @keyframes fadeInStory {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body class="bg-stone-900 text-stone-850 font-sans antialiased h-full overflow-hidden flex items-center justify-center">
@@ -83,34 +92,140 @@
       </button>
     </header>
 
-    <!-- 橫向滑動時代篩選膠囊列 -->
-    <div id="capsuleBar" class="bg-white border-b border-stone-200 px-3 py-2 shrink-0 flex items-center space-x-2 overflow-x-auto no-scrollbar z-20">
-      <button onclick="filterMobileCategory('all', this)" class="category-pill active tap-scale px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-stone-900 text-white shadow-sm">
-        全部時序
-      </button>
-      <button onclick="filterMobileCategory('founding', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
-        【建庄起源】
-      </button>
-      <button onclick="filterMobileCategory('japanese', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
-        日治新式製糖
-      </button>
-      <button onclick="filterMobileCategory('xinyuan-rail', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
-        新園影像 · 糖鐵口述
-      </button>
-      <button onclick="filterMobileCategory('postwar', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
-        戰後台糖時期
-      </button>
-      <button onclick="filterMobileCategory('global', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
-        大戰與名詞
-      </button>
-    </div>
-
     <!-- 主滑動內容視區 -->
     <main id="appScrollBody" class="flex-1 overflow-y-auto no-scrollbar p-3 space-y-4 pb-24">
       
-      <!-- 視圖 1: 卡片時間軸模式 (預設) -->
+      <!-- 繪本故事 (Picture Book Story - 7 Pages) -->
+      <div id="panel-story" class="hidden space-y-4">
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-3">
+          
+          <!-- 頂部頁碼與操作提示 -->
+          <div class="flex items-center justify-between pb-1 border-b border-stone-100">
+            <div class="flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-xs"></span>
+              <span class="text-xs font-serif font-bold text-stone-900 tracking-wider">繪本故事展</span>
+              <span id="storyPageBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold">第 1 / 7 頁</span>
+            </div>
+            <!-- 更換此頁照片 -->
+            <button onclick="triggerStoryPhotoUpload()" class="tap-scale px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-[10px] font-medium flex items-center gap-1 border border-stone-200">
+              <svg class="w-3 h-3 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              <span>更換此頁照片</span>
+            </button>
+          </div>
+
+          <!-- 主繪本圖片展示框（點擊放大） -->
+          <div onclick="openStoryLightbox()" class="w-full aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
+            <img id="storyMainImg" src="https://placehold.co/800x500/fef2f2/991b1b?text=第1頁%EF%BC%9A仙隆宮神農大帝開墾記+(點擊放大)" alt="繪本故事圖" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+            <div class="absolute inset-0 bg-stone-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="px-2.5 py-1 rounded-full bg-stone-900/80 text-white text-[10px] backdrop-blur-xs flex items-center gap-1 shadow">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                點擊全螢幕放大
+              </span>
+            </div>
+            <span id="storyImgBadge" class="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-md bg-stone-900/70 backdrop-blur-sm text-[9px] text-white font-medium">第 1 頁繪本</span>
+          </div>
+
+          <!-- 7 顆進度指示圓點 -->
+          <div class="flex items-center justify-center space-x-1.5 py-1">
+            <button onclick="goToStoryPage(0)" class="story-dot w-2 h-2 rounded-full bg-amber-600 transition-all duration-200" title="第 1 頁"></button>
+            <button onclick="goToStoryPage(1)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 2 頁"></button>
+            <button onclick="goToStoryPage(2)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 3 頁"></button>
+            <button onclick="goToStoryPage(3)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 4 頁"></button>
+            <button onclick="goToStoryPage(4)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 5 頁"></button>
+            <button onclick="goToStoryPage(5)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 6 頁"></button>
+            <button onclick="goToStoryPage(6)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 7 頁"></button>
+          </div>
+
+          <!-- 故事文字說明卡片 -->
+          <div class="bg-amber-50/60 rounded-xl p-3.5 border border-amber-200/80 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <h3 id="storyTitle" class="font-serif font-black text-sm text-stone-900">
+                第一幕：仙隆宮 · 拓墾鯉魚山
+              </h3>
+              <span id="storyEra" class="text-[10px] font-bold text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded">
+                明代天啟年間 (1621-1627)
+              </span>
+            </div>
+            <p id="storyDesc" class="text-xs text-stone-700 leading-relaxed">
+              仙隆宮主祀神農大帝。據廟中碑文與口傳，先民早至明代天啟年間、晚至崇禎時期抵達當地，於鯉魚山東方辛勤開墾，並祭祀隨身奉祀的五穀仙帝以求平安豐收，奠下新園聚落的基石。
+            </p>
+          </div>
+
+          <!-- 翻頁控制按鈕列 -->
+          <div class="flex items-center justify-between pt-1">
+            <button id="prevStoryBtn" onclick="prevStoryPage()" class="tap-scale flex-1 mr-1.5 py-2 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-xs flex items-center justify-center gap-1 border border-stone-200 transition">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+              <span>上一頁</span>
+            </button>
+            <button id="nextStoryBtn" onclick="nextStoryPage()" class="tap-scale flex-1 ml-1.5 py-2 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-sm transition">
+              <span>下一頁</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <!-- 7 張微縮圖快速跳頁列 -->
+          <div class="pt-2 border-t border-stone-100 space-y-1.5">
+            <div class="text-[10px] font-bold text-stone-400">微縮圖快速跳頁</div>
+            <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-1">
+              <button onclick="goToStoryPage(0)" id="thumb-0" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border-2 border-amber-600 ring-2 ring-amber-400/40 relative">
+                <img src="https://placehold.co/100x80/fef2f2/991b1b?text=1" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">1</span>
+              </button>
+              <button onclick="goToStoryPage(1)" id="thumb-1" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                <img src="https://placehold.co/100x80/fef2f2/991b1b?text=2" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">2</span>
+              </button>
+              <button onclick="goToStoryPage(2)" id="thumb-2" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                <img src="https://placehold.co/100x80/fef2f2/991b1b?text=3" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">3</span>
+              </button>
+              <button onclick="goToStoryPage(3)" id="thumb-3" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                <img src="https://placehold.co/100x80/fefce8/854d0e?text=4" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">4</span>
+              </button>
+              <button onclick="goToStoryPage(4)" id="thumb-4" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                <img src="https://placehold.co/100x80/fefce8/854d0e?text=5" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">5</span>
+              </button>
+              <button onclick="goToStoryPage(5)" id="thumb-5" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                <img src="https://placehold.co/100x80/fefce8/854d0e?text=6" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">6</span>
+              </button>
+              <button onclick="goToStoryPage(6)" id="thumb-6" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                <img src="https://placehold.co/100x80/ecfdf5/065f46?text=7" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">7</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 原版完整內容 · 庄頭紀事時間軸 (Timeline - 預設顯示) -->
       <div id="panel-timeline" class="space-y-4">
         
+        <!-- 橫向滑動時代篩選膠囊列 -->
+        <div id="capsuleBar" class="bg-white rounded-2xl border border-stone-200 p-2 shrink-0 flex items-center space-x-2 overflow-x-auto no-scrollbar shadow-xs">
+          <button onclick="filterMobileCategory('all', this)" class="category-pill active tap-scale px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-stone-900 text-white shadow-sm">
+            全部時序
+          </button>
+          <button onclick="filterMobileCategory('founding', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
+            【建庄起源】
+          </button>
+          <button onclick="filterMobileCategory('japanese', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
+            日治新式製糖
+          </button>
+          <button onclick="filterMobileCategory('xinyuan-rail', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
+            新園相關 · 糖鐵口述
+          </button>
+          <button onclick="filterMobileCategory('postwar', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
+            戰後台糖時期
+          </button>
+          <button onclick="filterMobileCategory('global', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
+            大戰與名詞
+          </button>
+        </div>
+
         <!-- SECTION 1: 【建庄起源】明朝時期 1368-1644 / 清朝時期 1636-1912 -->
         <section class="mobile-section" data-cat="founding">
           <div class="flex items-center justify-between mb-2.5 px-1">
@@ -227,7 +342,7 @@
               </div>
 
               <p class="text-xs text-stone-700 leading-relaxed bg-red-50/50 p-2.5 rounded-xl border border-red-100/80">
-                主祀主祀鹽府千歲，並陪祀糖府千歲、池府千歲等。其中「鹽」與「糖」千歲的稱呼由來與其生前官職或歷史淵源有關，是台灣少見以鹽、糖為神明尊號的王爺信仰。最早可追溯至清朝乾隆年，居民多簡稱為「王爺廟」。
+                主祀鹽府千歲，並陪祀糖府千歲、池府千歲等。其中「鹽」與「糖」千歲的稱呼由來與其生前官職或歷史淵源有關，是台灣少見以鹽、糖為神明尊號的王爺信仰。最早可追溯至清朝乾隆年，居民多簡稱為「王爺廟」。
               </p>
             </div>
 
@@ -500,9 +615,6 @@
                 </div>
                 <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-md bg-stone-900/60 backdrop-blur-sm text-[9px] text-white font-medium">糖鐵照片 二</span>
               </div>
-              <p class="text-[11px] text-stone-500 italic">
-                提示：點擊上方任一照片即可全螢幕放大檢視，點擊「換照片」可更換自訂圖片。
-              </p>
             </div>
 
           </div>
@@ -641,7 +753,7 @@
 
       </div>
 
-      <!-- TAB 2: 糖鐵車站路線圖專區 (Stations Tab) -->
+      <!-- TAB 3: 糖鐵車站路線圖專區 (Stations Tab) -->
       <div id="panel-stations" class="hidden space-y-3">
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-3">
           <div class="flex items-center justify-between">
@@ -707,7 +819,7 @@
             <!-- 路線 3 -->
             <div class="p-3 bg-stone-50 rounded-xl border border-stone-200 space-y-1.5">
               <div class="flex justify-between items-center">
-                <span class="font-bold text-stone-900">③ 屏東 ── 鹽埔子 (1950-1977)</span>
+                <span class="font-bold text-stone-900">③ 屏東 ── 新園 (1950-1977)</span>
                 <span class="text-[9px] bg-amber-200 text-amber-950 font-bold px-1.5 py-0.5 rounded">東港幹線</span>
               </div>
               <div class="flex flex-wrap gap-1 text-[10px] pt-1">
@@ -730,7 +842,7 @@
         </div>
       </div>
 
-      <!-- TAB 3: 心智樹圖專區 (Mindmap Tab) -->
+      <!-- TAB 4: 心智樹圖專區 (Mindmap Tab) -->
       <div id="panel-mindmap" class="hidden">
         <div class="bg-stone-900 text-stone-100 rounded-2xl p-4 shadow-xl border border-stone-800 overflow-x-auto no-scrollbar">
           <div class="min-w-[700px] space-y-4">
@@ -813,18 +925,28 @@
       </div>
     </main>
 
-    <!-- Native App 底部導航欄（無改標題功能） -->
-    <nav class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-stone-200 px-6 py-2 flex justify-around items-center z-40 pb-safe">
+    <!-- Native App 底部導航欄 -->
+    <nav class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-stone-200 px-3 py-2 flex justify-around items-center z-40 pb-safe">
+      
+      <!-- 庄頭紀事時間軸（第一項，預設選取） -->
       <button onclick="switchMobileTab('timeline', this)" class="app-tab-btn active flex flex-col items-center text-amber-600 tap-scale">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path></svg>
         <span class="text-[10px] font-bold mt-0.5">年表紀事</span>
       </button>
 
+      <!-- 繪本故事（第二項） -->
+      <button onclick="switchMobileTab('story', this)" class="app-tab-btn flex flex-col items-center text-stone-400 hover:text-stone-700 tap-scale">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"></path></svg>
+        <span class="text-[10px] font-medium mt-0.5">繪本故事</span>
+      </button>
+
+      <!-- 糖鐵線路 -->
       <button onclick="switchMobileTab('stations', this)" class="app-tab-btn flex flex-col items-center text-stone-400 hover:text-stone-700 tap-scale">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
         <span class="text-[10px] font-medium mt-0.5">糖鐵線路</span>
       </button>
 
+      <!-- 心智樹圖 -->
       <button onclick="switchMobileTab('mindmap', this)" class="app-tab-btn flex flex-col items-center text-stone-400 hover:text-stone-700 tap-scale">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
         <span class="text-[10px] font-medium mt-0.5">心智樹圖</span>
@@ -854,9 +976,157 @@
 
     <!-- 隱藏原生檔案上傳器 -->
     <input type="file" id="photoUploadInput" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+    <input type="file" id="storyPhotoUploadInput" accept="image/*" class="hidden" onchange="handleStoryPhotoUpload(event)">
   </div>
 
   <script>
+    // 繪本故事 7 頁資料結構
+    const storyPages = [
+      {
+        page: 1,
+        title: "第一幕：仙隆宮 · 拓墾鯉魚山",
+        era: "明朝天啟年間 (1621-1627)",
+        desc: "仙隆宮主祀神農大帝。據廟中碑文與口傳，先民早至明代天啟年間、晚至崇禎時期抵達當地，於鯉魚山東方辛勤開墾，並祭祀隨身奉祀的五穀仙帝以求平安豐收，奠定新園庄頭的農耕信仰基石。",
+        img: "https://placehold.co/800x500/fef2f2/991b1b?text=第1頁%EF%BC%9A仙隆宮神農大帝開墾記+(點擊放大)"
+      },
+      {
+        page: 2,
+        title: "第二幕：新惠宮 · 渡口與遷村記",
+        era: "清朝乾隆年間 (1755年創建)",
+        desc: "新惠宮主祀媽祖，創建於清乾隆二十年（1755年），是新園三十六庄的信仰中心。清康熙年間已有新園古街渡口，為船隊溯溪北上中途要津；後因下淡水溪洪水氾濫，居民於同治六年（1867年）經歷了第一次大遷村。",
+        img: "https://placehold.co/800x500/fef2f2/991b1b?text=第2頁%EF%BC%9A新惠宮媽祖與古街渡口+(點擊放大)"
+      },
+      {
+        page: 3,
+        title: "第三幕：澄灜宮 · 鹽糖王爺傳奇",
+        era: "清乾隆年間迄今",
+        desc: "澄灜宮居民俗稱王爺廟，主祀鹽府千歲，並陪祀糖府千歲、池府千歲。其中「鹽」與「糖」千歲稱呼由來與其生前官職或歷史淵源密切相關，為全臺灣少見以鹽、糖為神尊名號之特殊王爺信仰。",
+        img: "https://placehold.co/800x500/fef2f2/991b1b?text=第3頁%EF%BC%9A澄灜宮鹽府與糖府千歲+(點擊放大)"
+      },
+      {
+        page: 4,
+        title: "第四幕：新式製糖 · 東洋第一工場",
+        era: "日治時期 (1895-1945)",
+        desc: "總督府於1905年實施原料採取區域制，壟斷原料並取締傳統糖廍。四大會社崛起，自1899年蘇雲梯先生南昌製糖（阿緱製糖前身）到屏東糖廠日榨3600噸東洋最大廠區、1910酒精工場與1937高達70公尺的大煙囪，產值一度佔全臺工業75%。",
+        img: "https://placehold.co/800x500/fefce8/854d0e?text=第4頁%EF%BC%9A阿緱糖廠與70米大煙囪+(點擊放大)"
+      },
+      {
+        page: 5,
+        title: "第五幕：五分車鳴笛 · 東港線沿革",
+        era: "糖鐵演進 (1908-1977)",
+        desc: "新園境內帶有「廍」字的舊地名訴說糖廍地景。1908年開設烏龍線與東港專用線，隨後發展出甘棠門支線（阿緱-東港）、舊東港幹線（屏東-鹽埔子）與東港幹線（屏東-新園）等兼具運蔗與載客的營業線，串起萬丹、仙公廟至新園的生活脈動。",
+        img: "https://placehold.co/800x500/fefce8/854d0e?text=第5頁%EF%BC%9A奔馳於田野的東港線五分車+(點擊放大)"
+      },
+      {
+        page: 6,
+        title: "第六幕：周阿伯的口述 · 溪埔甘蔗與期貨",
+        era: "民國40~50年代 (1950s-1960s)",
+        desc: "周阿伯回憶：昔日下淡水溪浮覆地種植了大片甘蔗。糖販將糖寄存在糖廠並代保火險，領取『農產糖寄託存單』作為憑證，需要時再提領，成為臺灣最早的期貨實務，記錄了蔗農與糖廠唇齒相依的珍貴歲月。",
+        img: "https://placehold.co/800x500/fefce8/854d0e?text=第6頁%EF%BC%9A周阿伯口述溪埔蔗田與期貨單+(點擊放大)"
+      },
+      {
+        page: 7,
+        title: "第七幕：煙囪歸於平靜 · 園味覺醒",
+        era: "戰後轉型 (1977-1997迄今)",
+        desc: "歷經蔗渣造紙、紙漿廠60米煙囪矗立，面對國際糖價自千美元降至60美元，1977年停駛東港客運線，1994年紙漿廠停閉，至1997年10月屏東糖廠製糖工場正式停壓結束製糖。昔日蔗香化為文化記憶，在新意中迎來園味覺醒。",
+        img: "https://placehold.co/800x500/ecfdf5/065f46?text=第7頁%EF%BC%9A煙囪歸於平靜與文化新意+(點擊放大)"
+      }
+    ];
+
+    let currentStoryIndex = 0;
+
+    // 更新繪本故事介面
+    function updateStoryUI() {
+      const current = storyPages[currentStoryIndex];
+      const mainImg = document.getElementById('storyMainImg');
+      const title = document.getElementById('storyTitle');
+      const era = document.getElementById('storyEra');
+      const desc = document.getElementById('storyDesc');
+      const badge = document.getElementById('storyPageBadge');
+      const imgBadge = document.getElementById('storyImgBadge');
+
+      mainImg.src = current.img;
+      title.textContent = current.title;
+      era.textContent = current.era;
+      desc.textContent = current.desc;
+      badge.textContent = `第 ${current.page} / ${storyPages.length} 頁`;
+      imgBadge.textContent = `第 ${current.page} 頁繪本`;
+
+      // 更新 7 顆圓點狀態
+      const dots = document.querySelectorAll('.story-dot');
+      dots.forEach((dot, idx) => {
+        if (idx === currentStoryIndex) {
+          dot.className = 'story-dot w-4 h-2 rounded-full bg-amber-600 transition-all duration-200';
+        } else {
+          dot.className = 'story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200';
+        }
+      });
+
+      // 更新微縮圖外框狀態
+      for (let i = 0; i < 7; i++) {
+        const thumb = document.getElementById(`thumb-${i}`);
+        if (thumb) {
+          if (i === currentStoryIndex) {
+            thumb.className = 'story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border-2 border-amber-600 ring-2 ring-amber-400/40 relative';
+          } else {
+            thumb.className = 'story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative';
+          }
+        }
+      }
+
+      // 控制按鈕狀態
+      document.getElementById('prevStoryBtn').style.opacity = currentStoryIndex === 0 ? '0.5' : '1';
+      document.getElementById('nextStoryBtn').style.opacity = currentStoryIndex === storyPages.length - 1 ? '0.5' : '1';
+    }
+
+    function nextStoryPage() {
+      if (currentStoryIndex < storyPages.length - 1) {
+        currentStoryIndex++;
+        updateStoryUI();
+      }
+    }
+
+    function prevStoryPage() {
+      if (currentStoryIndex > 0) {
+        currentStoryIndex--;
+        updateStoryUI();
+      }
+    }
+
+    function goToStoryPage(index) {
+      if (index >= 0 && index < storyPages.length) {
+        currentStoryIndex = index;
+        updateStoryUI();
+      }
+    }
+
+    // 繪本主圖放大檢視
+    function openStoryLightbox() {
+      const current = storyPages[currentStoryIndex];
+      openLightboxCustom(current.img, `${current.title} (${current.era})`);
+    }
+
+    // 換繪本當前頁照片
+    function triggerStoryPhotoUpload() {
+      document.getElementById('storyPhotoUploadInput').click();
+    }
+
+    function handleStoryPhotoUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          storyPages[currentStoryIndex].img = e.target.result;
+          updateStoryUI();
+          // 同步微縮圖
+          const thumbImg = document.querySelector(`#thumb-${currentStoryIndex} img`);
+          if (thumbImg) thumbImg.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+      event.target.value = '';
+    }
+
     // 錄音播放狀態切換微互動
     let isPlayingAudio = false;
     function toggleAudioPlay(btn) {
@@ -893,24 +1163,25 @@
       const activeSpan = btnElement.querySelector('span');
       if (activeSpan) activeSpan.className = 'text-[10px] font-bold mt-0.5';
 
+      const panelStory = document.getElementById('panel-story');
       const panelTimeline = document.getElementById('panel-timeline');
       const panelStations = document.getElementById('panel-stations');
       const panelMindmap = document.getElementById('panel-mindmap');
-      const capsuleBar = document.getElementById('capsuleBar');
 
+      panelStory.classList.add('hidden');
       panelTimeline.classList.add('hidden');
       panelStations.classList.add('hidden');
       panelMindmap.classList.add('hidden');
 
-      if (tabKey === 'timeline') {
+      if (tabKey === 'story') {
+        panelStory.classList.remove('hidden');
+        panelStory.classList.add('story-fade');
+      } else if (tabKey === 'timeline') {
         panelTimeline.classList.remove('hidden');
-        capsuleBar.classList.remove('hidden');
       } else if (tabKey === 'stations') {
         panelStations.classList.remove('hidden');
-        capsuleBar.classList.add('hidden');
       } else if (tabKey === 'mindmap') {
         panelMindmap.classList.remove('hidden');
-        capsuleBar.classList.add('hidden');
       }
     }
 
@@ -935,16 +1206,21 @@
     // 燈箱放大檢視邏輯
     function openLightbox(imgElementId, titleText) {
       const sourceImg = document.getElementById(imgElementId);
+      if (sourceImg) {
+        openLightboxCustom(sourceImg.src, titleText || '影像放大檢視');
+      }
+    }
+
+    function openLightboxCustom(imgSrc, titleText) {
       const lightbox = document.getElementById('imageLightbox');
       const targetImg = document.getElementById('lightboxTargetImg');
       const title = document.getElementById('lightboxTitle');
 
-      if (sourceImg && lightbox && targetImg) {
-        targetImg.src = sourceImg.src;
+      if (lightbox && targetImg) {
+        targetImg.src = imgSrc;
         title.textContent = titleText || '影像放大檢視';
         lightbox.classList.remove('hidden');
         
-        // 觸發淡入動效
         requestAnimationFrame(() => {
           lightbox.classList.remove('opacity-0');
           lightbox.classList.add('opacity-100');
@@ -970,12 +1246,16 @@
       }
     }
 
-    // 鍵盤 ESC 關閉燈箱支援
+    // 鍵盤左右鍵切換繪本與 ESC 關閉燈箱
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeLightbox();
+      if (!document.getElementById('panel-story').classList.contains('hidden')) {
+        if (e.key === 'ArrowRight') nextStoryPage();
+        if (e.key === 'ArrowLeft') prevStoryPage();
+      }
     });
 
-    // 照片替換上傳模擬
+    // 照片替換上傳 (原時間軸廟宇與糖鐵照)
     let currentPhotoTargetId = null;
 
     function triggerPhotoUpload(targetKey) {
@@ -1011,6 +1291,11 @@
         container.classList.add('max-w-md');
       }
     }
+
+    // 初始化繪本故事第一頁
+    window.addEventListener('DOMContentLoaded', () => {
+      updateStoryUI();
+    });
   </script>
 </body>
 </html>

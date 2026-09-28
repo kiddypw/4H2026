@@ -473,53 +473,40 @@
               </div>
             </div>
 
-            <!-- 照片展示框 1：新園糖鐵與口述影像紀錄 -->
+            <!-- YouTube 影片播放：新園糖鐵與口述影像紀錄（AI影片生成） -->
             <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-2.5">
-              <div class="flex justify-between items-center">
+              <div class="flex justify-between items-start">
                 <div>
-                  <h3 class="font-serif font-black text-sm text-stone-900">新園糖鐵與口述影像紀錄（一）</h3>
-                  <p class="text-[10px] text-stone-500">五分車鐵道、載蔗台車或歷史老照片預留區</p>
+                  <div class="flex items-center gap-2 mb-1">
+                    <h3 class="font-serif font-black text-sm text-stone-900">新園糖鐵與口述影像紀錄</h3>
+                    <span class="px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 text-[10px] font-bold border border-purple-250 flex items-center gap-1">
+                      <svg class="w-3 h-3 text-purple-600" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 16.5a1.5 1.5 0 00-3 0V17h3v-.5zM4 16.5a1.5 1.5 0 013 0V17H4v-.5z"/></svg>
+                      AI影片生成
+                    </span>
+                  </div>
+                  <p class="text-[10px] text-stone-500">五分車鐵道、糖業歷史與口述記憶重現</p>
                 </div>
-                <button onclick="triggerPhotoUpload('railway')" class="tap-scale px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-[10px] font-medium flex items-center gap-1 border border-stone-200">
-                  <svg class="w-3 h-3 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                  <span>換照片</span>
-                </button>
+                <a href="https://youtu.be/VDvv9i73CAM" target="_blank" rel="noopener noreferrer" class="tap-scale px-2 py-1 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg text-[10px] font-medium flex items-center gap-1 border border-red-200 shrink-0">
+                  <svg class="w-3 h-3 text-red-600" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                  <span>開啟 YT</span>
+                </a>
               </div>
 
-              <div onclick="openLightbox('img-railway', '新園糖鐵與口述歷史 影像展示（一）')" class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
-                <img id="img-railway" src="https://placehold.co/800x450/fefce8/854d0e?text=新園糖鐵與口述照片位置+一+(點擊放大)" alt="新園糖鐵與口述歷史照片" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                <div class="absolute inset-0 bg-stone-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="px-2.5 py-1 rounded-full bg-stone-900/75 text-white text-[10px] backdrop-blur-xs flex items-center gap-1 shadow">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
-                    點擊放大檢視
-                  </span>
-                </div>
-                <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-md bg-stone-900/60 backdrop-blur-sm text-[9px] text-white font-medium">糖鐵照片 一</span>
-              </div>
-            </div>
-
-            <!-- 照片展示框 2：新園糖鐵與口述影像紀錄 -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-2.5">
-              <div class="flex justify-between items-center">
-                <div>
-                  <h3 class="font-serif font-black text-sm text-stone-900">新園糖鐵與口述影像紀錄（二）</h3>
-                  <p class="text-[10px] text-stone-500">周阿伯採訪現況、浮覆地蔗田或糖廍空間舊址</p>
-                </div>
-                <button onclick="triggerPhotoUpload('railway2')" class="tap-scale px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-[10px] font-medium flex items-center gap-1 border border-stone-200">
-                  <svg class="w-3 h-3 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                  <span>換照片</span>
-                </button>
+              <!-- YouTube 響應式嵌入播放器 -->
+              <div class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-black border border-stone-200 shadow-inner relative">
+                <iframe 
+                  class="w-full h-full"
+                  src="https://www.youtube-nocookie.com/embed/VDvv9i73CAM?rel=0" 
+                  title="新園糖鐵與口述影像紀錄 - AI影片生成" 
+                  frameborder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                  allowfullscreen>
+                </iframe>
               </div>
 
-              <div onclick="openLightbox('img-railway2', '新園糖鐵與口述歷史 影像展示（二）')" class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
-                <img id="img-railway2" src="https://placehold.co/800x450/fefce8/854d0e?text=新園糖鐵與口述照片位置+二+(點擊放大)" alt="新園糖鐵與口述歷史照片二" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                <div class="absolute inset-0 bg-stone-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <span class="px-2.5 py-1 rounded-full bg-stone-900/75 text-white text-[10px] backdrop-blur-xs flex items-center gap-1 shadow">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
-                    點擊放大檢視
-                  </span>
-                </div>
-                <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-md bg-stone-900/60 backdrop-blur-sm text-[9px] text-white font-medium">糖鐵照片 二</span>
+              <div class="bg-purple-50/60 p-2.5 rounded-xl border border-purple-150 text-[11px] text-purple-950 flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-purple-600 shrink-0"></span>
+                <span>此影像為結合文史口述調研之 <strong>AI影片生成</strong> 影像作品，生動重現新園糖鐵與昔日蔗田風貌。</span>
               </div>
             </div>
 

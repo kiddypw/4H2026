@@ -467,7 +467,7 @@
                 <div class="bg-amber-50/70 p-3 rounded-xl border border-amber-200/80 text-stone-700 text-[11px] space-y-1">
                   <div class="font-bold text-amber-950 text-xs">臺灣最早的期貨：</div>
                   <p class="leading-relaxed">
-                    糖販原則上先暫存在糖廠，並代為投保火災險，核發「農產糖寄託存單」為憑據，蔗農需要用糖時再持單到糖廠領用。
+                    糖販原則上先暫存在糖廠，並代為投保火災險，核發「砂糖棧單」為憑據，蔗農需要用糖時再持單到糖廠領用。
                   </p>
                 </div>
               </div>
@@ -727,11 +727,137 @@
               <span class="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-sm"></span>
               <h2 class="text-xs font-bold uppercase tracking-wider text-blue-800">補充資料</h2>
             </div>
-            <span class="text-[10px] text-stone-400 font-medium">口述、背景與名詞</span>
+            <span class="text-[10px] text-stone-400 font-medium">口述、背景與歷史影像</span>
           </div>
 
           <div class="grid grid-cols-1 gap-3">
             
+            <!-- 【歷史照片】10 幅老照片互動切換專題（功能與地圖集相同） -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-3">
+              <!-- 頂部標題與頁碼標籤 -->
+              <div class="flex items-center justify-between pb-2 border-b border-stone-100">
+                <div class="flex items-center space-x-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-xs"></span>
+                  <div>
+                    <span class="text-xs font-serif font-black text-blue-950 tracking-wide block">《新園與糖業歷史影像專輯》</span>
+                    <span class="text-[9px] text-stone-500">五分車、蔗田、糖廍與庄頭珍貴歷史照片</span>
+                  </div>
+                </div>
+                <span id="photoPageBadge" class="text-[10px] px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 font-bold">第 1 / 10 幅</span>
+              </div>
+
+              <!-- 主歷史照片圖片展示框 -->
+              <div onclick="openPhotoLightbox()" class="w-full aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
+                <img id="photoMainImg" src="photo/photo0001.jpg" onerror="this.src='https://placehold.co/800x500/eff6ff/1e40af?text=PHOTO0001'" alt="歷史照片" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                <div class="absolute inset-0 bg-stone-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span class="px-2.5 py-1 rounded-full bg-stone-900/80 text-white text-[10px] backdrop-blur-xs flex items-center gap-1 shadow">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                    點擊全螢幕放大檢視
+                  </span>
+                </div>
+              </div>
+
+              <!-- 10 顆進度指示圓點 -->
+              <div class="flex items-center justify-center space-x-1.5 py-1">
+                <button onclick="goToPhotoPage(0)" class="photo-dot w-4 h-2 rounded-full bg-blue-600 transition-all duration-200" title="第 1 幅"></button>
+                <button onclick="goToPhotoPage(1)" class="photo-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 2 幅"></button>
+                <button onclick="goToPhotoPage(2)" class="photo-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 3 幅"></button>
+                <button onclick="goToPhotoPage(3)" class="photo-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 4 幅"></button>
+                <button onclick="goToPhotoPage(4)" class="photo-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 5 幅"></button>
+                <button onclick="goToPhotoPage(5)" class="photo-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 6 幅"></button>
+                <button onclick="goToPhotoPage(6)" class="photo-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 7 幅"></button>
+                <button onclick="goToPhotoPage(7)" class="photo-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 8 幅"></button>
+                <button onclick="goToPhotoPage(8)" class="photo-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 9 幅"></button>
+                <button onclick="goToPhotoPage(9)" class="photo-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 10 幅"></button>
+              </div>
+
+              <!-- 照片說明卡片 -->
+              <div class="bg-blue-50/70 rounded-xl p-3.5 border border-blue-200/80 space-y-2.5">
+                <div>
+                  <div class="flex items-center justify-between gap-1 mb-1">
+                    <span id="photoFileName" class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-200/80 text-blue-950">photo0001.jpg</span>
+                    <span id="photoAttribution" class="text-[10px] text-blue-800 font-medium">文史老照片珍藏</span>
+                  </div>
+                  <h3 id="photoTitle" class="font-serif font-black text-sm text-stone-900 leading-snug">
+                    傳統糖廍石車壓榨甘蔗實景
+                  </h3>
+                </div>
+
+                <!-- 說明文字 -->
+                <div id="photoDescContainer" class="bg-white/80 p-2.5 rounded-lg border border-blue-200/60 space-y-1">
+                  <span class="text-[10px] font-bold text-blue-900 flex items-center gap-1">
+                    <svg class="w-3 h-3 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    影像背景說明：
+                  </span>
+                  <p id="photoDesc" class="text-xs text-stone-800 leading-relaxed font-sans">
+                    早期由牛隻拉動石車雙輪壓榨甘蔗汁，為新園與鄰近聚落日治新式製糖引進前的糖廍傳統製糖縮影。
+                  </p>
+                </div>
+              </div>
+
+              <!-- 翻頁控制按鈕列 -->
+              <div class="flex items-center justify-between pt-1">
+                <button id="prevPhotoBtn" onclick="prevPhotoPage()" class="tap-scale flex-1 mr-1.5 py-2 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-xs flex items-center justify-center gap-1 border border-stone-200 transition">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                  <span>上一幅</span>
+                </button>
+                <button id="nextPhotoBtn" onclick="nextPhotoPage()" class="tap-scale flex-1 ml-1.5 py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-sm transition">
+                  <span>下一幅</span>
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+
+              <!-- 10 張微縮圖快速跳頁列 -->
+              <div class="pt-2 border-t border-stone-100 space-y-1.5">
+                <div class="flex justify-between items-center text-[10px] text-stone-400 font-bold px-0.5">
+                  <span>照片縮圖快速跳頁</span>
+                  <span>共 10 幅</span>
+                </div>
+                <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-1">
+                  <button onclick="goToPhotoPage(0)" id="thumb-photo-0" class="photo-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border-2 border-blue-600 ring-2 ring-blue-400/40 relative">
+                    <img src="photo/photo0001.jpg" onerror="this.src='https://placehold.co/100x80/eff6ff/1e40af?text=P1'" class="w-full h-full object-cover">
+                    <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">1</span>
+                  </button>
+                  <button onclick="goToPhotoPage(1)" id="thumb-photo-1" class="photo-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                    <img src="photo/photo0002.jpg" onerror="this.src='https://placehold.co/100x80/eff6ff/1e40af?text=P2'" class="w-full h-full object-cover">
+                    <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">2</span>
+                  </button>
+                  <button onclick="goToPhotoPage(2)" id="thumb-photo-2" class="photo-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                    <img src="photo/photo0003.jpg" onerror="this.src='https://placehold.co/100x80/eff6ff/1e40af?text=P3'" class="w-full h-full object-cover">
+                    <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">3</span>
+                  </button>
+                  <button onclick="goToPhotoPage(3)" id="thumb-photo-3" class="photo-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                    <img src="photo/photo0004.jpg" onerror="this.src='https://placehold.co/100x80/eff6ff/1e40af?text=P4'" class="w-full h-full object-cover">
+                    <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">4</span>
+                  </button>
+                  <button onclick="goToPhotoPage(4)" id="thumb-photo-4" class="photo-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                    <img src="photo/photo0005.jpg" onerror="this.src='https://placehold.co/100x80/eff6ff/1e40af?text=P5'" class="w-full h-full object-cover">
+                    <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">5</span>
+                  </button>
+                  <button onclick="goToPhotoPage(5)" id="thumb-photo-5" class="photo-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                    <img src="photo/photo0006.jpg" onerror="this.src='https://placehold.co/100x80/eff6ff/1e40af?text=P6'" class="w-full h-full object-cover">
+                    <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">6</span>
+                  </button>
+                  <button onclick="goToPhotoPage(6)" id="thumb-photo-6" class="photo-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                    <img src="photo/photo0007.jpg" onerror="this.src='https://placehold.co/100x80/eff6ff/1e40af?text=P7'" class="w-full h-full object-cover">
+                    <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">7</span>
+                  </button>
+                  <button onclick="goToPhotoPage(7)" id="thumb-photo-7" class="photo-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                    <img src="photo/photo0008.jpg" onerror="this.src='https://placehold.co/100x80/eff6ff/1e40af?text=P8'" class="w-full h-full object-cover">
+                    <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">8</span>
+                  </button>
+                  <button onclick="goToPhotoPage(8)" id="thumb-photo-8" class="photo-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                    <img src="photo/photo0009.jpg" onerror="this.src='https://placehold.co/100x80/eff6ff/1e40af?text=P9'" class="w-full h-full object-cover">
+                    <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">9</span>
+                  </button>
+                  <button onclick="goToPhotoPage(9)" id="thumb-photo-9" class="photo-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                    <img src="photo/photo0010.jpg" onerror="this.src='https://placehold.co/100x80/eff6ff/1e40af?text=P10'" class="w-full h-full object-cover">
+                    <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">10</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <!-- 周阿伯口述歷史（完整複製一份） -->
             <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-3">
               <div class="flex items-center justify-between">
@@ -763,7 +889,7 @@
                 <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-200/60 text-stone-700 text-[11px] space-y-1">
                   <div class="font-bold text-blue-950 text-xs">臺灣最早的期貨：</div>
                   <p class="leading-relaxed">
-                    糖販原則上先暫存在糖廠，並代為投保火災險，核發「農產糖寄託存單」為憑據，蔗農需要用糖時再持單到糖廠領用。
+                    糖販原則上先暫存在糖廠，並代為投保火災險，核發「砂糖棧單」為憑據，蔗農需要用糖時再持單到糖廠領用。
                   </p>
                 </div>
               </div>
@@ -1061,7 +1187,7 @@
                 <div>• 專用線：烏龍線、烏龍延長線、東港線 (1908.03)。</div>
                 <div>• 營業線三大演進：甘棠門支線、舊東港幹線、東港幹線。</div>
                 <div>• 周阿伯口述歷史：40~50年代下淡水溪浮覆地種植大片甘蔗。</div>
-                <div>• 臺灣最早的期貨：糖廠暫存投保火災險、核發「農產糖寄託存單」。</div>
+                <div>• 臺灣最早的期貨：糖廠暫存投保火災險、核發「砂糖棧單」。</div>
                 <div>• 停駛客運營業線-東港線 (1977)。</div>
               </div>
             </div>
@@ -1085,7 +1211,8 @@
                 <span class="text-blue-400">補充資料</span>
               </div>
               <div class="flex-1 bg-stone-800/80 p-3 rounded-xl border border-stone-700/60 text-[11px] space-y-1 text-stone-300">
-                <div>• 周阿伯口述歷史：下淡水溪浮覆地甘蔗種植、砂糖期貨存單。</div>
+                <div>• 歷史照片：10 幅新園庄頭、糖廍與糖鐵珍貴紀事老照片。</div>
+                <div>• 周阿伯口述歷史：下淡水溪浮覆地甘蔗種植、核發砂糖棧單。</div>
                 <div>• 第一次世界大戰 (1914.07-1918.11)</div>
                 <div>• 第二次世界大戰 (1939.09-1945.09) ➔ 太平洋戰爭(1941)戰區之一</div>
                 <div>• 糖業鐵道名詞：專用線（原料線）、營業線（客運線）</div>
@@ -1291,6 +1418,170 @@
     ];
 
     let currentMapIndex = 0;
+
+    // 歷史照片 10 頁資料結構（於補充資料中呈現，功能與地圖集相同）
+    const historyPhotos = [
+      {
+        page: 1,
+        fileName: "photo0001.jpg",
+        title: "傳統糖廍石車壓榨甘蔗實景",
+        attribution: "文史老照片珍藏",
+        desc: "早期由牛隻拉動石車雙輪壓榨甘蔗汁，為新園與鄰近聚落日治新式製糖引進前的糖廍傳統製糖縮影。",
+        img: "photo/photo0001.jpg"
+      },
+      {
+        page: 2,
+        fileName: "photo0002.jpg",
+        title: "高屏溪下游浮覆地甘蔗採收與牛車搬運",
+        attribution: "新園耆老口述影像集",
+        desc: "下淡水溪（高屏溪）河灘浮覆地土壤肥沃，昔日蔗農趁枯水期種蔗，採收期以牛車運載至糖鐵裝車點。",
+        img: "photo/photo0002.jpg"
+      },
+      {
+        page: 3,
+        fileName: "photo0003.jpg",
+        title: "阿緱製糖所工場初期建設全景",
+        attribution: "日治初期臺灣製糖寫真帖",
+        desc: "屏東糖廠前身，引進現代化蒸汽壓榨設備與大型鐵構廠房，成為東洋最大規模新式製糖工場起點。",
+        img: "photo/photo0003.jpg"
+      },
+      {
+        page: 4,
+        fileName: "photo0004.jpg",
+        title: "台糖五分車蒸汽機車行駛於新園田野",
+        attribution: "糖鐵歷史檔案室",
+        desc: "汽笛長鳴、白煙裊裊，牽引長列原料甘蔗車廂穿梭於新園與萬丹平原之間的經典景象。",
+        img: "photo/photo0004.jpg"
+      },
+      {
+        page: 5,
+        fileName: "photo0005.jpg",
+        title: "東港線營業線客貨兩用站場景象",
+        attribution: "糖鐵客運歷史照片",
+        desc: "甘棠門支線與舊東港幹線昔日不僅運蔗，更是沿線新園鄉民前往屏東求學、洽公與購物的命脈。",
+        img: "photo/photo0005.jpg"
+      },
+      {
+        page: 6,
+        fileName: "photo0006.jpg",
+        title: "蔗農群聚交蔗與糖廠過磅稽核",
+        attribution: "臺灣糖業文獻影像",
+        desc: "甘蔗採收季時，農友排隊過磅秤重，並依據含糖率計算收購量以核換砂糖棧單。",
+        img: "photo/photo0006.jpg"
+      },
+      {
+        page: 7,
+        fileName: "photo0007.jpg",
+        title: "屏東糖廠70公尺大地標大煙囪遠眺",
+        attribution: "1937年屏東地景寫真",
+        desc: "高聳入雲的70公尺紅磚煙囪，象徵製糖盛期的地標，在下淡水溪對岸亦能清晰眺望其雄姿。",
+        img: "photo/photo0007.jpg"
+      },
+      {
+        page: 8,
+        fileName: "photo0008.jpg",
+        title: "歷史檔案：珍貴砂糖棧單憑證原件",
+        attribution: "周阿伯文史資料",
+        desc: "農民繳蔗後由糖廠核發之提領與物資交換憑單，是早期臺灣農村極具信用價值的期貨流通憑證。",
+        img: "photo/photo0008.jpg"
+      },
+      {
+        page: 9,
+        fileName: "photo0009.jpg",
+        title: "新園庄頭糖鐵平交道與聚落生活日常",
+        attribution: "屏東文史影像研究組",
+        desc: "居民與學童在噹噹作響的警報聲中等待滿載甘蔗的五分車慢速通過，交織出庄頭特有的生活節奏。",
+        img: "photo/photo0009.jpg"
+      },
+      {
+        page: 10,
+        fileName: "photo0010.jpg",
+        title: "停駛前夕的糖鐵軌道與鐵橋夕照",
+        attribution: "鐵道文化珍藏紀錄",
+        desc: "1977年停駛客運營業線後，鐵道逐漸沉寂，落日映照著昔日糖金歲月留下的鋼軌與道碴枕木。",
+        img: "photo/photo0010.jpg"
+      }
+    ];
+
+    let currentPhotoIndex = 0;
+
+    // 更新歷史照片介面
+    function updatePhotoUI() {
+      const current = historyPhotos[currentPhotoIndex];
+      const mainImg = document.getElementById('photoMainImg');
+      const title = document.getElementById('photoTitle');
+      const fileName = document.getElementById('photoFileName');
+      const attribution = document.getElementById('photoAttribution');
+      const desc = document.getElementById('photoDesc');
+      const badge = document.getElementById('photoPageBadge');
+
+      if (mainImg) {
+        mainImg.src = current.img;
+        mainImg.onerror = function() {
+          this.src = `https://placehold.co/800x500/eff6ff/1e40af?text=${encodeURIComponent(current.fileName)}`;
+        };
+      }
+
+      if (title) title.textContent = current.title;
+      if (fileName) fileName.textContent = current.fileName;
+      if (attribution) attribution.textContent = current.attribution;
+      if (desc) desc.textContent = current.desc;
+      if (badge) badge.textContent = `第 ${current.page} / ${historyPhotos.length} 幅`;
+
+      // 更新 10 顆指示圓點狀態
+      const dots = document.querySelectorAll('.photo-dot');
+      dots.forEach((dot, idx) => {
+        if (idx === currentPhotoIndex) {
+          dot.className = 'photo-dot w-4 h-2 rounded-full bg-blue-600 transition-all duration-200';
+        } else {
+          dot.className = 'photo-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200';
+        }
+      });
+
+      // 更新 10 張微縮圖外框狀態
+      for (let i = 0; i < historyPhotos.length; i++) {
+        const thumb = document.getElementById(`thumb-photo-${i}`);
+        if (thumb) {
+          if (i === currentPhotoIndex) {
+            thumb.className = 'photo-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border-2 border-blue-600 ring-2 ring-blue-400/40 relative';
+          } else {
+            thumb.className = 'photo-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative';
+          }
+        }
+      }
+
+      // 控制按鈕狀態
+      const prevBtn = document.getElementById('prevPhotoBtn');
+      const nextBtn = document.getElementById('nextPhotoBtn');
+      if (prevBtn) prevBtn.style.opacity = currentPhotoIndex === 0 ? '0.5' : '1';
+      if (nextBtn) nextBtn.style.opacity = currentPhotoIndex === historyPhotos.length - 1 ? '0.5' : '1';
+    }
+
+    function nextPhotoPage() {
+      if (currentPhotoIndex < historyPhotos.length - 1) {
+        currentPhotoIndex++;
+        updatePhotoUI();
+      }
+    }
+
+    function prevPhotoPage() {
+      if (currentPhotoIndex > 0) {
+        currentPhotoIndex--;
+        updatePhotoUI();
+      }
+    }
+
+    function goToPhotoPage(index) {
+      if (index >= 0 && index < historyPhotos.length) {
+        currentPhotoIndex = index;
+        updatePhotoUI();
+      }
+    }
+
+    function openPhotoLightbox() {
+      const current = historyPhotos[currentPhotoIndex];
+      openLightboxCustom(current.img, `${current.fileName} · ${current.title}`);
+    }
 
     // 更新地圖集介面
     function updateMapUI() {
@@ -1652,6 +1943,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       updateStoryUI();
       updateMapUI();
+      updatePhotoUI();
     });
   </script>
 </body>

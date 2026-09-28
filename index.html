@@ -30,15 +30,15 @@
     }
   </script>
   <style>
-    /* Hide scrollbars for smooth app-like scrolling */
+    /* 隱藏滾動條以呈現原生 App 質感 */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Safe-area insets for modern mobile devices */
+    /* 支援現代行動裝置安全區域 */
     .pb-safe { padding-bottom: env(safe-area-inset-bottom, 16px); }
     .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
 
-    /* Custom active tap animation */
+    /* 點擊回饋微動效 */
     .tap-scale {
       transition: transform 0.15s ease, opacity 0.15s ease;
     }
@@ -46,67 +46,56 @@
       transform: scale(0.96);
       opacity: 0.85;
     }
+
+    /* 燈箱動畫 */
+    .lightbox-backdrop {
+      transition: opacity 0.25s ease-out;
+    }
+    .lightbox-img {
+      transition: transform 0.25s ease-out;
+    }
   </style>
 </head>
 <body class="bg-stone-900 text-stone-850 font-sans antialiased h-full overflow-hidden flex items-center justify-center">
 
-  <!-- Mobile Frame Container (Responsive: phone mock on desktop, 100% native on mobile) -->
-  <div id="appContainer" class="w-full h-full max-w-md bg-app-bg flex flex-col relative shadow-2xl overflow-hidden sm:rounded-[40px] sm:h-[92vh] sm:border-[8px] sm:border-stone-800 transition-all duration-300">
+  <!-- 手機外框容器（桌面顯示模擬手機，手機上 100% 滿版） -->
+  <div id="appContainer" class="w-full h-full max-w-md bg-app-bg flex flex-col relative shadow-2xl overflow-hidden sm:rounded-[36px] sm:h-[94vh] sm:border-[6px] sm:border-stone-800 transition-all duration-300">
 
-    <!-- iOS / Android Status Bar Simulator -->
-    <header class="bg-stone-900 text-stone-200 px-6 pt-3 pb-2 flex justify-between items-center text-xs select-none shrink-0 z-40 border-b border-stone-800">
-      <span id="appClock" class="font-semibold tracking-wider text-[11px]">09:41</span>
-      <div class="flex items-center space-x-1.5 text-stone-300">
-        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.22 19.68 10.56 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
-        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4z"/></svg>
-        <span class="text-[10px] font-bold">5G</span>
-        <div class="w-5 h-2.5 border border-stone-300 rounded-sm p-0.5 flex items-center">
-          <div class="h-full bg-emerald-400 w-3/4 rounded-2xs"></div>
-        </div>
-      </div>
-    </header>
-
-    <!-- App Top Navigation Bar -->
-    <div class="bg-stone-900 text-stone-100 px-4 py-3 shrink-0 flex items-center justify-between border-b border-stone-800 z-30 shadow-sm">
+    <!-- App 頂部固定導覽列（無電量時間狀態列，簡約俐落） -->
+    <header class="bg-stone-900 text-stone-100 px-4 py-3 shrink-0 flex items-center justify-between border-b border-stone-800 z-30 shadow-md">
       <div class="flex items-center space-x-2.5">
-        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-stone-950 font-serif font-black text-sm shadow">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-stone-950 font-serif font-black text-base shadow-md">
           糖
         </div>
-        <div class="truncate max-w-[210px]">
-          <h1 id="appHeaderTitle" class="font-serif font-bold text-base text-amber-200 leading-tight truncate">
+        <div>
+          <h1 class="font-serif font-bold text-base text-amber-200 leading-tight">
             新意糖香 園味覺醒
           </h1>
-          <p id="appHeaderSubtitle" class="text-[10px] text-stone-400 truncate">
-            新園庄頭 × 糖業紀事圖譜
+          <p class="text-[10px] text-stone-400">
+            新園記事 · 庄頭信仰與糖鐵紀事圖譜
           </p>
         </div>
       </div>
 
-      <!-- App Header Actions -->
-      <div class="flex items-center space-x-1.5">
-        <button onclick="toggleDesktopMode()" title="切換寬度模式" class="hidden sm:inline-flex p-1.5 rounded-full hover:bg-stone-800 text-stone-400 hover:text-amber-300 transition">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
-        </button>
-        <button onclick="openBottomSheet('titleSheet')" class="tap-scale flex items-center space-x-1 px-2.5 py-1.5 bg-amber-500/20 border border-amber-400/30 rounded-xl text-amber-300 text-xs font-medium">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-          <span>改標題</span>
-        </button>
-      </div>
-    </div>
+      <!-- 寬度切換輔助（僅在大螢幕顯現，方便展示） -->
+      <button onclick="toggleDesktopMode()" title="切換寬度模式" class="hidden sm:inline-flex p-1.5 rounded-lg hover:bg-stone-800 text-stone-400 hover:text-amber-300 transition tap-scale">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+      </button>
+    </header>
 
-    <!-- App Horizontal Category Capsules (Quick Switch Tabs) -->
+    <!-- 橫向滑動時代篩選膠囊列 -->
     <div id="capsuleBar" class="bg-white border-b border-stone-200 px-3 py-2 shrink-0 flex items-center space-x-2 overflow-x-auto no-scrollbar z-20">
       <button onclick="filterMobileCategory('all', this)" class="category-pill active tap-scale px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-stone-900 text-white shadow-sm">
-        全部精選
+        全部時序
       </button>
-      <button onclick="filterMobileCategory('zheng-qing', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
-        【糖廍經營】
+      <button onclick="filterMobileCategory('founding', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
+        【建庄起源】
       </button>
       <button onclick="filterMobileCategory('japanese', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
         日治新式製糖
       </button>
-      <button onclick="filterMobileCategory('railway', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
-        新園糖鐵與口述
+      <button onclick="filterMobileCategory('xinyuan-rail', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
+        新園相關 · 糖鐵口述
       </button>
       <button onclick="filterMobileCategory('postwar', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
         戰後台糖時期
@@ -116,27 +105,27 @@
       </button>
     </div>
 
-    <!-- MAIN SCROLLABLE APP BODY -->
+    <!-- 主滑動內容視區 -->
     <main id="appScrollBody" class="flex-1 overflow-y-auto no-scrollbar p-3 space-y-4 pb-24">
       
-      <!-- TAB 1: CARD TIMELINE VIEW (預設) -->
+      <!-- 視圖 1: 卡片時間軸模式 (預設) -->
       <div id="panel-timeline" class="space-y-4">
         
-        <!-- SECTION 1: 明朝時期 1368-1644 / 清朝時期 1636-1912【糖廍經營】 -->
-        <section class="mobile-section" data-cat="zheng-qing">
-          <div class="flex items-center justify-between mb-2 px-1">
+        <!-- SECTION 1: 【建庄起源】明朝時期 1368-1644 / 清朝時期 1636-1912【糖廍經營】 -->
+        <section class="mobile-section" data-cat="founding">
+          <div class="flex items-center justify-between mb-2.5 px-1">
             <div class="flex items-center space-x-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-red-600"></span>
-              <h2 class="text-xs font-bold uppercase tracking-wider text-red-700">明清時序 ·【糖廍經營】</h2>
+              <span class="w-2.5 h-2.5 rounded-full bg-red-600 shadow-sm"></span>
+              <h2 class="text-xs font-bold uppercase tracking-wider text-red-700">【建庄起源】明清時序</h2>
             </div>
-            <span class="text-[10px] text-stone-400">1368-1912</span>
+            <span class="text-[10px] text-stone-400 font-medium">1368-1912</span>
           </div>
 
           <!-- 廟宇卡片群 -->
           <div class="space-y-3">
             
             <!-- 仙隆宮 -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200/90 flex flex-col space-y-2.5">
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 flex flex-col space-y-2.5">
               <div class="flex justify-between items-start">
                 <div>
                   <span class="inline-block px-2 py-0.5 rounded-md bg-red-50 text-red-700 text-[10px] font-bold border border-red-150 mb-1">
@@ -144,25 +133,31 @@
                   </span>
                   <h3 class="font-serif font-black text-base text-stone-900">仙隆宮</h3>
                 </div>
-                <button onclick="triggerPhotoUpload('temple1')" class="tap-scale px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-[10px] font-medium flex items-center gap-1">
+                <button onclick="triggerPhotoUpload('temple1')" class="tap-scale px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-[10px] font-medium flex items-center gap-1 border border-stone-200">
                   <svg class="w-3 h-3 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                   <span>換照片</span>
                 </button>
               </div>
 
-              <!-- 照片展示區塊 -->
-              <div class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group">
-                <img id="img-temple1" src="https://placehold.co/600x338/fef2f2/991b1b?text=仙隆宮+照片位置" alt="仙隆宮" class="w-full h-full object-cover">
+              <!-- 仙隆宮照片展示框（點擊放大） -->
+              <div onclick="openLightbox('img-temple1', '仙隆宮 照片展示')" class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
+                <img id="img-temple1" src="https://placehold.co/800x450/fef2f2/991b1b?text=仙隆宮+照片位置+(點擊放大)" alt="仙隆宮" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                <div class="absolute inset-0 bg-stone-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span class="px-2.5 py-1 rounded-full bg-stone-900/70 text-white text-[10px] backdrop-blur-xs flex items-center gap-1">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                    點擊放大
+                  </span>
+                </div>
                 <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-md bg-stone-900/60 backdrop-blur-sm text-[9px] text-white font-medium">照片預留</span>
               </div>
 
-              <p class="text-xs text-stone-700 leading-relaxed bg-red-50/40 p-2.5 rounded-xl border border-red-100/80">
+              <p class="text-xs text-stone-700 leading-relaxed bg-red-50/50 p-2.5 rounded-xl border border-red-100/80">
                 主祀神農大帝，據 廟中碑文與口傳，先民早至明代天啟年間、晚至崇禎時期抵達當地，於鯉魚山東方開墾，並祭祀隨身奉祀的五穀仙帝以求平安豐收。
               </p>
             </div>
 
             <!-- 新惠宮 -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200/90 flex flex-col space-y-2.5">
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 flex flex-col space-y-2.5">
               <div class="flex justify-between items-start">
                 <div>
                   <span class="inline-block px-2 py-0.5 rounded-md bg-red-50 text-red-700 text-[10px] font-bold border border-red-150 mb-1">
@@ -170,15 +165,21 @@
                   </span>
                   <h3 class="font-serif font-black text-base text-stone-900">新惠宮</h3>
                 </div>
-                <button onclick="triggerPhotoUpload('temple2')" class="tap-scale px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-[10px] font-medium flex items-center gap-1">
+                <button onclick="triggerPhotoUpload('temple2')" class="tap-scale px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-[10px] font-medium flex items-center gap-1 border border-stone-200">
                   <svg class="w-3 h-3 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                   <span>換照片</span>
                 </button>
               </div>
 
-              <!-- 照片展示區塊 -->
-              <div class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group">
-                <img id="img-temple2" src="https://placehold.co/600x338/fef2f2/991b1b?text=新惠宮+照片位置" alt="新惠宮" class="w-full h-full object-cover">
+              <!-- 新惠宮照片展示框（點擊放大） -->
+              <div onclick="openLightbox('img-temple2', '新惠宮 照片展示')" class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
+                <img id="img-temple2" src="https://placehold.co/800x450/fef2f2/991b1b?text=新惠宮+照片位置+(點擊放大)" alt="新惠宮" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                <div class="absolute inset-0 bg-stone-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span class="px-2.5 py-1 rounded-full bg-stone-900/70 text-white text-[10px] backdrop-blur-xs flex items-center gap-1">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                    點擊放大
+                  </span>
+                </div>
                 <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-md bg-stone-900/60 backdrop-blur-sm text-[9px] text-white font-medium">照片預留</span>
               </div>
 
@@ -199,7 +200,7 @@
             </div>
 
             <!-- 澄灜宮 -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200/90 flex flex-col space-y-2.5">
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 flex flex-col space-y-2.5">
               <div class="flex justify-between items-start">
                 <div>
                   <span class="inline-block px-2 py-0.5 rounded-md bg-red-50 text-red-700 text-[10px] font-bold border border-red-150 mb-1">
@@ -207,26 +208,32 @@
                   </span>
                   <h3 class="font-serif font-black text-base text-stone-900">澄灜宮</h3>
                 </div>
-                <button onclick="triggerPhotoUpload('temple3')" class="tap-scale px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-[10px] font-medium flex items-center gap-1">
+                <button onclick="triggerPhotoUpload('temple3')" class="tap-scale px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-[10px] font-medium flex items-center gap-1 border border-stone-200">
                   <svg class="w-3 h-3 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                   <span>換照片</span>
                 </button>
               </div>
 
-              <!-- 照片展示區塊 -->
-              <div class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group">
-                <img id="img-temple3" src="https://placehold.co/600x338/fef2f2/991b1b?text=澄灜宮+照片位置" alt="澄灜宮" class="w-full h-full object-cover">
+              <!-- 澄灜宮照片展示框（點擊放大） -->
+              <div onclick="openLightbox('img-temple3', '澄灜宮 照片展示')" class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
+                <img id="img-temple3" src="https://placehold.co/800x450/fef2f2/991b1b?text=澄灜宮+照片位置+(點擊放大)" alt="澄灜宮" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                <div class="absolute inset-0 bg-stone-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span class="px-2.5 py-1 rounded-full bg-stone-900/70 text-white text-[10px] backdrop-blur-xs flex items-center gap-1">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                    點擊放大
+                  </span>
+                </div>
                 <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-md bg-stone-900/60 backdrop-blur-sm text-[9px] text-white font-medium">照片預留</span>
               </div>
 
-              <p class="text-xs text-stone-700 leading-relaxed bg-red-50/40 p-2.5 rounded-xl border border-red-100/80">
+              <p class="text-xs text-stone-700 leading-relaxed bg-red-50/50 p-2.5 rounded-xl border border-red-100/80">
                 主祀主祀鹽府千歲，並陪祀糖府千歲、池府千歲等。其中「鹽」與「糖」千歲的稱呼由來與其生前官職或歷史淵源有關，是台灣少見以鹽、糖為神明尊號的王爺信仰。最早可追溯至清朝乾隆年，居民多簡稱為「王爺廟」。
               </p>
             </div>
 
             <!-- 渡臺禁令卡片 -->
-            <div class="bg-gradient-to-r from-stone-100 to-amber-50/60 rounded-xl p-3 border border-stone-200 text-xs">
-              <div class="flex justify-between items-center mb-1">
+            <div class="bg-gradient-to-r from-stone-100 to-amber-50/60 rounded-xl p-3.5 border border-stone-200 text-xs">
+              <div class="flex justify-between items-center mb-1.5">
                 <span class="font-bold text-stone-900">渡臺禁令 (1684-1788)</span>
                 <span class="text-[10px] bg-red-100 text-red-800 font-semibold px-2 py-0.5 rounded">三禁政策</span>
               </div>
@@ -240,12 +247,12 @@
 
         <!-- SECTION 2: 日治時期 1895-1945 引入新式製糖 -->
         <section class="mobile-section" data-cat="japanese">
-          <div class="flex items-center justify-between mb-2 px-1 pt-2">
+          <div class="flex items-center justify-between mb-2.5 px-1 pt-2">
             <div class="flex items-center space-x-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-sm"></span>
               <h2 class="text-xs font-bold uppercase tracking-wider text-amber-800">日治體系 · 引入新式製糖</h2>
             </div>
-            <span class="text-[10px] text-stone-400">1895-1945</span>
+            <span class="text-[10px] text-stone-400 font-medium">1895-1945</span>
           </div>
 
           <div class="space-y-3">
@@ -273,10 +280,10 @@
                 <p class="text-[11px] text-stone-500">大日本・台灣・明治・鹽水港製糖株式會社</p>
               </div>
 
-              <!-- 台灣製糖株式會社重點展開 -->
-              <div class="bg-stone-50 rounded-xl p-3 border border-stone-200 space-y-2 text-xs">
-                <div class="font-bold text-amber-900 flex items-center gap-1">
-                  <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+              <!-- 台灣製糖株式會社詳細發展 -->
+              <div class="bg-stone-50 rounded-xl p-3 border border-stone-200 space-y-2.5 text-xs">
+                <div class="font-bold text-amber-900 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-amber-600"></span>
                   台灣製糖株式會社
                 </div>
                 
@@ -300,7 +307,7 @@
                 </div>
               </div>
 
-              <!-- 工業產值關鍵紀錄 -->
+              <!-- 產值重要數據指標 -->
               <div class="grid grid-cols-2 gap-2 text-xs">
                 <div class="bg-amber-50/70 p-2.5 rounded-xl border border-amber-200 text-amber-950">
                   <div class="text-[10px] text-amber-700 font-bold">1932 全臺核心</div>
@@ -316,85 +323,145 @@
           </div>
         </section>
 
-        <!-- SECTION 3: 新園相關 (專用線 / 營業線 / 周阿伯口述歷史) -->
-        <section class="mobile-section" data-cat="railway">
-          <div class="flex items-center justify-between mb-2 px-1 pt-2">
+        <!-- SECTION 3: 新園相關 (糖廍經營 / 專用線 / 營業線 / 周阿伯口述 / 專屬照片框) -->
+        <section class="mobile-section" data-cat="xinyuan-rail">
+          <div class="flex items-center justify-between mb-2.5 px-1 pt-2">
             <div class="flex items-center space-x-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
-              <h2 class="text-xs font-bold uppercase tracking-wider text-yellow-800">糖鐵記憶 · 新園相關</h2>
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-sm"></span>
+              <h2 class="text-xs font-bold uppercase tracking-wider text-yellow-800">新園相關 · 糖鐵口述</h2>
             </div>
-            <span class="text-[10px] text-stone-400">五分車交通</span>
+            <span class="text-[10px] text-stone-400 font-medium">糖鐵與地景</span>
           </div>
 
           <div class="space-y-3">
             
-            <!-- 專用線與口述歷史 -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-3">
+            <!-- 糖廍經營舊地名產業地景 -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-1.5">
               <div class="flex justify-between items-center">
-                <span class="px-2 py-0.5 bg-yellow-100 text-yellow-900 rounded font-bold text-[10px]">專用線</span>
-                <span class="text-[10px] text-stone-400">1908.03</span>
+                <h3 class="font-bold text-stone-900 text-sm">糖廍經營與舊地名</h3>
+                <span class="px-2 py-0.5 bg-yellow-100 text-yellow-900 rounded font-bold text-[10px]">地景空間</span>
               </div>
-              <h3 class="font-bold text-stone-900 text-sm">烏龍線、烏龍延長線、東港線</h3>
               <p class="text-xs text-stone-700 leading-relaxed bg-yellow-50/50 p-2.5 rounded-xl border border-yellow-200/60">
-                阿緱工場運糖專用線，用來載運甘蔗用 1908.03
+                帶有「廍」字的舊地名，在空間歷史上多與清代或日治早期的傳統糖業密切相關，反映出該地曾為「糖廍」的產業地景。
               </p>
-
-              <!-- 周阿伯口述歷史 -->
-              <div class="pt-2 border-t border-stone-100">
-                <div class="text-xs font-bold text-amber-900 mb-1.5 flex items-center gap-1">
-                  <svg class="w-3.5 h-3.5 text-amber-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-                  周阿伯口述歷史
-                </div>
-                <div class="grid grid-cols-2 gap-2 text-[11px] text-stone-700">
-                  <div class="bg-stone-50 p-2 rounded-lg border border-stone-200">
-                    • 40~50年代下淡水溪浮覆地種植甘蔗
-                  </div>
-                  <div class="bg-stone-50 p-2 rounded-lg border border-stone-200 flex items-center">
-                    • 砂埔種蔗
-                  </div>
-                </div>
-              </div>
             </div>
 
-            <!-- 營業線 東港線三大階段 -->
+            <!-- 專用線 (原料線) -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-2">
+              <div class="flex justify-between items-center">
+                <span class="px-2 py-0.5 bg-yellow-500 text-stone-950 font-bold rounded text-[10px]">專用線</span>
+                <span class="text-[10px] text-stone-400 font-medium">1908.03</span>
+              </div>
+              <h3 class="font-bold text-stone-900 text-sm">烏龍線、烏龍延長線、東港線</h3>
+              <p class="text-xs text-stone-600 leading-relaxed">
+                阿緱工場運糖專用線，用來載運甘蔗用 1908.03
+              </p>
+            </div>
+
+            <!-- 營業線 東港線三大階段演進與更名 -->
             <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-2.5">
               <div class="flex justify-between items-center">
-                <h3 class="font-bold text-stone-900 text-sm">東港線（營業線演進）</h3>
+                <h3 class="font-bold text-stone-900 text-sm">東港線（營業線演進與更名）</h3>
                 <span class="px-2 py-0.5 bg-yellow-500 text-stone-950 font-bold rounded text-[10px]">客運線</span>
               </div>
 
               <!-- 階段 1 -->
-              <div class="bg-stone-50 p-3 rounded-xl border border-stone-200 text-xs space-y-1">
+              <div class="bg-stone-50 p-3 rounded-xl border border-stone-200 text-xs space-y-1.5">
                 <div class="flex justify-between text-stone-900 font-bold">
-                  <span>阿緱 ── 東港</span>
+                  <span>東港線 (阿緱←→東港)</span>
                   <span class="text-stone-500 text-[10px]">1909-1931</span>
                 </div>
                 <p class="text-[11px] text-stone-600 leading-relaxed">
-                  <span class="text-amber-800 font-bold">【行經】</span> 阿緱、大崙庄、萬丹、頂社子、甘菜凹、北故仔、過溪子、內關帝、東港
+                  <span class="text-amber-800 font-bold">【行經】</span> 阿緱、大湖莊、萬丹、新庄子、甘棠門、北勢仔、過溪子、內關帝、東港
                 </p>
+                <div class="inline-block px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-[10px] font-bold">
+                  後更名為「甘棠門支線」
+                </div>
               </div>
 
               <!-- 階段 2 -->
-              <div class="bg-stone-50 p-3 rounded-xl border border-stone-200 text-xs space-y-1">
+              <div class="bg-stone-50 p-3 rounded-xl border border-stone-200 text-xs space-y-1.5">
                 <div class="flex justify-between text-stone-900 font-bold">
-                  <span>屏東 ── 糖埔子</span>
-                  <span class="text-rose-600 text-[10px] font-bold">1944 同年開設、停駛</span>
+                  <span>東港線 (屏東─鹽埔子)</span>
+                  <span class="text-rose-600 text-[10px] font-bold">1944 同年開辦、停駛</span>
                 </div>
                 <p class="text-[11px] text-stone-600 leading-relaxed">
-                  <span class="text-amber-800 font-bold">【行經】</span> 屏東、工場、大崙(大埔)、萬丹、新庄子、仙公庄、港西、烏龍、糖埔子
+                  <span class="text-amber-800 font-bold">【行經】</span> 屏東、工場、太湖(大湖)、萬丹、新庄子、仙宮庄、港西、烏龍、鹽埔子
                 </p>
+                <div class="inline-block px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-[10px] font-bold">
+                  後更名為「舊東港幹線」
+                </div>
               </div>
 
               <!-- 階段 3 -->
-              <div class="bg-stone-50 p-3 rounded-xl border border-stone-200 text-xs space-y-1">
+              <div class="bg-stone-50 p-3 rounded-xl border border-stone-200 text-xs space-y-1.5">
                 <div class="flex justify-between text-stone-900 font-bold">
-                  <span>屏東 ── 糖埔子 (新園段)</span>
+                  <span>東港幹線 (屏東─新園)</span>
                   <span class="text-stone-500 text-[10px]">1950-1977</span>
                 </div>
                 <p class="text-[11px] text-stone-600 leading-relaxed">
-                  <span class="text-amber-800 font-bold">【行經】</span> 屏東、工場、大崙(大埔)、萬丹、新庄子、仙公庄、新園
+                  <span class="text-amber-800 font-bold">【行經】</span> 屏東、工場、太湖(大湖)、萬丹、新庄子、仙公廟、新園
                 </p>
+                <div class="inline-block px-2 py-0.5 rounded bg-amber-100 text-amber-900 text-[10px] font-bold">
+                  後更名為「東港幹線」
+                </div>
               </div>
+            </div>
+
+            <!-- 周阿伯口述歷史與期貨說明 -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-3">
+              <div class="flex items-center gap-1.5 text-xs font-bold text-amber-900">
+                <svg class="w-4 h-4 text-amber-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                <span>周阿伯口述歷史</span>
+              </div>
+
+              <div class="space-y-2 text-xs">
+                <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-200 text-stone-700 text-[11px]">
+                  • 40~50年代下淡水溪浮覆地種植大片甘蔗
+                </div>
+
+                <div class="bg-amber-50/70 p-3 rounded-xl border border-amber-200/80 text-stone-700 text-[11px] space-y-1">
+                  <div class="font-bold text-amber-950 text-xs">臺灣最早的期貨：</div>
+                  <p class="leading-relaxed">
+                    糖販原則上先暫存在糖廠，並代為投保火災險，核發「農產糖寄託存單」為憑據，蔗農需要用糖時再持單到糖廠領用。
+                  </p>
+                </div>
+              </div>
+
+              <!-- 停駛客運營業線-東港線 1977 標記 -->
+              <div class="flex items-center justify-between p-2.5 bg-red-50/70 border border-red-200 rounded-xl text-xs">
+                <span class="font-bold text-red-950">停駛客運營業線-東港線</span>
+                <span class="text-red-700 font-bold text-[11px]">1977</span>
+              </div>
+            </div>
+
+            <!-- ★ 新增：「新園相關 · 糖鐵口述」專屬照片展示框（點擊放大） -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-2.5">
+              <div class="flex justify-between items-center">
+                <div>
+                  <h3 class="font-serif font-black text-sm text-stone-900">新園糖鐵與口述影像紀錄</h3>
+                  <p class="text-[10px] text-stone-500">五分車鐵道、載蔗台車或歷史老照片預留區</p>
+                </div>
+                <button onclick="triggerPhotoUpload('railway')" class="tap-scale px-2 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-[10px] font-medium flex items-center gap-1 border border-stone-200">
+                  <svg class="w-3 h-3 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                  <span>換照片</span>
+                </button>
+              </div>
+
+              <!-- 糖鐵影像框（點擊後啟動全螢幕燈箱放大檢視） -->
+              <div onclick="openLightbox('img-railway', '新園糖鐵與口述歷史 影像展示')" class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
+                <img id="img-railway" src="https://placehold.co/800x450/fefce8/854d0e?text=新園糖鐵與口述照片位置+(點擊放大)" alt="新園糖鐵與口述歷史照片" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                <div class="absolute inset-0 bg-stone-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span class="px-2.5 py-1 rounded-full bg-stone-900/75 text-white text-[10px] backdrop-blur-xs flex items-center gap-1 shadow">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                    點擊放大檢視
+                  </span>
+                </div>
+                <span class="absolute bottom-1.5 right-1.5 px-2 py-0.5 rounded-md bg-stone-900/60 backdrop-blur-sm text-[9px] text-white font-medium">糖鐵專屬照片</span>
+              </div>
+              <p class="text-[11px] text-stone-500 italic">
+                提示：點擊上方圖片即可全螢幕放大檢視，亦可點擊「換照片」上傳田調採訪照片。
+              </p>
             </div>
 
           </div>
@@ -402,12 +469,12 @@
 
         <!-- SECTION 4: 中華民國時期 1945年~迄今 -->
         <section class="mobile-section" data-cat="postwar">
-          <div class="flex items-center justify-between mb-2 px-1 pt-2">
+          <div class="flex items-center justify-between mb-2.5 px-1 pt-2">
             <div class="flex items-center space-x-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 shadow-sm"></span>
               <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800">戰後台糖 · 轉型與停閉</h2>
             </div>
-            <span class="text-[10px] text-stone-400">1945~迄今</span>
+            <span class="text-[10px] text-stone-400 font-medium">1945~迄今</span>
           </div>
 
           <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200">
@@ -479,12 +546,12 @@
 
         <!-- SECTION 5: 國際情勢、名詞解釋 -->
         <section class="mobile-section" data-cat="global">
-          <div class="flex items-center justify-between mb-2 px-1 pt-2">
+          <div class="flex items-center justify-between mb-2.5 px-1 pt-2">
             <div class="flex items-center space-x-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-sm"></span>
               <h2 class="text-xs font-bold uppercase tracking-wider text-blue-800">歷史背景與名詞</h2>
             </div>
-            <span class="text-[10px] text-stone-400">情勢註解</span>
+            <span class="text-[10px] text-stone-400 font-medium">情勢註解</span>
           </div>
 
           <div class="grid grid-cols-1 gap-3">
@@ -541,67 +608,79 @@
             <span class="text-[10px] bg-yellow-100 text-yellow-900 font-bold px-2 py-0.5 rounded">東港線</span>
           </div>
           
-          <div class="space-y-3 text-xs">
-            <div class="p-3 bg-stone-50 rounded-xl border border-stone-200">
-              <span class="font-bold text-stone-900 block mb-1">① 阿緱 ── 東港 (1909-1931)</span>
-              <div class="flex flex-wrap gap-1 text-[10px]">
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">阿緱</span>
+          <div class="space-y-3.5 text-xs">
+            <!-- 路線 1 -->
+            <div class="p-3 bg-stone-50 rounded-xl border border-stone-200 space-y-1.5">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-stone-900">① 阿緱 ── 東港 (1909-1931)</span>
+                <span class="text-[9px] bg-amber-200 text-amber-950 font-bold px-1.5 py-0.5 rounded">甘棠門支線</span>
+              </div>
+              <div class="flex flex-wrap gap-1 text-[10px] pt-1">
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">阿緱</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">大崙庄</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">大湖莊</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">萬丹</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">萬丹</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">頂社子</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">新庄子</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">甘菜凹</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">甘棠門</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">北故仔</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">北勢仔</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">過溪子</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">過溪子</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">內關帝</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">內關帝</span>
                 <span class="text-stone-400">→</span>
                 <span class="px-2 py-0.5 bg-amber-500 text-stone-950 font-bold rounded">東港</span>
               </div>
             </div>
 
-            <div class="p-3 bg-stone-50 rounded-xl border border-stone-200">
-              <span class="font-bold text-stone-900 block mb-1">② 屏東 ── 糖埔子 (1944 同年開設、停駛)</span>
-              <div class="flex flex-wrap gap-1 text-[10px]">
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">屏東</span>
+            <!-- 路線 2 -->
+            <div class="p-3 bg-stone-50 rounded-xl border border-stone-200 space-y-1.5">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-stone-900">② 屏東 ── 鹽埔子 (1944 同年開辦停駛)</span>
+                <span class="text-[9px] bg-amber-200 text-amber-950 font-bold px-1.5 py-0.5 rounded">舊東港幹線</span>
+              </div>
+              <div class="flex flex-wrap gap-1 text-[10px] pt-1">
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">屏東</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">工場</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">工場</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">大崙(大埔)</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">太湖(大湖)</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">萬丹</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">萬丹</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">新庄子</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">新庄子</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">仙公庄</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">仙宮庄</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">港西</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">港西</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">烏龍</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">烏龍</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-amber-500 text-stone-950 font-bold rounded">糖埔子</span>
+                <span class="px-2 py-0.5 bg-amber-500 text-stone-950 font-bold rounded">鹽埔子</span>
               </div>
             </div>
 
-            <div class="p-3 bg-stone-50 rounded-xl border border-stone-200">
-              <span class="font-bold text-stone-900 block mb-1">③ 屏東 ── 新園 (1950-1977)</span>
-              <div class="flex flex-wrap gap-1 text-[10px]">
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">屏東</span>
+            <!-- 路線 3 -->
+            <div class="p-3 bg-stone-50 rounded-xl border border-stone-200 space-y-1.5">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-stone-900">③ 屏東 ── 鹽埔子 (1950-1977)</span>
+                <span class="text-[9px] bg-amber-200 text-amber-950 font-bold px-1.5 py-0.5 rounded">東港幹線</span>
+              </div>
+              <div class="flex flex-wrap gap-1 text-[10px] pt-1">
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">屏東</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">工場</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">工場</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">大崙(大埔)</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">太湖(大湖)</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">萬丹</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">萬丹</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">新庄子</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">新庄子</span>
                 <span class="text-stone-400">→</span>
-                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800">仙公庄</span>
+                <span class="px-2 py-0.5 bg-white border border-stone-200 rounded text-stone-800 font-medium">仙公廟</span>
                 <span class="text-stone-400">→</span>
                 <span class="px-2 py-0.5 bg-amber-500 text-stone-950 font-bold rounded">新園</span>
               </div>
@@ -613,54 +692,57 @@
       <!-- TAB 3: 心智樹圖專區 (Mindmap Tab) -->
       <div id="panel-mindmap" class="hidden">
         <div class="bg-stone-900 text-stone-100 rounded-2xl p-4 shadow-xl border border-stone-800 overflow-x-auto no-scrollbar">
-          <div class="min-w-[680px] space-y-4">
+          <div class="min-w-[700px] space-y-4">
             
-            <div class="flex items-center gap-2 pb-2 border-b border-stone-800">
-              <span class="w-3 h-3 rounded-full bg-amber-400"></span>
-              <span class="font-serif font-black text-amber-200 text-sm">新園記事 原圖心智樹結構</span>
+            <div class="flex items-center gap-2 pb-2.5 border-b border-stone-800">
+              <span class="w-3 h-3 rounded-full bg-amber-400 shadow"></span>
+              <span class="font-serif font-black text-amber-200 text-sm">新園記事 原圖心智樹結構一覽</span>
             </div>
 
-            <!-- Branch 1 -->
+            <!-- 分支 1: 建庄起源 -->
             <div class="flex gap-3 text-xs">
               <div class="w-32 py-2 px-2.5 bg-red-950/80 border border-red-500/40 rounded-xl text-red-200 shrink-0 text-center font-bold">
-                明朝清朝<br><span class="text-red-400">【糖廍經營】</span>
+                【建庄起源】<br>明朝 1368-1644<br>清朝 1636-1912<br><span class="text-red-400">【糖廍經營】</span>
               </div>
               <div class="flex-1 bg-stone-800/80 p-3 rounded-xl border border-stone-700/60 text-[11px] space-y-1.5 text-stone-300">
-                <div>• <strong class="text-red-400">仙隆宮 (1621-1627)</strong>：主祀神農大帝，鯉魚山東方開墾，奉祀五穀仙帝。</div>
+                <div>• <strong class="text-red-400">仙隆宮 (1621-1627)</strong>：主祀神農大帝，鯉魚山東方開墾，奉祀隨身五穀仙帝。</div>
                 <div>• <strong class="text-red-400">新惠宮 (1755)</strong>：清乾隆二十年創建，三十六庄信仰中心，康熙渡口與1867遷村。</div>
-                <div>• <strong class="text-red-400">澄灜宮</strong>：主祀鹽府千歲，陪祀糖府千歲、池府千歲，少見以鹽糖為神明尊號。</div>
+                <div>• <strong class="text-red-400">澄灜宮</strong>：主祀鹽府千歲，陪祀糖府千歲、池府千歲，台灣少見以鹽糖為神尊之王爺廟。</div>
                 <div>• <strong class="text-red-400">渡臺禁令 (1684-1788)</strong>：三禁政策（禁無照、禁家眷、禁粵民）。</div>
               </div>
             </div>
 
-            <!-- Branch 2 -->
+            <!-- 分支 2: 日治新式製糖 -->
             <div class="flex gap-3 text-xs">
               <div class="w-32 py-2 px-2.5 bg-amber-950/80 border border-amber-500/40 rounded-xl text-amber-200 shrink-0 text-center font-bold">
-                日治時期<br><span class="text-amber-400">引入新式製糖</span>
+                日治時期<br>1895-1945<br><span class="text-amber-400">引入新式製糖</span>
               </div>
               <div class="flex-1 bg-stone-800/80 p-3 rounded-xl border border-stone-700/60 text-[11px] space-y-1.5 text-stone-300">
                 <div>• 原料採取區域制 (1905)：指定專屬區域、強制販售與壟斷、取締傳統糖廍。</div>
                 <div>• 四大會社：大日本・台灣・明治・鹽水港製糖株式會社。</div>
-                <div>• 阿緱製糖 (1899)：劉厝庄南昌製糖（蘇雲梯經營），日人收購。</div>
+                <div>• 阿緱製糖 (1899)：劉厝庄私人糖廠南昌製糖（蘇雲梯先生經營），日人收購。</div>
                 <div>• 屏東糖廠 (1909)：日榨3600噸東洋最大 ➔ 酒精工場(1910) ➔ 煙囪高70公尺(1937)。</div>
                 <div>• 東港製糖所開業 (1921) ➔ 現南州糖廠前身。</div>
                 <div>• 1932佔臺灣工業產值 75%，全盛期達 60% 以上。</div>
               </div>
             </div>
 
-            <!-- Branch 3 -->
+            <!-- 分支 3: 新園相關 -->
             <div class="flex gap-3 text-xs">
               <div class="w-32 py-2 px-2.5 bg-yellow-950/80 border border-yellow-500/40 rounded-xl text-yellow-200 shrink-0 text-center font-bold">
                 <span class="text-yellow-400">新園相關</span>
               </div>
               <div class="flex-1 bg-stone-800/80 p-3 rounded-xl border border-stone-700/60 text-[11px] space-y-1.5 text-stone-300">
+                <div>• 糖廍經營：帶有「廍」字舊地名反映傳統糖廍空間歷史地景。</div>
                 <div>• 專用線：烏龍線、烏龍延長線、東港線 (1908.03)。</div>
-                <div>• 營業線：東港線三大歷史階段（阿緱-東港、屏東-糖埔子）。</div>
-                <div>• 周阿伯口述歷史：40~50年代下淡水溪浮覆地種植甘蔗、砂埔種蔗。</div>
+                <div>• 營業線三大演進：甘棠門支線、舊東港幹線、東港幹線。</div>
+                <div>• 周阿伯口述歷史：40~50年代下淡水溪浮覆地種植大片甘蔗。</div>
+                <div>• 臺灣最早的期貨：糖廠暫存投保火災險、核發「農產糖寄託存單」。</div>
+                <div>• 停駛客運營業線-東港線 (1977)。</div>
               </div>
             </div>
 
-            <!-- Branch 4 -->
+            <!-- 分支 4: 中華民國時期 -->
             <div class="flex gap-3 text-xs">
               <div class="w-32 py-2 px-2.5 bg-emerald-950/80 border border-emerald-500/40 rounded-xl text-emerald-200 shrink-0 text-center font-bold">
                 中華民國時期<br><span class="text-emerald-400">1945~迄今</span>
@@ -668,12 +750,12 @@
               <div class="flex-1 bg-stone-800/80 p-3 rounded-xl border border-stone-700/60 text-[11px] space-y-1 text-stone-300">
                 <div>• 1946台糖成立 · 1948外銷為主 · 1949遷台 · 1950更名屏東糖廠。</div>
                 <div>• 1967利用蔗渣造紙 · 1976紙漿廠電爐煙囪高60公尺。</div>
-                <div>• 1977-1986國際糖價暴跌至$60/噸 · 1977停駛東港線。</div>
+                <div>• 1977-1986國際糖價降至$60/噸 · 1977停駛東港線。</div>
                 <div>• 1994紙漿廠停閉 · 1997.10製糖工場停壓結束製糖。</div>
               </div>
             </div>
 
-            <!-- Branch 5 -->
+            <!-- 分支 5: 國際情勢與名詞 -->
             <div class="flex gap-3 text-xs">
               <div class="w-32 py-2 px-2.5 bg-blue-950/80 border border-blue-500/40 rounded-xl text-blue-200 shrink-0 text-center font-bold">
                 <span class="text-blue-400">國際情勢、名詞</span>
@@ -690,8 +772,8 @@
       </div>
     </main>
 
-    <!-- Native App Bottom Navigation Bar -->
-    <nav class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-stone-200 px-4 py-2 flex justify-around items-center z-40 pb-safe">
+    <!-- Native App 底部導航欄（無改標題功能） -->
+    <nav class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-stone-200 px-6 py-2 flex justify-around items-center z-40 pb-safe">
       <button onclick="switchMobileTab('timeline', this)" class="app-tab-btn active flex flex-col items-center text-amber-600 tap-scale">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path></svg>
         <span class="text-[10px] font-bold mt-0.5">年表紀事</span>
@@ -706,77 +788,36 @@
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
         <span class="text-[10px] font-medium mt-0.5">心智樹圖</span>
       </button>
-
-      <button onclick="openBottomSheet('titleSheet')" class="app-tab-btn flex flex-col items-center text-stone-400 hover:text-stone-700 tap-scale">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-        <span class="text-[10px] font-medium mt-0.5">主題標題</span>
-      </button>
     </nav>
 
-    <!-- MOBILE BOTTOM SHEET: TITLE SWITCHER & CUSTOMIZER -->
-    <div id="titleSheet" class="hidden fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-xs flex items-end justify-center transition-opacity">
-      <div class="bg-white rounded-t-3xl w-full max-w-md p-5 pb-8 shadow-2xl space-y-4 border-t border-stone-200 animate-in slide-in-from-bottom duration-200">
-        <div class="w-12 h-1.5 bg-stone-300 rounded-full mx-auto mb-1"></div>
-        <div class="flex justify-between items-center">
-          <h4 class="font-serif font-bold text-base text-stone-900">切換與自訂 App 標題</h4>
-          <button onclick="closeBottomSheet('titleSheet')" class="text-stone-400 hover:text-stone-600 text-lg font-bold p-1">&times;</button>
-        </div>
+    <!-- 全螢幕燈箱放大檢視 Modal (支援點擊放大與手勢) -->
+    <div id="imageLightbox" class="hidden fixed inset-0 z-50 bg-stone-950/90 backdrop-blur-md flex flex-col items-center justify-between p-4 lightbox-backdrop opacity-0 transition-opacity duration-250 select-none">
+      <!-- 頂部列：標題與關閉按鈕 -->
+      <div class="w-full flex items-center justify-between text-stone-200 z-10 pt-safe">
+        <h4 id="lightboxTitle" class="text-xs font-serif font-bold text-amber-200 truncate pr-2">圖片檢視</h4>
+        <button onclick="closeLightbox()" class="tap-scale p-2 rounded-full bg-stone-800 text-stone-200 hover:bg-stone-700 hover:text-white transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
 
-        <div class="space-y-2">
-          <div class="text-[11px] font-bold text-stone-400 uppercase tracking-wider">快捷預設標題</div>
-          <button onclick="applyAppTitle('新意糖香 園味覺醒', '新園庄頭 × 糖業紀事圖譜')" class="w-full text-left p-3 rounded-xl bg-amber-50 hover:bg-amber-100/70 border border-amber-200 transition flex items-center justify-between">
-            <div>
-              <div class="font-bold text-xs text-amber-950">新意糖香 園味覺醒</div>
-              <div class="text-[10px] text-amber-800">預設專案主軸標題</div>
-            </div>
-            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-          </button>
+      <!-- 中間放大主圖 -->
+      <div class="flex-1 w-full flex items-center justify-center p-2 overflow-hidden" onclick="closeLightbox()">
+        <img id="lightboxTargetImg" src="" alt="放大檢視" class="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl scale-95 lightbox-img" onclick="event.stopPropagation()">
+      </div>
 
-          <button onclick="applyAppTitle('新園記事', '明清糖廍 · 新式製糖 · 糖鐵 · 戰後台糖 · 國際情勢')" class="w-full text-left p-3 rounded-xl bg-stone-50 hover:bg-stone-100 border border-stone-200 transition flex items-center justify-between">
-            <div>
-              <div class="font-bold text-xs text-stone-900">新園記事（原心智圖核心）</div>
-              <div class="text-[10px] text-stone-500">忠實呈現原附圖主題</div>
-            </div>
-            <span class="w-2 h-2 rounded-full bg-stone-400"></span>
-          </button>
-        </div>
-
-        <div class="pt-2 border-t border-stone-150 space-y-3">
-          <div class="text-[11px] font-bold text-stone-400 uppercase tracking-wider">自訂 App 標題</div>
-          <div>
-            <label class="block text-[11px] font-semibold text-stone-700 mb-1">主標題：</label>
-            <input id="inputAppMainTitle" type="text" value="新意糖香 園味覺醒" class="w-full text-xs px-3 py-2 bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none">
-          </div>
-          <div>
-            <label class="block text-[11px] font-semibold text-stone-700 mb-1">副標題：</label>
-            <input id="inputAppSubTitle" type="text" value="新園庄頭 × 糖業紀事圖譜" class="w-full text-xs px-3 py-2 bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:outline-none">
-          </div>
-          <button onclick="submitCustomAppTitle()" class="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold text-xs shadow-md tap-scale">
-            套用新標題
-          </button>
-        </div>
+      <!-- 底部提示文字 -->
+      <div class="text-[11px] text-stone-400 pb-safe z-10 flex items-center gap-1.5">
+        <span>點擊背景或右上角關閉</span>
       </div>
     </div>
 
-    <!-- Hidden native file input for temple photo replacement -->
-    <input type="file" id="templePhotoInput" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+    <!-- 隱藏原生檔案上傳器 -->
+    <input type="file" id="photoUploadInput" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
   </div>
 
   <script>
-    // Live Clock Simulation for App Header
-    function updateClock() {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const clockEl = document.getElementById('appClock');
-      if (clockEl) clockEl.textContent = `${hours}:${minutes}`;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // Bottom Navigation Tab Switching
+    // 底部標籤頁切換
     function switchMobileTab(tabKey, btnElement) {
-      // Update Tab Button Styles
       const tabBtns = document.querySelectorAll('.app-tab-btn');
       tabBtns.forEach(btn => {
         btn.classList.remove('text-amber-600', 'active');
@@ -790,7 +831,6 @@
       const activeSpan = btnElement.querySelector('span');
       if (activeSpan) activeSpan.className = 'text-[10px] font-bold mt-0.5';
 
-      // Toggle Panels
       const panelTimeline = document.getElementById('panel-timeline');
       const panelStations = document.getElementById('panel-stations');
       const panelMindmap = document.getElementById('panel-mindmap');
@@ -812,7 +852,7 @@
       }
     }
 
-    // Category Pill Filter
+    // 分類膠囊過濾切換
     function filterMobileCategory(category, element) {
       const pills = document.querySelectorAll('.category-pill');
       pills.forEach(p => {
@@ -830,43 +870,55 @@
       });
     }
 
-    // Title Switcher & Customizer Functions
-    function applyAppTitle(mainTitle, subTitle) {
-      document.getElementById('appHeaderTitle').textContent = mainTitle;
-      document.getElementById('appHeaderSubtitle').textContent = subTitle || '';
-      document.title = mainTitle;
-      closeBottomSheet('titleSheet');
-    }
+    // 燈箱放大檢視邏輯
+    function openLightbox(imgElementId, titleText) {
+      const sourceImg = document.getElementById(imgElementId);
+      const lightbox = document.getElementById('imageLightbox');
+      const targetImg = document.getElementById('lightboxTargetImg');
+      const title = document.getElementById('lightboxTitle');
 
-    function submitCustomAppTitle() {
-      const main = document.getElementById('inputAppMainTitle').value.trim();
-      const sub = document.getElementById('inputAppSubTitle').value.trim();
-      if (main) {
-        applyAppTitle(main, sub);
+      if (sourceImg && lightbox && targetImg) {
+        targetImg.src = sourceImg.src;
+        title.textContent = titleText || '影像放大檢視';
+        lightbox.classList.remove('hidden');
+        
+        // 觸發淡入動效
+        requestAnimationFrame(() => {
+          lightbox.classList.remove('opacity-0');
+          lightbox.classList.add('opacity-100');
+          targetImg.classList.remove('scale-95');
+          targetImg.classList.add('scale-100');
+        });
       }
     }
 
-    // Bottom Sheet Handlers
-    function openBottomSheet(id) {
-      const sheet = document.getElementById(id);
-      if (sheet) {
-        sheet.classList.remove('hidden');
+    function closeLightbox() {
+      const lightbox = document.getElementById('imageLightbox');
+      const targetImg = document.getElementById('lightboxTargetImg');
+      if (lightbox) {
+        lightbox.classList.remove('opacity-100');
+        lightbox.classList.add('opacity-0');
+        if (targetImg) {
+          targetImg.classList.remove('scale-100');
+          targetImg.classList.add('scale-95');
+        }
+        setTimeout(() => {
+          lightbox.classList.add('hidden');
+        }, 220);
       }
     }
 
-    function closeBottomSheet(id) {
-      const sheet = document.getElementById(id);
-      if (sheet) {
-        sheet.classList.add('hidden');
-      }
-    }
+    // 鍵盤 ESC 關閉燈箱支援
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
 
-    // Temple Photo Upload Simulator
+    // 照片替換上傳模擬
     let currentPhotoTargetId = null;
 
-    function triggerPhotoUpload(templeKey) {
-      currentPhotoTargetId = `img-${templeKey}`;
-      document.getElementById('templePhotoInput').click();
+    function triggerPhotoUpload(targetKey) {
+      currentPhotoTargetId = `img-${targetKey}`;
+      document.getElementById('photoUploadInput').click();
     }
 
     function handlePhotoUpload(event) {
@@ -881,11 +933,10 @@
         };
         reader.readAsDataURL(file);
       }
-      // Reset input
       event.target.value = '';
     }
 
-    // Toggle Desktop View Width (Comfortable reading vs Phone Frame)
+    // 大螢幕寬度模式切換
     let isWide = false;
     function toggleDesktopMode() {
       const container = document.getElementById('appContainer');

@@ -34,11 +34,11 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* 支援現代行動裝置安全區域 */
+    /* 支援行動裝置安全區域 */
     .pb-safe { padding-bottom: env(safe-area-inset-bottom, 16px); }
     .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
 
-    /* 點擊回饋微動效 */
+    /* 點擊微動效 */
     .tap-scale {
       transition: transform 0.15s ease, opacity 0.15s ease;
     }
@@ -67,10 +67,10 @@
 </head>
 <body class="bg-stone-900 text-stone-850 font-sans antialiased h-full overflow-hidden flex items-center justify-center">
 
-  <!-- 手機外框容器（桌面顯示模擬手機，手機上 100% 滿版） -->
+  <!-- 手機外框容器（桌面顯示模擬手機，手機上滿版自適應） -->
   <div id="appContainer" class="w-full h-full max-w-md bg-app-bg flex flex-col relative shadow-2xl overflow-hidden sm:rounded-[36px] sm:h-[94vh] sm:border-[6px] sm:border-stone-800 transition-all duration-300">
 
-    <!-- App 頂部固定導覽列（無電量時間狀態列，簡約俐落） -->
+    <!-- App 頂部固定導覽列 -->
     <header class="bg-stone-900 text-stone-100 px-4 py-3 shrink-0 flex items-center justify-between border-b border-stone-800 z-30 shadow-md">
       <div class="flex items-center space-x-2.5">
         <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-stone-950 font-serif font-black text-base shadow-md">
@@ -86,7 +86,7 @@
         </div>
       </div>
 
-      <!-- 寬度切換輔助（僅在大螢幕顯現，方便展示） -->
+      <!-- 寬度切換輔助（大螢幕顯現，便利投影展示） -->
       <button onclick="toggleDesktopMode()" title="切換寬度模式" class="hidden sm:inline-flex p-1.5 rounded-lg hover:bg-stone-800 text-stone-400 hover:text-amber-300 transition tap-scale">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
       </button>
@@ -95,122 +95,13 @@
     <!-- 主滑動內容視區 -->
     <main id="appScrollBody" class="flex-1 overflow-y-auto no-scrollbar p-3 space-y-4 pb-24">
       
-      <!-- 繪本故事 (Picture Book Story - 7 Pages) -->
-      <div id="panel-story" class="hidden space-y-4">
-        <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-3">
-          
-          <!-- 頂部書名與頁碼標籤 -->
-          <div class="flex items-center justify-between pb-2 border-b border-stone-100">
-            <div class="flex items-center space-x-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-xs"></span>
-              <div>
-                <span class="text-xs font-serif font-black text-amber-950 tracking-wide block">《新園的甜甜時光機》</span>
-                <span class="text-[9px] text-stone-500">甘蔗、五分車與砂糖棧單</span>
-              </div>
-            </div>
-            <span id="storyPageBadge" class="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold">第 1 / 7 頁</span>
-          </div>
-
-          <!-- 主繪本圖片展示框（點擊放大） -->
-          <div onclick="openStoryLightbox()" class="w-full aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
-            <img id="storyMainImg" src="sugar/sugar0001.jpg" onerror="this.src='https://placehold.co/800x500/fef3c7/78350f?text=%E6%96%B0%E5%9C%92%E7%9A%84%E7%94%9c%E7%94%9c%E6%99%82%E5%85%89%E6%A9%9F'" alt="繪本故事圖" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-            <div class="absolute inset-0 bg-stone-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <span class="px-2.5 py-1 rounded-full bg-stone-900/80 text-white text-[10px] backdrop-blur-xs flex items-center gap-1 shadow">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
-                點擊全螢幕放大
-              </span>
-            </div>
-          </div>
-
-          <!-- 7 顆進度指示圓點 -->
-          <div class="flex items-center justify-center space-x-1.5 py-1">
-            <button onclick="goToStoryPage(0)" class="story-dot w-2 h-2 rounded-full bg-amber-600 transition-all duration-200" title="第 1 頁"></button>
-            <button onclick="goToStoryPage(1)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 2 頁"></button>
-            <button onclick="goToStoryPage(2)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 3 頁"></button>
-            <button onclick="goToStoryPage(3)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 4 頁"></button>
-            <button onclick="goToStoryPage(4)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 5 頁"></button>
-            <button onclick="goToStoryPage(5)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 6 頁"></button>
-            <button onclick="goToStoryPage(6)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 7 頁"></button>
-          </div>
-
-          <!-- 故事文字說明卡片 -->
-          <div class="bg-amber-50/70 rounded-xl p-3.5 border border-amber-200/80 space-y-2">
-            <div class="flex items-center justify-between">
-              <h3 id="storyTitle" class="font-serif font-black text-sm text-stone-900">
-                【第一頁】阿公的秘密藏寶盒
-              </h3>
-              <span id="storyEra" class="text-[10px] font-bold text-amber-800 bg-amber-100/90 px-2 py-0.5 rounded">
-                對應圖片：sugar0001.jpg
-              </span>
-            </div>
-            <p id="storyDesc" class="text-xs text-stone-800 leading-relaxed whitespace-pre-line font-sans">
-              在屏東新園鄉的老家裡，陽光溫柔地灑在溪畔與綠意盎然的蔗田上。
-              阿明好奇地看著阿公從古樸的木盒裡，小心翼翼地拿出一張泛黃的舊紙張。
-              「阿公，這是你的藏寶圖嗎？」阿明睜大眼睛問道。
-              阿公笑著摸了摸阿明的頭說：「這可比寶藏還神奇喔！這是我們新園蔗農以前的『神奇卡片』——砂糖棧單。」
-            </p>
-          </div>
-
-          <!-- 翻頁控制按鈕列 -->
-          <div class="flex items-center justify-between pt-1">
-            <button id="prevStoryBtn" onclick="prevStoryPage()" class="tap-scale flex-1 mr-1.5 py-2 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-xs flex items-center justify-center gap-1 border border-stone-200 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-              <span>上一頁</span>
-            </button>
-            <button id="nextStoryBtn" onclick="nextStoryPage()" class="tap-scale flex-1 ml-1.5 py-2 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-sm transition">
-              <span>下一頁</span>
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-            </button>
-          </div>
-
-          <!-- 7 張微縮圖快速跳頁列 -->
-          <div class="pt-2 border-t border-stone-100 space-y-1.5">
-            <div class="flex justify-between items-center text-[10px] text-stone-400 font-bold px-0.5">
-              <span>微縮圖快速跳頁</span>
-              <span>共 7 幕</span>
-            </div>
-            <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-1">
-              <button onclick="goToStoryPage(0)" id="thumb-0" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border-2 border-amber-600 ring-2 ring-amber-400/40 relative">
-                <img src="sugar/sugar0001.jpg" onerror="this.src='https://placehold.co/100x80/fef2f2/991b1b?text=01'" class="w-full h-full object-cover">
-                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">1</span>
-              </button>
-              <button onclick="goToStoryPage(1)" id="thumb-1" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
-                <img src="sugar/sugar0002.jpg" onerror="this.src='https://placehold.co/100x80/fef2f2/991b1b?text=02'" class="w-full h-full object-cover">
-                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">2</span>
-              </button>
-              <button onclick="goToStoryPage(2)" id="thumb-2" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
-                <img src="sugar/sugar0003.jpg" onerror="this.src='https://placehold.co/100x80/fef2f2/991b1b?text=03'" class="w-full h-full object-cover">
-                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">3</span>
-              </button>
-              <button onclick="goToStoryPage(3)" id="thumb-3" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
-                <img src="sugar/sugar0004.jpg" onerror="this.src='https://placehold.co/100x80/fefce8/854d0e?text=04'" class="w-full h-full object-cover">
-                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">4</span>
-              </button>
-              <button onclick="goToStoryPage(4)" id="thumb-4" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
-                <img src="sugar/sugar0005.jpg" onerror="this.src='https://placehold.co/100x80/fefce8/854d0e?text=05'" class="w-full h-full object-cover">
-                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">5</span>
-              </button>
-              <button onclick="goToStoryPage(5)" id="thumb-5" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
-                <img src="sugar/sugar0006.jpg" onerror="this.src='https://placehold.co/100x80/fefce8/854d0e?text=06'" class="w-full h-full object-cover">
-                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">6</span>
-              </button>
-              <button onclick="goToStoryPage(6)" id="thumb-6" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
-                <img src="sugar/sugar0007.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=07'" class="w-full h-full object-cover">
-                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">7</span>
-              </button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- 原版完整內容 · 庄頭紀事時間軸 (Timeline - 預設顯示) -->
+      <!-- TAB 1: 年表紀事 (Timeline - 預設首頁) -->
       <div id="panel-timeline" class="space-y-4">
         
         <!-- 橫向滑動時代篩選膠囊列 -->
         <div id="capsuleBar" class="bg-white rounded-2xl border border-stone-200 p-2 shrink-0 flex items-center space-x-2 overflow-x-auto no-scrollbar shadow-xs">
           <button onclick="filterMobileCategory('all', this)" class="category-pill active tap-scale px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap bg-stone-900 text-white shadow-sm">
-            滑動檢視
+            全部檢視
           </button>
           <button onclick="filterMobileCategory('founding', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
             【建庄起源】
@@ -227,9 +118,9 @@
           <button onclick="filterMobileCategory('global', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200">
             大戰與名詞
           </button>
-          <button onclick="filterMobileCategory('maps', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-stone-100 text-stone-700 hover:bg-stone-200 flex items-center gap-1">
+          <button onclick="filterMobileCategory('maps', this)" class="category-pill tap-scale px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 flex items-center gap-1">
             <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-            <span>地圖集</span>
+            <span>地圖集 (10幅)</span>
           </button>
         </div>
 
@@ -261,7 +152,7 @@
                 </button>
               </div>
 
-              <!-- 仙隆宮照片展示框（點擊放大） -->
+              <!-- 仙隆宮照片展示框 -->
               <div onclick="openLightbox('img-temple1', '仙隆宮 照片展示')" class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
                 <img id="img-temple1" src="https://placehold.co/800x450/fef2f2/991b1b?text=仙隆宮+照片位置+(點擊放大)" alt="仙隆宮" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                 <div class="absolute inset-0 bg-stone-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -293,7 +184,7 @@
                 </button>
               </div>
 
-              <!-- 新惠宮照片展示框（點擊放大） -->
+              <!-- 新惠宮照片展示框 -->
               <div onclick="openLightbox('img-temple2', '新惠宮 照片展示')" class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
                 <img id="img-temple2" src="https://placehold.co/800x450/fef2f2/991b1b?text=新惠宮+照片位置+(點擊放大)" alt="新惠宮" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                 <div class="absolute inset-0 bg-stone-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -336,7 +227,7 @@
                 </button>
               </div>
 
-              <!-- 澄灜宮照片展示框（點擊放大） -->
+              <!-- 澄灜宮照片展示框 -->
               <div onclick="openLightbox('img-temple3', '澄灜宮 照片展示')" class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
                 <img id="img-temple3" src="https://placehold.co/800x450/fef2f2/991b1b?text=澄灜宮+照片位置+(點擊放大)" alt="澄灜宮" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                 <div class="absolute inset-0 bg-stone-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -528,7 +419,8 @@
                   後更名為「東港幹線」
                 </div>
               </div>
-            <!-- 停駛客運營業線-東港線 1977 標記 -->
+
+              <!-- 停駛客運營業線-東港線 1977 標記 -->
               <div class="flex items-center justify-between p-2.5 bg-red-50/70 border border-red-200 rounded-xl text-xs">
                 <span class="font-bold text-red-950">停駛客運營業線-東港線</span>
                 <span class="text-red-700 font-bold text-[11px]">1977</span>
@@ -569,8 +461,6 @@
                   </p>
                 </div>
               </div>
-
-
             </div>
 
             <!-- 照片展示框 1：新園糖鐵與口述影像紀錄 -->
@@ -586,7 +476,7 @@
                 </button>
               </div>
 
-              <!-- 糖鐵影像框 1（點擊放大） -->
+              <!-- 糖鐵影像框 1 -->
               <div onclick="openLightbox('img-railway', '新園糖鐵與口述歷史 影像展示（一）')" class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
                 <img id="img-railway" src="https://placehold.co/800x450/fefce8/854d0e?text=新園糖鐵與口述照片位置+一+(點擊放大)" alt="新園糖鐵與口述歷史照片" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                 <div class="absolute inset-0 bg-stone-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -599,7 +489,7 @@
               </div>
             </div>
 
-            <!-- 照片展示框 2：新園相關田調與歷史影像紀錄 -->
+            <!-- 照片展示框 2：新園糖鐵與口述影像紀錄 -->
             <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-2.5">
               <div class="flex justify-between items-center">
                 <div>
@@ -612,7 +502,7 @@
                 </button>
               </div>
 
-              <!-- 糖鐵影像框 2（點擊放大） -->
+              <!-- 糖鐵影像框 2 -->
               <div onclick="openLightbox('img-railway2', '新園糖鐵與口述歷史 影像展示（二）')" class="w-full aspect-[16/9] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
                 <img id="img-railway2" src="https://placehold.co/800x450/fefce8/854d0e?text=新園糖鐵與口述照片位置+二+(點擊放大)" alt="新園糖鐵與口述歷史照片二" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                 <div class="absolute inset-0 bg-stone-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -749,7 +639,17 @@
                 <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-200">
                   <span class="font-bold text-blue-900">專用線：</span>
                   或稱原料線，用牽引列車載運甘蔗到糖廠內
-        <!-- SECTION 6: 【地圖集】10 頁互動切換專題 -->
+                </div>
+                <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-200">
+                  <span class="font-bold text-blue-900">營業線：</span>
+                  或稱客運營業線，非糖季也能賺取利潤
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 6: 【地圖集】10 幅地圖互動切換專題 -->
         <section class="mobile-section" data-cat="maps">
           <div class="flex items-center justify-between mb-2.5 px-1 pt-2">
             <div class="flex items-center space-x-2">
@@ -773,7 +673,7 @@
               <span id="mapPageBadge" class="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 font-bold">第 1 / 10 幅</span>
             </div>
 
-            <!-- 主地圖圖片展示框（點擊全螢幕放大） -->
+            <!-- 主地圖圖片展示框 -->
             <div onclick="openMapLightbox()" class="w-full aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
               <img id="mapMainImg" src="MAP/map0001.jpg" onerror="this.src='https://placehold.co/800x500/ecfdf5/065f46?text=%E6%96%B0%E5%9C%92%E5%9C%B0%E5%9C%96%E9%9B%86+01'" alt="歷史地圖" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
               <div class="absolute inset-0 bg-stone-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -853,7 +753,7 @@
                   <img src="MAP/map0005.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M5'" class="w-full h-full object-cover">
                   <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">5</span>
                 </button>
-                <button onclick="goToMapPage(5)" id="thumb-map-5" class="map-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                <button onclick="goToMapPage(5)" id="thumb-map-6" class="map-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
                   <img src="MAP/map0006.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M6'" class="w-full h-full object-cover">
                   <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">6</span>
                 </button>
@@ -879,6 +779,115 @@
           </div>
         </section>
 
+      </div>
+
+      <!-- TAB 2: 繪本故事 (Picture Book Story - 7 Pages) -->
+      <div id="panel-story" class="hidden space-y-4">
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-3">
+          
+          <!-- 頂部書名與頁碼標籤 -->
+          <div class="flex items-center justify-between pb-2 border-b border-stone-100">
+            <div class="flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-xs"></span>
+              <div>
+                <span class="text-xs font-serif font-black text-amber-950 tracking-wide block">《新園的甜甜時光機》</span>
+                <span class="text-[9px] text-stone-500">甘蔗、五分車與砂糖棧單</span>
+              </div>
+            </div>
+            <span id="storyPageBadge" class="text-[10px] px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold">第 1 / 7 頁</span>
+          </div>
+
+          <!-- 主繪本圖片展示框 -->
+          <div onclick="openStoryLightbox()" class="w-full aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
+            <img id="storyMainImg" src="sugar/sugar0001.jpg" onerror="this.src='https://placehold.co/800x500/fef3c7/78350f?text=%E6%96%B0%E5%9C%92%E7%9A%84%E7%94%9c%E7%94%9c%E6%99%82%E5%85%89%E6%A9%9F+01'" alt="繪本故事圖" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+            <div class="absolute inset-0 bg-stone-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="px-2.5 py-1 rounded-full bg-stone-900/80 text-white text-[10px] backdrop-blur-xs flex items-center gap-1 shadow">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                點擊全螢幕放大檢視
+              </span>
+            </div>
+          </div>
+
+          <!-- 7 顆進度指示圓點 -->
+          <div class="flex items-center justify-center space-x-1.5 py-1">
+            <button onclick="goToStoryPage(0)" class="story-dot w-4 h-2 rounded-full bg-amber-600 transition-all duration-200" title="第 1 頁"></button>
+            <button onclick="goToStoryPage(1)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 2 頁"></button>
+            <button onclick="goToStoryPage(2)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 3 頁"></button>
+            <button onclick="goToStoryPage(3)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 4 頁"></button>
+            <button onclick="goToStoryPage(4)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 5 頁"></button>
+            <button onclick="goToStoryPage(5)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 6 頁"></button>
+            <button onclick="goToStoryPage(6)" class="story-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 7 頁"></button>
+          </div>
+
+          <!-- 故事文字說明卡片 -->
+          <div class="bg-amber-50/70 rounded-xl p-3.5 border border-amber-200/80 space-y-2">
+            <div class="flex items-center justify-between">
+              <h3 id="storyTitle" class="font-serif font-black text-sm text-stone-900">
+                【第一頁】阿公的秘密藏寶盒
+              </h3>
+              <span id="storyEra" class="text-[10px] font-bold text-amber-800 bg-amber-100/90 px-2 py-0.5 rounded">
+                新園老家回憶
+              </span>
+            </div>
+            <p id="storyDesc" class="text-xs text-stone-800 leading-relaxed whitespace-pre-line font-sans">
+              在屏東新園鄉的老家裡，陽光溫柔地灑在溪畔與綠意盎然的蔗田上。
+              阿明好奇地看著阿公從古樸的木盒裡，小心翼翼地拿出一張泛黃的舊紙張。
+              「阿公，這是你的藏寶圖嗎？」阿明睜大眼睛問道。
+              阿公笑著摸了摸阿明的頭說：「這可比寶藏還神奇喔！這是我們新園蔗農以前的『神奇卡片』——砂糖棧單。」
+            </p>
+          </div>
+
+          <!-- 翻頁控制按鈕列 -->
+          <div class="flex items-center justify-between pt-1">
+            <button id="prevStoryBtn" onclick="prevStoryPage()" class="tap-scale flex-1 mr-1.5 py-2 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-xs flex items-center justify-center gap-1 border border-stone-200 transition">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+              <span>上一頁</span>
+            </button>
+            <button id="nextStoryBtn" onclick="nextStoryPage()" class="tap-scale flex-1 ml-1.5 py-2 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-sm transition">
+              <span>下一頁</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <!-- 7 張微縮圖快速跳頁列 -->
+          <div class="pt-2 border-t border-stone-100 space-y-1.5">
+            <div class="flex justify-between items-center text-[10px] text-stone-400 font-bold px-0.5">
+              <span>微縮圖快速跳頁</span>
+              <span>共 7 幕</span>
+            </div>
+            <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-1">
+              <button onclick="goToStoryPage(0)" id="thumb-0" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border-2 border-amber-600 ring-2 ring-amber-400/40 relative">
+                <img src="sugar/sugar0001.jpg" onerror="this.src='https://placehold.co/100x80/fef2f2/991b1b?text=01'" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">1</span>
+              </button>
+              <button onclick="goToStoryPage(1)" id="thumb-1" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                <img src="sugar/sugar0002.jpg" onerror="this.src='https://placehold.co/100x80/fef2f2/991b1b?text=02'" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">2</span>
+              </button>
+              <button onclick="goToStoryPage(2)" id="thumb-2" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                <img src="sugar/sugar0003.jpg" onerror="this.src='https://placehold.co/100x80/fef2f2/991b1b?text=03'" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">3</span>
+              </button>
+              <button onclick="goToStoryPage(3)" id="thumb-3" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                <img src="sugar/sugar0004.jpg" onerror="this.src='https://placehold.co/100x80/fefce8/854d0e?text=04'" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">4</span>
+              </button>
+              <button onclick="goToStoryPage(4)" id="thumb-4" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                <img src="sugar/sugar0005.jpg" onerror="this.src='https://placehold.co/100x80/fefce8/854d0e?text=05'" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">5</span>
+              </button>
+              <button onclick="goToStoryPage(5)" id="thumb-5" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                <img src="sugar/sugar0006.jpg" onerror="this.src='https://placehold.co/100x80/fefce8/854d0e?text=06'" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">6</span>
+              </button>
+              <button onclick="goToStoryPage(6)" id="thumb-6" class="story-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                <img src="sugar/sugar0007.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=07'" class="w-full h-full object-cover">
+                <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">7</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
       </div>
 
       <!-- TAB 3: 糖鐵車站路線圖專區 (Stations Tab) -->
@@ -983,7 +992,7 @@
             <!-- 分支 1: 建庄起源 -->
             <div class="flex gap-3 text-xs">
               <div class="w-32 py-2 px-2.5 bg-red-950/80 border border-red-500/40 rounded-xl text-red-200 shrink-0 text-center font-bold">
-                【建庄起源】<br>明朝 1368-1644<br>清朝 1636-1912<br><span class="text-red-400">【糖廍經營】</span>
+                【建庄起源】<br>明朝 1368-1644<br>清朝 1636-1912
               </div>
               <div class="flex-1 bg-stone-800/80 p-3 rounded-xl border border-stone-700/60 text-[11px] space-y-1.5 text-stone-300">
                 <div>• <strong class="text-red-400">仙隆宮 (1621-1627)</strong>：主祀神農大帝，鯉魚山東方開墾，奉祀隨身五穀仙帝。</div>
@@ -1056,13 +1065,13 @@
     <!-- Native App 底部導航欄 -->
     <nav class="absolute bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-stone-200 px-3 py-2 flex justify-around items-center z-40 pb-safe">
       
-      <!-- 庄頭紀事時間軸（第一項，預設選取） -->
+      <!-- 庄頭紀事時間軸 -->
       <button onclick="switchMobileTab('timeline', this)" class="app-tab-btn active flex flex-col items-center text-amber-600 tap-scale">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"></path></svg>
         <span class="text-[10px] font-bold mt-0.5">年表紀事</span>
       </button>
 
-      <!-- 繪本故事（第二項） -->
+      <!-- 繪本故事 -->
       <button onclick="switchMobileTab('story', this)" class="app-tab-btn flex flex-col items-center text-stone-400 hover:text-stone-700 tap-scale">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"></path></svg>
         <span class="text-[10px] font-medium mt-0.5">繪本故事</span>
@@ -1081,7 +1090,7 @@
       </button>
     </nav>
 
-    <!-- 全螢幕燈箱放大檢視 Modal (支援點擊放大與手勢) -->
+    <!-- 全螢幕燈箱放大檢視 Modal -->
     <div id="imageLightbox" class="hidden fixed inset-0 z-50 bg-stone-950/90 backdrop-blur-md flex flex-col items-center justify-between p-4 lightbox-backdrop opacity-0 transition-opacity duration-250 select-none">
       <!-- 頂部列：標題與關閉按鈕 -->
       <div class="w-full flex items-center justify-between text-stone-200 z-10 pt-safe">
@@ -1107,7 +1116,7 @@
   </div>
 
   <script>
-    // 繪本故事 7 頁資料結構（已綁定 sugar 資料夾內圖片）
+    // 繪本故事 7 頁資料結構（已綁定 sugar 資料夾內圖片，完全移除檔名文字）
     const storyPages = [
       {
         page: 1,
@@ -1162,7 +1171,7 @@
 
     let currentStoryIndex = 0;
 
-    // 地圖集 10 頁資料結構（對應 MAP 資料夾 map0001.jpg ~ map0010.jpg）
+    // 地圖集 10 頁資料結構（依序對應 MAP/map0001.jpg ~ MAP/map0010.jpg）
     const mapPages = [
       {
         page: 1,
@@ -1259,7 +1268,7 @@
       if (desc) desc.textContent = current.desc;
       if (badge) badge.textContent = `第 ${current.page} / ${mapPages.length} 幅`;
 
-      // 更新 10 顆圓點狀態
+      // 更新 10 顆指示圓點狀態
       const dots = document.querySelectorAll('.map-dot');
       dots.forEach((dot, idx) => {
         if (idx === currentMapIndex) {
@@ -1309,7 +1318,6 @@
       }
     }
 
-    // 地圖放大檢視
     function openMapLightbox() {
       const current = mapPages[currentMapIndex];
       openLightboxCustom(current.img, current.title);
@@ -1324,17 +1332,19 @@
       const desc = document.getElementById('storyDesc');
       const badge = document.getElementById('storyPageBadge');
 
-      mainImg.src = current.img;
-      mainImg.onerror = function() {
-        this.src = `https://placehold.co/800x500/fef3c7/78350f?text=${encodeURIComponent(current.title)}`;
-      };
+      if (mainImg) {
+        mainImg.src = current.img;
+        mainImg.onerror = function() {
+          this.src = `https://placehold.co/800x500/fef3c7/78350f?text=${encodeURIComponent(current.title)}`;
+        };
+      }
 
-      title.textContent = current.title;
-      era.textContent = current.era;
-      desc.textContent = current.desc;
-      badge.textContent = `第 ${current.page} / ${storyPages.length} 頁`;
+      if (title) title.textContent = current.title;
+      if (era) era.textContent = current.era;
+      if (desc) desc.textContent = current.desc;
+      if (badge) badge.textContent = `第 ${current.page} / ${storyPages.length} 頁`;
 
-      // 更新 7 顆圓點狀態
+      // 更新 7 顆指示圓點狀態
       const dots = document.querySelectorAll('.story-dot');
       dots.forEach((dot, idx) => {
         if (idx === currentStoryIndex) {
@@ -1344,8 +1354,8 @@
         }
       });
 
-      // 更新微縮圖外框狀態
-      for (let i = 0; i < 7; i++) {
+      // 更新 7 張微縮圖外框狀態
+      for (let i = 0; i < storyPages.length; i++) {
         const thumb = document.getElementById(`thumb-${i}`);
         if (thumb) {
           if (i === currentStoryIndex) {
@@ -1357,8 +1367,10 @@
       }
 
       // 控制按鈕狀態
-      document.getElementById('prevStoryBtn').style.opacity = currentStoryIndex === 0 ? '0.5' : '1';
-      document.getElementById('nextStoryBtn').style.opacity = currentStoryIndex === storyPages.length - 1 ? '0.5' : '1';
+      const prevBtn = document.getElementById('prevStoryBtn');
+      const nextBtn = document.getElementById('nextStoryBtn');
+      if (prevBtn) prevBtn.style.opacity = currentStoryIndex === 0 ? '0.5' : '1';
+      if (nextBtn) nextBtn.style.opacity = currentStoryIndex === storyPages.length - 1 ? '0.5' : '1';
     }
 
     function nextStoryPage() {
@@ -1382,13 +1394,12 @@
       }
     }
 
-    // 繪本主圖放大檢視
     function openStoryLightbox() {
       const current = storyPages[currentStoryIndex];
-      openLightboxCustom(current.img, `${current.title}`);
+      openLightboxCustom(current.img, current.title);
     }
 
-    // 錄音播放狀態切換微互動
+    // 周阿伯口述錄音播放微互動
     let isPlayingAudio = false;
     function toggleAudioPlay(btn) {
       isPlayingAudio = !isPlayingAudio;
@@ -1409,7 +1420,7 @@
       }
     }
 
-    // 底部標籤頁切換
+    // 底部主導覽頁籤切換
     function switchMobileTab(tabKey, btnElement) {
       const tabBtns = document.querySelectorAll('.app-tab-btn');
       tabBtns.forEach(btn => {
@@ -1424,26 +1435,30 @@
       const activeSpan = btnElement.querySelector('span');
       if (activeSpan) activeSpan.className = 'text-[10px] font-bold mt-0.5';
 
-      const panelStory = document.getElementById('panel-story');
       const panelTimeline = document.getElementById('panel-timeline');
+      const panelStory = document.getElementById('panel-story');
       const panelStations = document.getElementById('panel-stations');
       const panelMindmap = document.getElementById('panel-mindmap');
 
-      panelStory.classList.add('hidden');
       panelTimeline.classList.add('hidden');
+      panelStory.classList.add('hidden');
       panelStations.classList.add('hidden');
       panelMindmap.classList.add('hidden');
 
-      if (tabKey === 'story') {
+      if (tabKey === 'timeline') {
+        panelTimeline.classList.remove('hidden');
+      } else if (tabKey === 'story') {
         panelStory.classList.remove('hidden');
         panelStory.classList.add('story-fade');
-      } else if (tabKey === 'timeline') {
-        panelTimeline.classList.remove('hidden');
       } else if (tabKey === 'stations') {
         panelStations.classList.remove('hidden');
       } else if (tabKey === 'mindmap') {
         panelMindmap.classList.remove('hidden');
       }
+
+      // 切換標籤時自動回到頂部
+      const scrollBody = document.getElementById('appScrollBody');
+      if (scrollBody) scrollBody.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // 分類膠囊過濾切換
@@ -1465,11 +1480,8 @@
         }
       });
 
-      // 若點選地圖集，平滑捲動至頂部以利閱讀
-      if (category === 'maps') {
-        const scrollBody = document.getElementById('appScrollBody');
-        if (scrollBody) scrollBody.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      const scrollBody = document.getElementById('appScrollBody');
+      if (scrollBody) scrollBody.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // 燈箱放大檢視邏輯
@@ -1515,7 +1527,7 @@
       }
     }
 
-    // 鍵盤左右鍵切換繪本與 ESC 關閉燈箱
+    // 鍵盤左右鍵快捷鍵切換繪本與 ESC 關閉燈箱
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeLightbox();
       if (!document.getElementById('panel-story').classList.contains('hidden')) {
@@ -1524,7 +1536,7 @@
       }
     });
 
-    // 照片替換上傳 (原時間軸廟宇與糖鐵照)
+    // 照片替換上傳 (年表廟宇與糖鐵專屬槽位)
     let currentPhotoTargetId = null;
 
     function triggerPhotoUpload(targetKey) {
@@ -1547,7 +1559,7 @@
       event.target.value = '';
     }
 
-    // 大螢幕寬度模式切換
+    // 桌面模式寬度切換
     let isWide = false;
     function toggleDesktopMode() {
       const container = document.getElementById('appContainer');
@@ -1561,7 +1573,7 @@
       }
     }
 
-    // 初始化繪本故事第一頁
+    // 頁面初始化
     window.addEventListener('DOMContentLoaded', () => {
       updateStoryUI();
       updateMapUI();

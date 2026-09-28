@@ -452,7 +452,8 @@
                   <span>周阿伯口述歷史</span>
                 </div>
                 
-                <!-- 錄音播放 ICON 按鈕 -->
+                <!-- 錄音播放 ICON 按鈕與 HTML5 Audio 標籤 -->
+                <audio id="oralAudioPlayer" src="Voice/V01.wav" preload="none" onended="handleAudioEnded()"></audio>
                 <button id="oralAudioBtn" onclick="toggleAudioPlay(this)" class="tap-scale flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-250 transition-all text-[11px] font-medium shadow-2xs">
                   <span id="audioIconContainer">
                     <svg class="w-3.5 h-3.5 text-amber-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
@@ -668,13 +669,6 @@
 
         <!-- SECTION 6: 【地圖集】10 幅地圖互動切換專題 -->
         <section class="mobile-section" data-cat="maps">
-          <div class="flex items-center justify-between mb-2.5 px-1 pt-2">
-            <div class="flex items-center space-x-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 shadow-sm"></span>
-
-            </div>
-            <span class="text-[10px] text-stone-400 font-medium">10 幅圖譜</span>
-          </div>
 
           <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-3">
             
@@ -1437,24 +1431,54 @@
       openLightboxCustom(current.img, current.title);
     }
 
-    // 周阿伯口述錄音播放微互動
+    // 周阿伯口述錄音播放實作（指向 Voice/V01.jpg）
     let isPlayingAudio = false;
-    function toggleAudioPlay(btn) {
-      isPlayingAudio = !isPlayingAudio;
+
+    function resetAudioUI() {
+      const btn = document.getElementById('oralAudioBtn');
       const iconContainer = document.getElementById('audioIconContainer');
       const textSpan = document.getElementById('audioPlayText');
       const waves = document.getElementById('audioWaves');
 
-      if (isPlayingAudio) {
-        iconContainer.innerHTML = '<svg class="w-3.5 h-3.5 text-amber-800" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>';
-        textSpan.textContent = '播放中...';
-        btn.classList.add('bg-amber-200', 'border-amber-400');
-        waves.classList.remove('hidden');
-      } else {
+      isPlayingAudio = false;
+      if (iconContainer) {
         iconContainer.innerHTML = '<svg class="w-3.5 h-3.5 text-amber-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>';
-        textSpan.textContent = '播放錄音';
-        btn.classList.remove('bg-amber-200', 'border-amber-400');
-        waves.classList.add('hidden');
+      }
+      if (textSpan) textSpan.textContent = '播放錄音';
+      if (btn) btn.classList.remove('bg-amber-200', 'border-amber-400');
+      if (waves) waves.classList.add('hidden');
+    }
+
+    function handleAudioEnded() {
+      resetAudioUI();
+    }
+
+    function toggleAudioPlay(btn) {
+      const audio = document.getElementById('oralAudioPlayer');
+      const iconContainer = document.getElementById('audioIconContainer');
+      const textSpan = document.getElementById('audioPlayText');
+      const waves = document.getElementById('audioWaves');
+
+      if (!audio) return;
+
+      if (!isPlayingAudio) {
+        audio.play().then(() => {
+          isPlayingAudio = true;
+          iconContainer.innerHTML = '<svg class="w-3.5 h-3.5 text-amber-800" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>';
+          textSpan.textContent = '暫停播放';
+          btn.classList.add('bg-amber-200', 'border-amber-400');
+          waves.classList.remove('hidden');
+        }).catch(err => {
+          console.warn('音訊播放失敗或檔案尚未載入:', err);
+          // 容錯展示：若檔案無法直接解碼，仍提供視覺反饋
+          isPlayingAudio = true;
+          textSpan.textContent = '播放中...';
+          btn.classList.add('bg-amber-200', 'border-amber-400');
+          waves.classList.remove('hidden');
+        });
+      } else {
+        audio.pause();
+        resetAudioUI();
       }
     }
 

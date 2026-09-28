@@ -749,24 +749,14 @@
                 <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-200">
                   <span class="font-bold text-blue-900">專用線：</span>
                   或稱原料線，用牽引列車載運甘蔗到糖廠內
-                </div>
-                <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-200">
-                  <span class="font-bold text-blue-900">營業線：</span>
-                  或稱客運營業線，非糖季也能賺取利潤
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- SECTION 6: 【地圖集】8 頁互動切換專題 -->
+        <!-- SECTION 6: 【地圖集】10 頁互動切換專題 -->
         <section class="mobile-section" data-cat="maps">
           <div class="flex items-center justify-between mb-2.5 px-1 pt-2">
             <div class="flex items-center space-x-2">
               <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 shadow-sm"></span>
               <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-800">歷史地理 · 新園糖業地圖集</h2>
             </div>
-            <span class="text-[10px] text-stone-400 font-medium">8 幅圖譜</span>
+            <span class="text-[10px] text-stone-400 font-medium">10 幅圖譜</span>
           </div>
 
           <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-3">
@@ -780,12 +770,12 @@
                   <span class="text-[9px] text-stone-500">水系渡口、糖鐵軌跡與庄頭變遷</span>
                 </div>
               </div>
-              <span id="mapPageBadge" class="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 font-bold">第 1 / 8 幅</span>
+              <span id="mapPageBadge" class="text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 font-bold">第 1 / 10 幅</span>
             </div>
 
             <!-- 主地圖圖片展示框（點擊全螢幕放大） -->
             <div onclick="openMapLightbox()" class="w-full aspect-[16/10] rounded-xl overflow-hidden bg-stone-100 border border-stone-200 relative group cursor-pointer shadow-inner">
-              <img id="mapMainImg" src="map/map0001.jpg" onerror="this.src='https://placehold.co/800x500/ecfdf5/065f46?text=%E6%96%B0%E5%9C%92%E5%9C%B0%E5%9C%96%E9%9B%86+01'" alt="歷史地圖" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+              <img id="mapMainImg" src="MAP/map0001.jpg" onerror="this.src='https://placehold.co/800x500/ecfdf5/065f46?text=%E6%96%B0%E5%9C%92%E5%9C%B0%E5%9C%96%E9%9B%86+01'" alt="歷史地圖" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
               <div class="absolute inset-0 bg-stone-950/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                 <span class="px-2.5 py-1 rounded-full bg-stone-900/80 text-white text-[10px] backdrop-blur-xs flex items-center gap-1 shadow">
                   <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
@@ -794,7 +784,7 @@
               </div>
             </div>
 
-            <!-- 8 顆進度指示圓點 -->
+            <!-- 10 顆進度指示圓點 -->
             <div class="flex items-center justify-center space-x-1.5 py-1">
               <button onclick="goToMapPage(0)" class="map-dot w-4 h-2 rounded-full bg-emerald-600 transition-all duration-200" title="第 1 幅"></button>
               <button onclick="goToMapPage(1)" class="map-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 2 幅"></button>
@@ -804,13 +794,15 @@
               <button onclick="goToMapPage(5)" class="map-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 6 幅"></button>
               <button onclick="goToMapPage(6)" class="map-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 7 幅"></button>
               <button onclick="goToMapPage(7)" class="map-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 8 幅"></button>
+              <button onclick="goToMapPage(8)" class="map-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 9 幅"></button>
+              <button onclick="goToMapPage(9)" class="map-dot w-2 h-2 rounded-full bg-stone-300 transition-all duration-200" title="第 10 幅"></button>
             </div>
 
             <!-- 地圖說明文字卡片 -->
             <div class="bg-emerald-50/70 rounded-xl p-3.5 border border-emerald-200/80 space-y-2">
               <div class="flex items-center justify-between">
                 <h3 id="mapTitle" class="font-serif font-black text-sm text-stone-900">
-                  【圖一】清康熙下淡水溪與新園古街渡口圖
+                  【第一幅】清康熙下淡水溪與新園古街渡口圖
                 </h3>
                 <span id="mapEra" class="text-[10px] font-bold text-emerald-800 bg-emerald-100/90 px-2 py-0.5 rounded">
                   清代水運地景
@@ -834,44 +826,52 @@
               </button>
             </div>
 
-            <!-- 8 張微縮圖快速跳頁列 -->
+            <!-- 10 張微縮圖快速跳頁列 -->
             <div class="pt-2 border-t border-stone-100 space-y-1.5">
               <div class="flex justify-between items-center text-[10px] text-stone-400 font-bold px-0.5">
                 <span>地圖縮圖快速跳頁</span>
-                <span>共 8 幅</span>
+                <span>共 10 幅</span>
               </div>
               <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar py-1">
                 <button onclick="goToMapPage(0)" id="thumb-map-0" class="map-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border-2 border-emerald-600 ring-2 ring-emerald-400/40 relative">
-                  <img src="map/map0001.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M1'" class="w-full h-full object-cover">
+                  <img src="MAP/map0001.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M1'" class="w-full h-full object-cover">
                   <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">1</span>
                 </button>
                 <button onclick="goToMapPage(1)" id="thumb-map-1" class="map-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
-                  <img src="map/map0002.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M2'" class="w-full h-full object-cover">
+                  <img src="MAP/map0002.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M2'" class="w-full h-full object-cover">
                   <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">2</span>
                 </button>
                 <button onclick="goToMapPage(2)" id="thumb-map-2" class="map-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
-                  <img src="map/map0003.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M3'" class="w-full h-full object-cover">
+                  <img src="MAP/map0003.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M3'" class="w-full h-full object-cover">
                   <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">3</span>
                 </button>
                 <button onclick="goToMapPage(3)" id="thumb-map-3" class="map-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
-                  <img src="map/map0004.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M4'" class="w-full h-full object-cover">
+                  <img src="MAP/map0004.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M4'" class="w-full h-full object-cover">
                   <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">4</span>
                 </button>
                 <button onclick="goToMapPage(4)" id="thumb-map-4" class="map-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
-                  <img src="map/map0005.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M5'" class="w-full h-full object-cover">
+                  <img src="MAP/map0005.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M5'" class="w-full h-full object-cover">
                   <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">5</span>
                 </button>
                 <button onclick="goToMapPage(5)" id="thumb-map-5" class="map-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
-                  <img src="map/map0006.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M6'" class="w-full h-full object-cover">
+                  <img src="MAP/map0006.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M6'" class="w-full h-full object-cover">
                   <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">6</span>
                 </button>
                 <button onclick="goToMapPage(6)" id="thumb-map-6" class="map-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
-                  <img src="map/map0007.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M7'" class="w-full h-full object-cover">
+                  <img src="MAP/map0007.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M7'" class="w-full h-full object-cover">
                   <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">7</span>
                 </button>
                 <button onclick="goToMapPage(7)" id="thumb-map-7" class="map-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
-                  <img src="map/map0008.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M8'" class="w-full h-full object-cover">
+                  <img src="MAP/map0008.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M8'" class="w-full h-full object-cover">
                   <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">8</span>
+                </button>
+                <button onclick="goToMapPage(8)" id="thumb-map-8" class="map-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                  <img src="MAP/map0009.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M9'" class="w-full h-full object-cover">
+                  <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">9</span>
+                </button>
+                <button onclick="goToMapPage(9)" id="thumb-map-9" class="map-thumb shrink-0 w-11 h-9 rounded-lg overflow-hidden border border-stone-200 opacity-60 hover:opacity-100 relative">
+                  <img src="MAP/map0010.jpg" onerror="this.src='https://placehold.co/100x80/ecfdf5/065f46?text=M10'" class="w-full h-full object-cover">
+                  <span class="absolute bottom-0 right-0 px-1 text-[8px] bg-stone-900/80 text-white font-bold">10</span>
                 </button>
               </div>
             </div>
@@ -1162,63 +1162,77 @@
 
     let currentStoryIndex = 0;
 
-    // 地圖集 8 頁資料結構（對應 map 資料夾 map0001.jpg ~ map0008.jpg）
+    // 地圖集 10 頁資料結構（對應 MAP 資料夾 map0001.jpg ~ map0010.jpg）
     const mapPages = [
       {
         page: 1,
         title: "【第一幅】清康熙下淡水溪與新園古街渡口圖",
         era: "清代水運地景",
         desc: "清康熙年間，新園古街渡口為重要水運樞紐，商船溯下淡水溪北上各庄。\n地圖詳實記載港道走向、聚落分佈與早年先民拓墾之鯉魚山周邊水陸界線。",
-        img: "map/map0001.jpg"
+        img: "MAP/map0001.jpg"
       },
       {
         page: 2,
         title: "【第二幅】清代新園三十六庄境域地圖",
         era: "庄頭信仰圈",
         desc: "以新惠宮媽祖廟為中心的新園三十六庄歷史聚落分佈圖。\n完整涵蓋仙隆宮、澄灜宮及各角頭廟宇，呈現清代防洪與聚落拓墾之深厚脈絡。",
-        img: "map/map0002.jpg"
+        img: "MAP/map0002.jpg"
       },
       {
         page: 3,
         title: "【第三幅】日治阿緱廳糖業分佈與新式製糖版圖",
         era: "日治初期糖業",
         desc: "明治時期阿緱工場（屏東糖廠）與四大製糖會社之管轄界線圖。\n標示出劉厝庄南昌製糖到東洋最大規模阿緱工場的產業地理轉變。",
-        img: "map/map0003.jpg"
+        img: "MAP/map0003.jpg"
       },
       {
         page: 4,
         title: "【第四幅】原料採取區域制劃分圖 (1905)",
         era: "製糖場取締規則",
         desc: "臺灣總督府劃定之原料採取專屬區域圖。\n詳細記錄專屬區域範圍、蔗農採收運送限制，以及傳統糖廍受取締後之糖業地景演變。",
-        img: "map/map0004.jpg"
+        img: "MAP/map0004.jpg"
       },
       {
         page: 5,
         title: "【第五幅】糖鐵專用線路線圖 (1908)",
         era: "烏龍線 · 東港線",
         desc: "阿緱工場運糖專用線（原料線）軌道圖譜。\n清晰描繪1908年開通之烏龍線、烏龍延長線及東港線軌道走向，連接蔗田與壓榨工場。",
-        img: "map/map0005.jpg"
+        img: "MAP/map0005.jpg"
       },
       {
         page: 6,
         title: "【第六幅】東港營業線三大時期路網演進圖",
         era: "1909-1977 糖鐵客運",
         desc: "東港線三大更名階段鐵道圖：\n① 阿緱至東港（甘棠門支線 1909-1931）\n② 屏東至鹽埔子（舊東港幹線 1944）\n③ 屏東至新園（東港幹線 1950-1977）。",
-        img: "map/map0006.jpg"
+        img: "MAP/map0006.jpg"
       },
       {
         page: 7,
         title: "【第七幅】下淡水溪浮覆地蔗田分佈測繪圖",
         era: "40~50年代口述田調",
         desc: "呼應周阿伯口述歷史之珍貴浮覆地測繪圖。\n展示40至50年代下淡水溪河道沙洲「砂埔種蔗」之廣闊分佈，見證早期糖業期貨存單年代。",
-        img: "map/map0007.jpg"
+        img: "MAP/map0007.jpg"
       },
       {
         page: 8,
-        title: "【第八幅】戰後糖鐵廢線與今日新園文史導覽地圖",
-        era: "現代文史走讀",
+        title: "【第八幅】糖廠至港口運糖網絡與水陸轉運圖",
+        era: "水陸交通銜接",
+        desc: "五分車鐵道銜接東港渡口與鹽埔仔轉運之歷史路線圖。\n記錄戰後糖產經由鐵路直達碼頭駁運外銷之關鍵運輸通道。",
+        img: "MAP/map0008.jpg"
+      },
+      {
+        page: 9,
+        title: "【第九幅】戰後糖鐵廢線與新園行政界線演變圖",
+        era: "戰後產業轉型",
+        desc: "記錄1977年客運東港線停駛後，糖鐵軌道逐步廢線與拆除之空間轉變。\n比對新園聚落現代聯外道路闢建與早期鐵道痕跡。",
+        img: "MAP/map0009.jpg"
+      },
+      {
+        page: 10,
+        title: "【第十幅】今日新園文史聚落與糖業遺址走讀圖",
+        era: "當代文史導覽",
         desc: "當代新園鄉行政區與昔日五分車鐵道遺跡疊合圖。\n標記仙隆宮、新惠宮、澄灜宮、歷史車站遺址與糖鐵文化步道路徑，引領走入歷史現場。",
-        img: "map/map0008.jpg"
+        img: "MAP/map0010.jpg"
       }
     ];
 
@@ -1245,7 +1259,7 @@
       if (desc) desc.textContent = current.desc;
       if (badge) badge.textContent = `第 ${current.page} / ${mapPages.length} 幅`;
 
-      // 更新 8 顆圓點狀態
+      // 更新 10 顆圓點狀態
       const dots = document.querySelectorAll('.map-dot');
       dots.forEach((dot, idx) => {
         if (idx === currentMapIndex) {
@@ -1255,8 +1269,8 @@
         }
       });
 
-      // 更新 8 張微縮圖外框狀態
-      for (let i = 0; i < 8; i++) {
+      // 更新 10 張微縮圖外框狀態
+      for (let i = 0; i < mapPages.length; i++) {
         const thumb = document.getElementById(`thumb-map-${i}`);
         if (thumb) {
           if (i === currentMapIndex) {

@@ -1,1 +1,735 @@
 
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>臺灣糖業產能與外匯表現歷史圖表</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sugar: {
+              50: '#FDFBF7',
+              100: '#FAF4E8',
+              200: '#F4E4C6',
+              300: '#E7CE9B',
+              400: '#D5B06B',
+              500: '#B88A3A',
+              600: '#946A25',
+              700: '#714D19',
+              800: '#4F3411',
+              900: '#321F08',
+            },
+            cane: {
+              600: '#2E6930',
+              700: '#235225',
+              800: '#193B1B'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+    
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: #F8F6F0;
+      color: #2D271D;
+    }
+    
+    .serif-title {
+      font-family: 'Noto Serif TC', serif;
+    }
+
+    .vintage-texture {
+      background-image: radial-gradient(#d3c5a3 0.75px, transparent 0.75px), radial-gradient(#d3c5a3 0.75px, #f8f6f0 0.75px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+    }
+
+    .timeline-dot::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      background-color: white;
+    }
+  </style>
+</head>
+<body class="vintage-texture min-h-screen antialiased selection:bg-sugar-300 selection:text-sugar-900 pb-20">
+
+  <header class="border-b border-sugar-200 bg-white/80 backdrop-blur-md sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-sugar-600 text-white flex items-center justify-center shadow-md">
+          <i class="fa-solid fa-seedling text-lg"></i>
+        </div>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-black text-sugar-900 serif-title tracking-tight">蔗糖王國的興衰百年史</h1>
+          <p class="text-xs text-sugar-600 font-medium tracking-wide">1900 – 現代：臺灣糖業產能、外匯貢獻與經濟定位變遷圖解</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="scrollToSection('trend-chart')" class="text-xs px-3 py-1.5 rounded-lg bg-sugar-100 hover:bg-sugar-200 text-sugar-800 transition font-semibold">
+          <i class="fa-solid fa-chart-line mr-1"></i>產能折線圖
+        </button>
+        <button onclick="scrollToSection('era-timeline')" class="text-xs px-3 py-1.5 rounded-lg bg-sugar-100 hover:bg-sugar-200 text-sugar-800 transition font-semibold">
+          <i class="fa-solid fa-clock-rotate-left mr-1"></i>歷史六大時期
+        </button>
+        <button onclick="scrollToSection('comparison-sec')" class="text-xs px-3 py-1.5 rounded-lg bg-sugar-600 hover:bg-sugar-700 text-white transition font-semibold shadow-sm">
+          <i class="fa-solid fa-scale-balanced mr-1"></i>今昔對比
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-8 space-y-10">
+    
+    <!-- Hero Banner with Key Statistics -->
+    <section>
+      <div class="bg-gradient-to-br from-sugar-800 via-sugar-900 to-amber-950 text-white rounded-3xl p-6 sm:p-10 shadow-xl relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 opacity-10 text-[260px] pointer-events-none select-none text-white">
+          <i class="fa-solid fa-cubes-stacked"></i>
+        </div>
+        
+        <div class="relative z-10 max-w-3xl">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-400/20 text-amber-300 border border-amber-400/30 mb-3">
+            <i class="fa-solid fa-award"></i> 國家經濟戰略樞紐歷史特輯
+          </span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black serif-title leading-tight mb-4">
+            「以農業培養工業」的金色支柱
+          </h2>
+          <p class="text-sugar-100 text-sm sm:text-base leading-relaxed text-balance">
+            從日治時期的「工業日本，農業臺灣」到戰後台糖支撐新台幣穩定，臺灣砂糖曾高居全球出口第二與第三大。鼎盛期曾憑一己之力貢獻中華民國 <strong class="text-amber-300 underline decoration-amber-400 font-bold">74% 全國總外匯</strong>，孕育了臺灣經濟奇蹟的基石。
+          </p>
+        </div>
+
+        <!-- 4 Key Numbers Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8 relative z-10 pt-6 border-t border-white/15">
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 hover:border-amber-400/50 transition">
+            <div class="flex items-center justify-between text-sugar-200 text-xs mb-1">
+              <span>日治產能顛峰 (1939)</span>
+              <i class="fa-solid fa-mountain text-amber-300"></i>
+            </div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-white">141.9 <span class="text-sm font-normal text-sugar-200">萬公噸</span></div>
+            <p class="text-[11px] text-amber-300 mt-1 font-medium">榮登世界第三大產糖國</p>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 hover:border-amber-400/50 transition">
+            <div class="flex items-center justify-between text-sugar-200 text-xs mb-1">
+              <span>戰後外匯頂峰 (1950s)</span>
+              <i class="fa-solid fa-dollar-sign text-amber-300"></i>
+            </div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-amber-300">74 %</div>
+            <p class="text-[11px] text-sugar-200 mt-1 font-medium">全臺總外匯收入第一支柱</p>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 hover:border-amber-400/50 transition">
+            <div class="flex items-center justify-between text-sugar-200 text-xs mb-1">
+              <span>戰後產能峰值 (1977)</span>
+              <i class="fa-solid fa-industry text-amber-300"></i>
+            </div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-white">106.9 <span class="text-sm font-normal text-sugar-200">萬公噸</span></div>
+            <p class="text-[11px] text-sugar-200 mt-1 font-medium">創下戰後最高年產紀錄</p>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 hover:border-amber-400/50 transition">
+            <div class="flex items-center justify-between text-sugar-200 text-xs mb-1">
+              <span>現今本土營運工廠</span>
+              <i class="fa-solid fa-building-wheat text-amber-300"></i>
+            </div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-white">2 <span class="text-sm font-normal text-sugar-200">座</span></div>
+            <p class="text-[11px] text-sugar-300 mt-1 font-medium">虎尾、善化（產量 &lt; 5萬噸）</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="trend-chart" class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-sugar-200">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="p-2 rounded-lg bg-sugar-100 text-sugar-700">
+              <i class="fa-solid fa-chart-area"></i>
+            </span>
+            <h3 class="text-xl sm:text-2xl font-bold text-sugar-900 serif-title">百年產量歷史軌跡 (1900 - 現今)</h3>
+          </div>
+          <p class="text-xs sm:text-sm text-sugar-600 mt-1">
+            單位：萬公噸 (10,000 MT) ｜ 點擊節點查看該時期歷史里程碑與關鍵出口事件
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="inline-flex items-center text-xs px-2.5 py-1 rounded-md bg-amber-100 text-amber-900 font-semibold">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-600 mr-1.5"></span> 年砂糖總產量
+          </span>
+          <span class="inline-flex items-center text-xs px-2.5 py-1 rounded-md bg-red-100 text-red-900 font-semibold">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500 mr-1.5"></span> 戰火破壞期
+          </span>
+          <span class="inline-flex items-center text-xs px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-900 font-semibold">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 mr-1.5"></span> 現今國內年消耗 (~60萬噸)
+          </span>
+        </div>
+      </div>
+
+      <!-- Chart Container -->
+      <div class="w-full h-80 sm:h-96 relative">
+        <canvas id="sugarProductionChart"></canvas>
+      </div>
+
+      <!-- Dynamic Event Info Box on Node Click -->
+      <div id="chartInsightBox" class="mt-4 p-4 rounded-2xl bg-sugar-50 border border-sugar-200 flex items-start gap-4 transition-all">
+        <div class="p-3 bg-sugar-200 text-sugar-800 rounded-xl text-lg hidden sm:block">
+          <i class="fa-solid fa-circle-info"></i>
+        </div>
+        <div>
+          <h4 id="insightTitle" class="text-sm sm:text-base font-bold text-sugar-900">點選上方圖表各歷史年份節點</h4>
+          <p id="insightDesc" class="text-xs sm:text-sm text-sugar-700 mt-0.5">
+            可檢視該年份的出口比率、壓榨噸數或產業重大政策事件（例如 1912 年近半出口總額、1939 年的世界第三、1950 年代韓戰外匯飆升等）。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- 74% Foreign exchange highlight -->
+      <div class="bg-gradient-to-br from-amber-700 to-sugar-900 text-white rounded-3xl p-6 sm:p-7 shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs uppercase tracking-wider font-semibold text-amber-200 bg-white/10 px-3 py-1 rounded-full">
+              戰後經濟中流砥柱
+            </span>
+            <i class="fa-solid fa-sack-dollar text-2xl text-amber-300"></i>
+          </div>
+          <h4 class="text-xl font-bold serif-title mb-2">最高 74% 全國外匯收入</h4>
+          <p class="text-xs sm:text-sm text-sugar-100 leading-relaxed">
+            1952 – 1964 的「砂糖黃金時代」，臺灣糖業長期位居全臺外銷品之冠。藉由大量賺取的美元外匯，成功奠定新台幣幣值基礎，更成為推動「以農業培養工業、以工業發展農業」的核心啟動資本。
+          </p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-white/20">
+          <div class="text-xs text-amber-200">1975年（民國64年）國際糖價衝頂：</div>
+          <div class="text-lg font-bold text-white mt-1">單年盈餘高達 5.168 億元</div>
+        </div>
+      </div>
+
+      <!-- 1912 Trade share breakdown -->
+      <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-sm border border-sugar-200 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs uppercase tracking-wider font-semibold text-sugar-600 bg-sugar-100 px-3 py-1 rounded-full">
+              日治起飛期 (1912)
+            </span>
+            <i class="fa-solid fa-ship text-2xl text-sugar-500"></i>
+          </div>
+          <h4 class="text-xl font-bold text-sugar-900 serif-title mb-2">48.6% 出口半壁江山</h4>
+          <p class="text-xs sm:text-sm text-sugar-700 leading-relaxed">
+            新式製糖會社成立後十餘年內，1912 年砂糖出口值即高達 2,800 萬圓，占全臺灣出口總額近半（48.6%）。大幅取代了日本本土對外國進口糖的仰賴，開啟米糖兩大支柱時代。
+          </p>
+        </div>
+        <div class="mt-6">
+          <div class="w-full bg-sugar-100 rounded-full h-3 overflow-hidden">
+            <div class="bg-sugar-500 h-3 rounded-full" style="width: 48.6%"></div>
+          </div>
+          <div class="flex justify-between text-[11px] text-sugar-600 mt-1 font-medium">
+            <span>砂糖外銷占臺灣總出口：48.6%</span>
+            <span>其餘貨品：51.4%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Present status -->
+      <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-sm border border-sugar-200 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs uppercase tracking-wider font-semibold text-cane-600 bg-emerald-50 px-3 py-1 rounded-full">
+              現今角色轉變 (現況)
+            </span>
+            <i class="fa-solid fa-rotate text-2xl text-cane-600"></i>
+          </div>
+          <h4 class="text-xl font-bold text-sugar-900 serif-title mb-2">從外銷主力轉為「純進口國」</h4>
+          <p class="text-xs sm:text-sm text-sugar-700 leading-relaxed">
+            隨勞動成本上升與國際糖價低迷，全臺 42 座糖廠萎縮至僅存 2 座（雲林虎尾、台南善化）。本土甘蔗製糖年產已不足 5 萬公噸，對比全臺每年約 60 萬公噸的消費量，本土自給率已低於 8.3%。
+          </p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-sugar-100 flex items-center justify-between">
+          <div>
+            <div class="text-[11px] text-sugar-500">年糖自給率</div>
+            <div class="text-xl font-black text-sugar-900">&lt; 8.3%</div>
+          </div>
+          <div>
+            <div class="text-[11px] text-sugar-500">進口仰賴度</div>
+            <div class="text-xl font-black text-cane-600">&gt; 91.7%</div>
+          </div>
+          <div class="text-right">
+            <div class="text-[11px] text-sugar-500">主要用途</div>
+            <div class="text-xs font-bold text-sugar-800">民生與觀光保留</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="era-timeline" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-sugar-200 pb-4">
+        <div>
+          <h3 class="text-2xl font-bold text-sugar-900 serif-title flex items-center gap-2">
+            <i class="fa-solid fa-train-subway text-sugar-600"></i>
+            六大歷史紀元走廊
+          </h3>
+          <p class="text-xs sm:text-sm text-sugar-600">從三井五分車的汽笛，到戰火廢墟與今日的觀光廠區</p>
+        </div>
+        <div class="text-xs text-sugar-500 bg-sugar-100 px-3 py-1 rounded-full self-start sm:self-auto">
+          依文字史料完整編年
+        </div>
+      </div>
+
+      <!-- Timeline Container -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Era 1: 1900-1910s -->
+        <div class="bg-white rounded-2xl p-6 border-t-4 border-amber-500 shadow-sm border-x border-b border-sugar-200 flex flex-col justify-between hover:shadow-md transition">
+          <div>
+            <div class="flex items-center justify-between text-xs font-bold text-amber-700 mb-2">
+              <span>第一紀元</span>
+              <span class="bg-amber-100 px-2 py-0.5 rounded">1900 – 1910 年代</span>
+            </div>
+            <h4 class="text-lg font-bold text-sugar-900 serif-title mb-3">現代化製糖發軔與產能擴張</h4>
+            
+            <ul class="space-y-3 text-xs sm:text-sm text-sugar-700">
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-amber-600 min-w-[50px]">1900：</span>
+                <span>日本三井財閥在臺設立第一家新式製糖會社——「臺灣製糖株式會社」。</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-amber-600 min-w-[50px]">1901-02：</span>
+                <span>首座現代化機械糖廠「橋仔頭工場」開工，日壓榨量初期 250 公噸。大日本、明治、鹽水港等四大會社相繼成立。</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-amber-600 min-w-[50px]">1912：</span>
+                <span>總督府「工業日本，農業臺灣」政策扶持，砂糖出口達約 2,800 萬圓，占全臺總出口額 48.6%。</span>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-4 pt-3 border-t border-sugar-100 text-[11px] text-sugar-500 flex items-center justify-between">
+            <span>核心地標：橋仔頭工場</span>
+            <span class="text-amber-700 font-semibold">外銷近 50%</span>
+          </div>
+        </div>
+
+        <!-- Era 2: 1920-1930s -->
+        <div class="bg-white rounded-2xl p-6 border-t-4 border-amber-600 shadow-sm border-x border-b border-sugar-200 flex flex-col justify-between hover:shadow-md transition">
+          <div>
+            <div class="flex items-center justify-between text-xs font-bold text-amber-800 mb-2">
+              <span>第二紀元</span>
+              <span class="bg-amber-100 px-2 py-0.5 rounded">1920 – 1930 年代</span>
+            </div>
+            <h4 class="text-lg font-bold text-sugar-900 serif-title mb-3">國際產能顛峰，榮登世界第三</h4>
+            
+            <ul class="space-y-3 text-xs sm:text-sm text-sugar-700">
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-amber-700 min-w-[50px]">1920s：</span>
+                <span>「阿緱工場（屏東總廠）」擴建，日壓榨量達 3,600 公噸，號稱「東洋第一」，譽為臺灣糖業新高山。</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-amber-700 min-w-[50px]">1930s：</span>
+                <span>日治期發展最高峰，糖業出口長期穩居臺灣外銷產值的一半。</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-amber-700 min-w-[50px]">1939：</span>
+                <span>年產量達 141 萬 8,731 公噸，創日治歷史新高，產量及出口量躋身「世界第三位」。</span>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-4 pt-3 border-t border-sugar-100 text-[11px] text-sugar-500 flex items-center justify-between">
+            <span>歷史紀錄：141.9萬公噸</span>
+            <span class="text-amber-800 font-semibold">世界第三位</span>
+          </div>
+        </div>
+
+        <!-- Era 3: 1940s -->
+        <div class="bg-white rounded-2xl p-6 border-t-4 border-red-500 shadow-sm border-x border-b border-sugar-200 flex flex-col justify-between hover:shadow-md transition">
+          <div>
+            <div class="flex items-center justify-between text-xs font-bold text-red-600 mb-2">
+              <span>第三紀元</span>
+              <span class="bg-red-100 px-2 py-0.5 rounded">1940 年代</span>
+            </div>
+            <h4 class="text-lg font-bold text-sugar-900 serif-title mb-3">戰火重創與重組復舊</h4>
+            
+            <ul class="space-y-3 text-xs sm:text-sm text-sugar-700">
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-red-500 min-w-[50px]">1940-45：</span>
+                <span>二戰末期各製糖株式會社廠房遭盟軍猛烈轟炸，設施殘破，產能幾近全面癱瘓。</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-red-500 min-w-[50px]">1946：</span>
+                <span>戰後國民政府接收四大製糖會社資產，整合成立「台灣糖業公司」（台糖）。</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-red-500 min-w-[50px]">1947-48：</span>
+                <span>展開全面復舊，砂糖重啟外銷至香港、新加坡，並於 1948 年恢復對日輸出。</span>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-4 pt-3 border-t border-sugar-100 text-[11px] text-sugar-500 flex items-center justify-between">
+            <span>體制重組：台灣糖業公司</span>
+            <span class="text-red-600 font-semibold">戰火浴火重生</span>
+          </div>
+        </div>
+
+        <!-- Era 4: 1950-1960s -->
+        <div class="bg-white rounded-2xl p-6 border-t-4 border-emerald-600 shadow-sm border-x border-b border-sugar-200 flex flex-col justify-between hover:shadow-md transition">
+          <div>
+            <div class="flex items-center justify-between text-xs font-bold text-emerald-800 mb-2">
+              <span>第四紀元</span>
+              <span class="bg-emerald-100 px-2 py-0.5 rounded">1950 – 1960 年代</span>
+            </div>
+            <h4 class="text-lg font-bold text-sugar-900 serif-title mb-3">戰後黃金期，外匯貢獻高達七成</h4>
+            
+            <ul class="space-y-3 text-xs sm:text-sm text-sugar-700">
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-emerald-700 min-w-[50px]">1950：</span>
+                <span>韓戰爆發引發全球物資短缺與糖價飆升，臺灣出口量衝上世界第二，台糖為全臺第一大企業。</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-emerald-700 min-w-[50px]">1952-64：</span>
+                <span>砂糖黃金時代，外銷居全臺之冠，最高占全國總外匯 74%，奠定戰後金融幣值穩定。</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-emerald-700 min-w-[50px]">1964：</span>
+                <span>新品種與技術革新，1964/65 年期產糖量達 105.5 萬公噸，創戰後穩定期新高。</span>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-4 pt-3 border-t border-sugar-100 text-[11px] text-sugar-500 flex items-center justify-between">
+            <span>外匯巔峰：74% 歷史紀錄</span>
+            <span class="text-emerald-700 font-semibold">以農養工基石</span>
+          </div>
+        </div>
+
+        <!-- Era 5: 1970s -->
+        <div class="bg-white rounded-2xl p-6 border-t-4 border-yellow-600 shadow-sm border-x border-b border-sugar-200 flex flex-col justify-between hover:shadow-md transition">
+          <div>
+            <div class="flex items-center justify-between text-xs font-bold text-yellow-800 mb-2">
+              <span>第五紀元</span>
+              <span class="bg-yellow-100 px-2 py-0.5 rounded">1970 年代</span>
+            </div>
+            <h4 class="text-lg font-bold text-sugar-900 serif-title mb-3">最後的波段高峰與國際轉型</h4>
+            
+            <ul class="space-y-3 text-xs sm:text-sm text-sugar-700">
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-yellow-700 min-w-[50px]">1975：</span>
+                <span>國際糖價再度飆新高，單年為國庫創造高達 5.168 億元的巨大獲利盈餘。</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-yellow-700 min-w-[50px]">1977：</span>
+                <span>年產量達到戰後最高峰的 106.9 萬公噸。</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-yellow-700 min-w-[50px]">轉折：</span>
+                <span>工商業蓬勃帶動勞工工資暴漲，加上國際糖價陷入低迷，臺灣糖業價格競爭力急速下滑。</span>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-4 pt-3 border-t border-sugar-100 text-[11px] text-sugar-500 flex items-center justify-between">
+            <span>戰後極限：106.9 萬噸</span>
+            <span class="text-yellow-700 font-semibold">盈餘 5.168 億元</span>
+          </div>
+        </div>
+
+        <!-- Era 6: 1980s to Present -->
+        <div class="bg-white rounded-2xl p-6 border-t-4 border-stone-500 shadow-sm border-x border-b border-sugar-200 flex flex-col justify-between hover:shadow-md transition">
+          <div>
+            <div class="flex items-center justify-between text-xs font-bold text-stone-700 mb-2">
+              <span>第六紀元</span>
+              <span class="bg-stone-100 px-2 py-0.5 rounded">1980 年代至今</span>
+            </div>
+            <h4 class="text-lg font-bold text-sugar-900 serif-title mb-3">退出出口市場，轉為內需與進口</h4>
+            
+            <ul class="space-y-3 text-xs sm:text-sm text-sugar-700">
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-stone-600 min-w-[50px]">1986：</span>
+                <span>砂糖年產萎縮至 55 萬公噸。全台原有 42 座工廠陸續停產、拆除或轉型觀光休閒。</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-stone-600 min-w-[50px]">現今：</span>
+                <span>臺灣轉為「砂糖純進口國」。國內年消耗約 60 萬公噸砂糖，90% 以上仰賴進口。</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold text-stone-600 min-w-[50px]">保存：</span>
+                <span>本土自產不足 5 萬公噸，全臺僅剩虎尾糖廠、善化糖廠兩座仍在壓榨本土甘蔗。</span>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-4 pt-3 border-t border-sugar-100 text-[11px] text-sugar-500 flex items-center justify-between">
+            <span>現存製糖廠：僅存 2 座</span>
+            <span class="text-stone-700 font-semibold">本土產量 &lt; 5萬噸</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="comparison-sec" class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-sugar-200">
+      <div class="max-w-3xl mb-6">
+        <h3 class="text-xl sm:text-2xl font-bold text-sugar-900 serif-title">
+          今昔對照：從 42 座廠林立到雙廠守護
+        </h3>
+        <p class="text-xs sm:text-sm text-sugar-600 mt-1">
+          直觀剖析產量規模、外貿角色與廠區數量的歷史跨世紀巨變。
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+        <!-- Visual Comparison Bars -->
+        <div class="space-y-5 bg-sugar-50/70 p-5 rounded-2xl border border-sugar-200">
+          <div>
+            <div class="flex justify-between text-xs font-bold text-sugar-800 mb-1">
+              <span>全臺運轉糖廠數量</span>
+              <span>42座 (全盛) vs 2座 (現今)</span>
+            </div>
+            <div class="h-4 bg-sugar-200 rounded-full overflow-hidden flex">
+              <div class="bg-sugar-600 h-full text-[10px] text-white flex items-center justify-center font-bold" style="width: 95%">42 座全盛期</div>
+              <div class="bg-red-500 h-full text-[10px] text-white flex items-center justify-center font-bold" style="width: 5%">2</div>
+            </div>
+            <div class="text-[11px] text-sugar-500 mt-1">全臺僅餘「雲林虎尾糖廠」與「台南善化糖廠」維持傳統甘蔗製糖。</div>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs font-bold text-sugar-800 mb-1">
+              <span>年砂糖產量 (萬公噸)</span>
+              <span>141.9 萬噸 (1939) vs &lt; 5 萬噸 (現今)</span>
+            </div>
+            <div class="h-4 bg-sugar-200 rounded-full overflow-hidden flex">
+              <div class="bg-amber-600 h-full text-[10px] text-white flex items-center justify-center font-bold" style="width: 96%">141.9 萬噸</div>
+              <div class="bg-amber-900 h-full text-[9px] text-white flex items-center justify-center font-bold" style="width: 4%">&lt;5</div>
+            </div>
+            <div class="text-[11px] text-sugar-500 mt-1">產量縮減逾 96%，目前自產糖僅供特定民生品牌與文化傳承。</div>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs font-bold text-sugar-800 mb-1">
+              <span>現今每年消費量結構 (~60 萬公噸)</span>
+              <span>進口 &gt; 55 萬噸 vs 本土 &lt; 5 萬噸</span>
+            </div>
+            <div class="h-4 bg-sugar-200 rounded-full overflow-hidden flex">
+              <div class="bg-cane-600 h-full text-[10px] text-white flex items-center justify-center font-bold" style="width: 92%">進口糖 92%</div>
+              <div class="bg-amber-500 h-full text-[10px] text-white flex items-center justify-center font-bold" style="width: 8%">8%</div>
+            </div>
+            <div class="text-[11px] text-sugar-500 mt-1">臺灣已成為純進口國，主要原糖來自澳洲、巴西與東南亞等地。</div>
+          </div>
+        </div>
+
+        <!-- The Remaining Two Mills Feature Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-white p-4 rounded-2xl border border-sugar-300 shadow-sm relative overflow-hidden">
+            <div class="absolute top-2 right-2 text-sugar-200 text-3xl opacity-40">
+              <i class="fa-solid fa-industry"></i>
+            </div>
+            <span class="inline-block px-2 py-0.5 rounded bg-sugar-100 text-sugar-700 text-[10px] font-bold mb-2">雲林縣</span>
+            <h5 class="text-base font-bold text-sugar-900">虎尾糖廠</h5>
+            <p class="text-xs text-sugar-600 mt-1 leading-relaxed">
+              全臺唯一仍保留「五分車載運甘蔗」行駛於鐵道上的現役糖廠，每年冬季開工榨糖，保留珍貴的活態文化資產。
+            </p>
+            <div class="mt-3 pt-2 border-t border-sugar-100 text-[11px] text-sugar-500 flex items-center gap-1">
+              <i class="fa-solid fa-train text-sugar-600"></i> 冬季五分車採收季
+            </div>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl border border-sugar-300 shadow-sm relative overflow-hidden">
+            <div class="absolute top-2 right-2 text-sugar-200 text-3xl opacity-40">
+              <i class="fa-solid fa-wheat-awn"></i>
+            </div>
+            <span class="inline-block px-2 py-0.5 rounded bg-sugar-100 text-sugar-700 text-[10px] font-bold mb-2">臺南市</span>
+            <h5 class="text-base font-bold text-sugar-900">善化糖廠</h5>
+            <p class="text-xs text-sugar-600 mt-1 leading-relaxed">
+              南臺灣唯一仍在運轉的本土糖廠，生產高品質本土二砂與古法黑糖，並結合休閒園區與文化景觀展示。
+            </p>
+            <div class="mt-3 pt-2 border-t border-sugar-100 text-[11px] text-sugar-500 flex items-center gap-1">
+              <i class="fa-solid fa-jar-wheat text-sugar-600"></i> 本土二砂傳統製糖
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="p-6 sm:p-8 rounded-3xl bg-sugar-100 border border-sugar-300">
+      <h4 class="text-lg font-bold text-sugar-900 serif-title mb-3 flex items-center gap-2">
+        <i class="fa-solid fa-book-bookmark text-sugar-600"></i>
+        臺灣糖業歷史的三大經濟定位結語
+      </h4>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm text-sugar-800">
+        <div class="bg-white p-4 rounded-xl border border-sugar-200">
+          <span class="font-bold text-sugar-900 block mb-1">1. 日治殖民現代化的原動力</span>
+          引進西方蒸氣壓榨機、私鐵五分車網絡與新式金融會社，奠定臺灣基礎交通與現代企業經營型態。
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-sugar-200">
+          <span class="font-bold text-sugar-900 block mb-1">2. 戰後臺灣經濟奇蹟的提款機</span>
+          韓戰物資熱與 74% 的外匯極限，使台糖穩定了新台幣幣值，成為「以農業培養工業」最重要的啟動資本。
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-sugar-200">
+          <span class="font-bold text-sugar-900 block mb-1">3. 工業轉型後的文化與土地寶庫</span>
+          隨著工資上升與國際競爭淡出，糖業功成身退，其全臺龐大廠區與土地資產轉型為科學園區、觀光文化資產與民生支援。
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Smooth scroll helper
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Chart.js Dataset & Setup
+    document.addEventListener('DOMContentLoaded', function () {
+      const ctx = document.getElementById('sugarProductionChart').getContext('2d');
+
+      const historicalData = [
+        { year: '1902', output: 2.5, event: '橋仔頭工場正式開工', note: '日壓榨量初期 250 公噸，開啟臺灣現代化新式機械製糖新紀元。' },
+        { year: '1912', output: 18.0, event: '新式糖廠大開工 / 出口占全臺 48.6%', note: '總督府「工業日本，農業臺灣」政策帶動，出口值達 2,800 萬圓，供應日本內需。' },
+        { year: '1920', output: 35.0, event: '屏東阿緱工場完成擴建', note: '日榨量高達 3,600 公噸，榮膺「東洋第一」，臺灣糖業新高山。' },
+        { year: '1930', output: 80.0, event: '日治糖業進入全盛期', note: '糖業長期穩佔全島外銷產值的一半以上，製糖會社遍佈臺灣中南部。' },
+        { year: '1939', output: 141.9, event: '日治產能最高峰：141.9 萬公噸', note: '產糖量及出口量躋身「世界第三位」，臺灣成為國際糖市核心生產基地。' },
+        { year: '1945', output: 8.6, event: '二戰末期大轟炸：產能癱瘓', note: '各地工廠遭盟軍空襲轟炸嚴重受損，農田荒蕪，產量暴跌至谷底。' },
+        { year: '1946', output: 30.0, event: '台灣糖業公司（台糖）成立', note: '整併接收日治四大製糖會社在臺全部資產，全面啟動復舊。' },
+        { year: '1950', output: 61.0, event: '韓戰爆發：糖價飆升 / 世界第二', note: '全球物資緊張推升國際糖價，台糖成為臺灣規模最大之國營龍頭企業。' },
+        { year: '1955', output: 80.0, event: '外匯貢獻黃金年代', note: '砂糖出口長期高居全臺外銷品第一，最高創下占全國外匯 74% 的奇蹟紀錄。' },
+        { year: '1964', output: 105.5, event: '戰後穩定期新高：105.5 萬噸', note: '引進技術與新品種改良，1964/65 期產量破百萬公噸大關。' },
+        { year: '1975', output: 85.0, event: '國際糖價歷史高位：創造5.168億盈餘', note: '國際糖價短期暴漲，台糖為國庫創下單年逾 5 億元極大盈餘。' },
+        { year: '1977', output: 106.9, event: '戰後歷史最高峰：106.9 萬噸', note: '臺灣糖業產能的最後一波高峰，隨後因工資高漲與工商業興起失去價格優勢。' },
+        { year: '1986', output: 55.0, event: '產能急劇萎縮：55 萬噸', note: '42 座糖廠因成本過高相繼關閉、整併或觀光轉型。' },
+        { year: '2000', output: 15.0, event: '退出國際出口市場', note: '全面停止以出口賺取外匯策略，國內市場開始大宗開放原料進口。' },
+        { year: '現代', output: 4.8, event: '僅存虎尾與善化雙廠 (&lt;5萬噸)', note: '國內年消耗約 60 萬公噸，本土甘蔗自產不足 5 萬公噸，自給率不足 8.3%。' },
+      ];
+
+      const labels = historicalData.map(d => d.year);
+      const values = historicalData.map(d => d.output);
+
+      // Gradient fill for chart
+      const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+      gradient.addColorStop(0, 'rgba(184, 138, 58, 0.45)');
+      gradient.addColorStop(0.7, 'rgba(184, 138, 58, 0.08)');
+      gradient.addColorStop(1, 'rgba(184, 138, 58, 0.0)');
+
+      const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: '砂糖產量 (萬公噸)',
+              data: values,
+              borderColor: '#B88A3A',
+              backgroundColor: gradient,
+              borderWidth: 3,
+              fill: true,
+              tension: 0.35,
+              pointBackgroundColor: values.map((v, i) => {
+                if (i === 4) return '#D97706'; // 1939 Peak (Amber)
+                if (i === 5) return '#EF4444'; // 1945 War (Red)
+                if (i === 11) return '#2E6930'; // 1977 Post-war Peak (Green)
+                if (i === 14) return '#64748B'; // Today
+                return '#B88A3A';
+              }),
+              pointBorderColor: '#FFFFFF',
+              pointBorderWidth: 2,
+              pointRadius: values.map((v, i) => [4, 5, 8, 11, 14].includes(i) ? 7 : 4),
+              pointHoverRadius: 9
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              backgroundColor: '#321F08',
+              titleColor: '#FDFBF7',
+              bodyColor: '#F4E4C6',
+              padding: 12,
+              cornerRadius: 10,
+              callbacks: {
+                label: function (context) {
+                  return ` 產量估計: ${context.parsed.y} 萬公噸`;
+                },
+                afterLabel: function (context) {
+                  const item = historicalData[context.dataIndex];
+                  return ` 事件: ${item.event}`;
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 160,
+              grid: {
+                color: '#EDE8DF',
+              },
+              ticks: {
+                callback: function (val) {
+                  return val + ' 萬噸';
+                },
+                font: {
+                  family: "'Noto Sans TC', sans-serif",
+                  size: 11
+                },
+                color: '#714D19'
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              },
+              ticks: {
+                font: {
+                  family: "'Noto Sans TC', sans-serif",
+                  size: 11
+                },
+                color: '#714D19'
+              }
+            }
+          },
+          onClick: (e, elements) => {
+            if (elements.length > 0) {
+              const index = elements[0].index;
+              const item = historicalData[index];
+              const titleEl = document.getElementById('insightTitle');
+              const descEl = document.getElementById('insightDesc');
+              const boxEl = document.getElementById('chartInsightBox');
+
+              titleEl.innerHTML = `${item.year} 年：${item.event} <span class="text-xs ml-2 px-2 py-0.5 rounded bg-sugar-200 text-sugar-900 font-bold">${item.output} 萬噸</span>`;
+              descEl.innerHTML = item.note;
+              boxEl.classList.remove('bg-sugar-50');
+              boxEl.classList.add('bg-sugar-200/50');
+              setTimeout(() => {
+                boxEl.classList.remove('bg-sugar-200/50');
+                boxEl.classList.add('bg-sugar-50');
+              }, 400);
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

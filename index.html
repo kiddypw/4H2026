@@ -63,6 +63,29 @@
       from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* 長輩友善大字模式樣式 */
+    .elder-mode .text-\[8px\] { font-size: 12px !important; line-height: 1.4 !important; }
+    .elder-mode .text-\[9px\] { font-size: 13.5px !important; line-height: 1.45 !important; }
+    .elder-mode .text-\[10px\] { font-size: 15px !important; line-height: 1.5 !important; }
+    .elder-mode .text-\[11px\] { font-size: 16px !important; line-height: 1.6 !important; }
+    .elder-mode .text-xs { font-size: 17.5px !important; line-height: 1.7 !important; }
+    .elder-mode .text-sm { font-size: 19.5px !important; line-height: 1.7 !important; }
+    .elder-mode .text-base { font-size: 22px !important; line-height: 1.7 !important; }
+    .elder-mode p, 
+    .elder-mode .leading-relaxed {
+      line-height: 1.85 !important;
+      letter-spacing: 0.025em !important;
+    }
+    .elder-mode .font-bold,
+    .elder-mode .font-black {
+      font-weight: 800 !important;
+    }
+    .elder-mode button,
+    .elder-mode .category-pill,
+    .elder-mode .app-tab-btn span {
+      letter-spacing: 0.03em !important;
+    }
   </style>
 </head>
 <body class="bg-stone-900 text-stone-850 font-sans antialiased h-full overflow-hidden flex items-center justify-center">
@@ -86,10 +109,18 @@
         </div>
       </div>
 
-      <!-- 寬度切換輔助（大螢幕顯現，便利投影展示） -->
-      <button onclick="toggleDesktopMode()" title="切換寬度模式" class="hidden sm:inline-flex p-1.5 rounded-lg hover:bg-stone-800 text-stone-400 hover:text-amber-300 transition tap-scale">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
-      </button>
+      <!-- 頂部輔助功能區：長輩大字切換與寬度模式 -->
+      <div class="flex items-center space-x-1.5">
+        <button id="elderToggleBtn" onclick="toggleElderMode()" title="切換長輩大字模式" class="tap-scale px-2.5 py-1 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-400/40 text-xs font-bold flex items-center gap-1 transition shadow-xs">
+          <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+          <span id="elderBtnLabel">長輩大字</span>
+        </button>
+
+        <!-- 寬度切換輔助（大螢幕顯現，便利投影展示） -->
+        <button onclick="toggleDesktopMode()" title="切換寬度模式" class="hidden sm:inline-flex p-1.5 rounded-lg hover:bg-stone-800 text-stone-400 hover:text-amber-300 transition tap-scale">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+        </button>
+      </div>
     </header>
 
     <!-- 主滑動內容視區 -->
@@ -298,7 +329,7 @@
             <!-- 四大會社與阿緱糖廠 -->
             <div class="bg-white rounded-2xl p-4 shadow-sm border border-stone-200 space-y-3">
               <div>
-                <h3 class="font-bold text-stone-900 text-sm">四大製糖會社</h3>
+                <h3 class="font-bold text-stone-900 text-sm">四大會社體系</h3>
                 <p class="text-[11px] text-stone-500">大日本・台灣・明治・鹽水港製糖株式會社</p>
               </div>
 
@@ -461,7 +492,7 @@
 
               <div class="space-y-2 text-xs">
                 <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-200 text-stone-700 text-[11px]">
-                  • 40~50年代下淡水溪兩側的溪埔地種植大片甘蔗
+                  • 40~50年代下淡水溪浮覆地種植大片甘蔗
                 </div>
 
                 <div class="bg-amber-50/70 p-3 rounded-xl border border-amber-200/80 text-stone-700 text-[11px] space-y-1">
@@ -779,7 +810,7 @@
                     <span id="photoAttribution" class="text-[10px] text-blue-800 font-medium">文史老照片珍藏</span>
                   </div>
                   <h3 id="photoTitle" class="font-serif font-black text-sm text-stone-900 leading-snug">
-                    傳統糖廍石車壓榨甘蔗實景
+                    清代傳統糖廍製糖圖（《臺海采風圖》）
                   </h3>
                 </div>
 
@@ -787,10 +818,10 @@
                 <div id="photoDescContainer" class="bg-white/80 p-2.5 rounded-lg border border-blue-200/60 space-y-1">
                   <span class="text-[10px] font-bold text-blue-900 flex items-center gap-1">
                     <svg class="w-3 h-3 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    影像背景說明：
+                    影像背景與細節解讀：
                   </span>
-                  <p id="photoDesc" class="text-xs text-stone-800 leading-relaxed font-sans">
-                    早期由牛隻拉動石車雙輪壓榨甘蔗汁，為新園與鄰近聚落日治新式製糖引進前的糖廍傳統製糖縮影。
+                  <p id="photoDesc" class="text-xs text-stone-800 leading-relaxed font-sans whitespace-pre-line">
+                    ...
                   </p>
                 </div>
               </div>
@@ -883,7 +914,7 @@
 
               <div class="space-y-2 text-xs">
                 <div class="bg-stone-50 p-2.5 rounded-xl border border-stone-200 text-stone-700 text-[11px]">
-                  • 40~50年代下淡水溪兩側的溪埔地種植大片甘蔗
+                  • 40~50年代下淡水溪浮覆地種植大片甘蔗
                 </div>
 
                 <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-200/60 text-stone-700 text-[11px] space-y-1">
@@ -1186,7 +1217,7 @@
                 <div>• 糖廍經營：帶有「廍」字舊地名反映傳統糖廍空間歷史地景。</div>
                 <div>• 專用線：烏龍線、烏龍延長線、東港線 (1908.03)。</div>
                 <div>• 營業線三大演進：甘棠門支線、舊東港幹線、東港幹線。</div>
-                <div>• 周阿伯口述歷史：40~50年代下淡水溪兩側的溪埔地種植大片甘蔗。</div>
+                <div>• 周阿伯口述歷史：40~50年代下淡水溪浮覆地種植大片甘蔗。</div>
                 <div>• 臺灣最早的期貨：糖廠暫存投保火災險、核發「砂糖棧單」。</div>
                 <div>• 停駛客運營業線-東港線 (1977)。</div>
               </div>
@@ -1212,7 +1243,7 @@
               </div>
               <div class="flex-1 bg-stone-800/80 p-3 rounded-xl border border-stone-700/60 text-[11px] space-y-1 text-stone-300">
                 <div>• 歷史照片：10 幅新園庄頭、糖廍與糖鐵珍貴紀事老照片。</div>
-                <div>• 周阿伯口述歷史：下淡水溪兩側的溪埔地甘蔗種植、核發砂糖棧單。</div>
+                <div>• 周阿伯口述歷史：下淡水溪浮覆地甘蔗種植、核發砂糖棧單。</div>
                 <div>• 第一次世界大戰 (1914.07-1918.11)</div>
                 <div>• 第二次世界大戰 (1939.09-1945.09) ➔ 太平洋戰爭(1941)戰區之一</div>
                 <div>• 糖業鐵道名詞：專用線（原料線）、營業線（客運線）</div>
@@ -1424,81 +1455,81 @@
       {
         page: 1,
         fileName: "photo0001.jpg",
-        title: "傳統糖廍石車壓榨甘蔗實景",
-        attribution: "文史老照片珍藏",
-        desc: "早期由牛隻拉動石車雙輪壓榨甘蔗汁，為新園與鄰近聚落日治新式製糖引進前的糖廍傳統製糖縮影。",
+        title: "清代傳統糖廍製糖圖（《臺海采風圖》）",
+        attribution: "清代臺灣民間糖廍作業圖",
+        desc: "【年代與出處】約 18 世紀（清乾隆年間）巡臺御史六十七命筆工繪製之《臺海采風圖》中的「糖廍」篇。\n\n【畫面細節解讀】\n• 蔗田採收與搬運：上方遠處農民在甘蔗園揮刀砍蔗、捆紮並以扁擔或肩扛運往糖廍。\n• 草棚榨汁（石車）：中間圓頂茅草棚內，兩頭水牛牽引木架拉動成對的垂直「石車（花崗岩石磨）」碾壓甘蔗，工人不斷把甘蔗送入齒縫，榨出的蔗汁順溝流入承接桶。\n• 灶屋熬糖（孔子灶）：右側磚瓦工坊內設有階梯式排列的糖灶，熬糖師傅依不同火候在各鐵鍋間舀移、濃縮蔗汁，最終倒入瓦漏中結晶分蜜製成烏糖（黑糖）或白糖。\n\n【歷史意義】展現臺灣引進現代機械化工廠之前，長達數百年間「以牛力與土法」榨糖的古法聚落生產型態。",
         img: "photo/photo0001.jpg"
       },
       {
         page: 2,
         fileName: "photo0002.jpg",
-        title: "高屏溪下游溪埔地甘蔗採收與牛車搬運",
-        attribution: "新園耆老口述影像集",
-        desc: "下淡水溪（高屏溪）河灘溪埔地土壤肥沃，昔日蔗農趁枯水期種蔗，採收期以牛車運載至糖鐵裝車點。",
+        title: "採蔗季與五分車運輸盛況",
+        attribution: "戰後農村採蔗與蒸汽五分車",
+        desc: "【畫面細節解讀】\n• 台糖蒸汽機車：車身上清晰標註「台灣糖業公司」銘牌，煙囪噴吐蒸氣，行駛於 762mm 軌距的糖業專用窄軌（俗稱五分車，因軌距約為標準軌 1435mm 的一半）。\n• 甘蔗車斗（蔗箱車）：後方懸掛一節節滿載削整甘蔗的木造棚車。\n• 農村協作景象：兩旁有牛車運送甘蔗捆、戴斗笠的蔗農以長柄鋼叉將甘蔗裝載上車，背景為整片甘蔗林與紅土泥磚厝農舍。\n\n【歷史意義】重現每年秋冬至隔年春季（11 月至翌年 4 月）製糖開工期，全臺灣中南部農村動員數十萬人力、牛隻與糖鐵網絡的壯觀生命力。",
         img: "photo/photo0002.jpg"
       },
       {
         page: 3,
         fileName: "photo0003.jpg",
-        title: "阿緱製糖所工場初期建設全景",
-        attribution: "日治初期臺灣製糖寫真帖",
-        desc: "屏東糖廠前身，引進現代化蒸汽壓榨設備與大型鐵構廠房，成為東洋最大規模新式製糖工場起點。",
+        title: "傳統榨糖核心工具「石車（蔗車／石磨）」現成保存",
+        attribution: "舊式糖廍石製壓榨雙滾輪（石車）",
+        desc: "【規格與結構】\n• 成對石滾輪：由整塊玄武岩或花崗岩雕鑿成圓柱狀石輪，分別稱為「公車」與「母車」，表面鑿有互相嚙合的突起榫齒（照片中塗紅漆處）。\n• 牽引木架：石軸上方固定大木桁架，外接牛軛，由牛隻繞圓拖拽帶動兩滾輪相反方向咬合轉動，將夾入的甘蔗纖維徹底壓碎榨出汁液。\n\n【歷史意義】此為臺灣糖廠園區常駐展示的重要文化資產。在 1901 年新式糖廠機械化壓榨引進前，全臺數千座舊式糖廍就是靠此裝置支撐起明鄭至清代全臺灣的外銷貿易。",
         img: "photo/photo0003.jpg"
       },
       {
         page: 4,
         fileName: "photo0004.jpg",
-        title: "台糖五分車蒸汽機車行駛於新園田野",
-        attribution: "糖鐵歷史檔案室",
-        desc: "汽笛長鳴、白煙裊裊，牽引長列原料甘蔗車廂穿梭於新園與萬丹平原之間的經典景象。",
+        title: "屏東糖廠拆除煙囪「復田紀念碑」與底座殘壁",
+        attribution: "阿緱（屏東）糖廠歷史大煙囪紀念碑",
+        desc: "【畫面細節解讀】\n• 煙囪基座結構：高聳厚實的鋼筋混凝土厚壁基座，內部原為巨大煙道排煙處，現已長出雜草、化為公園地景。\n• 復田紀念碑文：前方黑石碑刻有糖廠煙囪圖樣，標註歷史尺寸（比例尺 1/100，高達 60–70 公尺）。碑文詳述臺灣製糖株式會社成立、阿緱工場所歷經的歲月，以及糖業沒落後土地重劃「拆除煙囪、還地復田/市地重劃」的歷史過程。\n\n【歷史意義】屏東糖廠在日治時期曾號稱「東洋第一」，擁有全臺最壯觀的日壓榨量與地標級大煙囪。此碑記錄了巨型工業地標走入歷史、地景轉型為現代都市空間的時代印記。",
         img: "photo/photo0004.jpg"
       },
       {
         page: 5,
         fileName: "photo0005.jpg",
-        title: "東港線營業線客貨兩用站場景象",
-        attribution: "糖鐵客運歷史照片",
-        desc: "甘棠門支線與舊東港幹線昔日不僅運蔗，更是沿線新園鄉民前往屏東求學、洽公與購物的命脈。",
+        title: "新園原料區與糖鐵支線配置歷史手繪地圖",
+        attribution: "台糖屏東總廠原料區網格圖",
+        desc: "【畫面細節解讀】\n• 地理範圍：圖中清晰可見高屏溪東岸的「新園原料區」、「甘棠門農場」、「大寮原料場」等重要台糖自營或契作產區。\n• 糖鐵線路網絡：地圖上標示「境南州糖廠北勢子支線」以及密佈於高屏平原的五分車專用幹線、支線、裝車場（圓圈代號）與避車線。\n\n【歷史意義】糖廠設廠以「原料採收後 24 小時內壓榨完畢以防糖分流失」為原則。此圖展現了糖廠如何利用密如蛛網的私設鐵路系統，精準控管廣大原料區甘蔗運輸的後勤樞紐。",
         img: "photo/photo0005.jpg"
       },
       {
         page: 6,
         fileName: "photo0006.jpg",
-        title: "蔗農群聚交蔗與糖廠過磅稽核",
-        attribution: "臺灣糖業文獻影像",
-        desc: "甘蔗採收季時，農友排隊過磅秤重，並依據含糖率計算收購量以核換砂糖棧單。",
+        title: "糖廠農務調度「原料區採收作業進度圖板」",
+        attribution: "農務課監控各村落採蔗進度掛圖",
+        desc: "【畫面細節解讀】\n• 圖釘與標籤代號：在新園原料區範圍內，釘滿了寫著「田洋二」、「田洋」、「新園」、「新園三」等各採收區塊與採蔗小組的圓形與長方形標記。\n• 鐵道集運節點：沿著黑色粗線（五分車專用鐵道）與水系分佈，標記甘棠門農場、仙公廟、港西、鹽埔子等調度站。\n\n【歷史意義】在缺乏電腦資訊系統的年代，這是糖廠農務主任調配空車廂（配車）、指派收割工班進駐、掌握各區成熟蔗量與避免車輛塞車的「實體動態戰情看板」。",
         img: "photo/photo0006.jpg"
       },
       {
         page: 7,
         fileName: "photo0007.jpg",
-        title: "屏東糖廠70公尺大地標大煙囪遠眺",
-        attribution: "1937年屏東地景寫真",
-        desc: "高聳入雲的70公尺紅磚煙囪，象徵製糖盛期的地標，在下淡水溪對岸亦能清晰眺望其雄姿。",
+        title: "台糖文獻解說牌「砂糖棧單」的金融角色",
+        attribution: "引自民國68年《糖業手冊》",
+        desc: "【核心規範與制度內涵】\n• 緣起：自民國 39/40 年期起，台糖為便利蔗農分得砂糖之儲存，制定「農民糖寄存規則」並印製「砂糖寄存棧單」。\n• 規格面額：分為特二砂「一包、二包、五包、十包」等面額。\n\n【實質功能】\n• 免費寄存：農民分得的糖可免費寄放糖廠倉庫，避免農家潮解腐壞，由廠方投保火險。\n• 自由轉讓流通：棧單具備有價證券（如支票、股票）性質，可在民間市場自由買賣、背書轉讓、抵押借貸或待價而沽。\n\n【歷史意義】臺灣戰後農村重要的金融創新工具，在通膨年代，「糖單」比紙鈔更有保值效益，成為中南部農村流通的硬通貨。",
         img: "photo/photo0007.jpg"
       },
       {
         page: 8,
         fileName: "photo0008.jpg",
-        title: "歷史檔案：珍貴砂糖棧單憑證原件",
-        attribution: "周阿伯文史資料",
-        desc: "農民繳蔗後由糖廠核發之提領與物資交換憑單，是早期臺灣農村極具信用價值的期貨流通憑證。",
+        title: "實體「砂糖寄存棧單」與轉讓聲請書原件檔案",
+        attribution: "民國40-50年代真實流通之砂糖棧單票卷",
+        desc: "【文物特徵】\n• 防偽鈔券印刷：採用精美防偽幾何花紋邊框，四角印有「貳」（兩包糖）、「伍」（五包糖）等面額印記，如同國庫券與鈔票。\n• 票根與存根聯：包含「棧單存根」、「改過定戶聲請書」、「分糖三十二號表」等，記錄權利人姓名、戶籍地址、身分證字號與蓋印。\n\n【歷史意義】見證了「糖單即現金」的歷史實況。農民若急需現金購買肥料或嫁娶，直接將整疊棧單背書轉讓即可兌現。",
         img: "photo/photo0008.jpg"
       },
       {
         page: 9,
         fileName: "photo0009.jpg",
-        title: "新園庄頭糖鐵平交道與聚落生活日常",
-        attribution: "屏東文史影像研究組",
-        desc: "居民與學童在噹噹作響的警報聲中等待滿載甘蔗的五分車慢速通過，交織出庄頭特有的生活節奏。",
+        title: "屏東總廠「砂糖寄存棧單轉讓過戶聲請書」特寫",
+        attribution: "民國61-62年期屏東總廠蔗農交易公文",
+        desc: "【關鍵文字識別】\n• 機構全銜：「台灣糖業股份有限公司 屏東總廠」。\n• 年度與項目：「民國六十一／六十二年期蔗農糖寄存棧單」、「特砂伍包砂糖」。\n\n【交易人資訊】\n• 棧單編號：第 018147 號\n• 出讓人：蓋許姓紅色印鑑\n• 受讓人：陳武發（住址：潮州鎮五房里中正路23號）\n• 申辦日期：中華民國62年4月3日\n\n【歷史意義】珍貴的一手民間契約文書，具體證明了屏東平原蔗農如何透過嚴謹的產權過戶程序轉讓砂糖資產，反映台糖嚴密的內控制度。",
         img: "photo/photo0009.jpg"
       },
       {
         page: 10,
         fileName: "photo0010.jpg",
-        title: "停駛前夕的糖鐵軌道與鐵橋夕照",
-        attribution: "鐵道文化珍藏紀錄",
-        desc: "1977年停駛客運營業線後，鐵道逐漸沉寂，落日映照著昔日糖金歲月留下的鋼軌與道碴枕木。",
+        title: "退役荒廢的糖鐵五分車軌道遺跡",
+        attribution: "停閉後遺留在農地旁的762mm窄軌鐵道",
+        desc: "【地景觀察】\n• 鐵軌構造：輕便窄軌鋼軌直接鋪設在水泥枕木（PC枕木）上，許多路段因長年風化、洪水沖刷或農地重劃而出現路基掏空、水泥枕木懸空破碎的景象。\n• 周遭環境：兩旁為廣袤平整的農田與遠方的高壓電塔，原本呼嘯穿梭運送甘蔗的列車已不復存在，鐵道淹沒於雜草碎石中。\n\n【歷史意義】象徵著臺灣糖業在 1980 年代後全面式微、42 座糖廠大多停閉拆除的歷史終章。這條「運送黃金外匯」的動脈功成身退，留下靜默見證百年興衰的地表刻痕。",
         img: "photo/photo0010.jpg"
       }
     ];
@@ -1936,6 +1967,27 @@
       } else {
         container.classList.remove('max-w-3xl');
         container.classList.add('max-w-md');
+      }
+    }
+
+    // 長輩友善大字模式切換
+    let isElderMode = false;
+    function toggleElderMode() {
+      const container = document.getElementById('appContainer');
+      const btn = document.getElementById('elderToggleBtn');
+      const label = document.getElementById('elderBtnLabel');
+      
+      isElderMode = !isElderMode;
+      if (isElderMode) {
+        container.classList.add('elder-mode');
+        btn.classList.remove('bg-amber-500/20', 'text-amber-200', 'border-amber-400/40');
+        btn.classList.add('bg-amber-400', 'text-stone-950', 'border-amber-300', 'ring-2', 'ring-amber-300/40');
+        label.textContent = '標準字級';
+      } else {
+        container.classList.remove('elder-mode');
+        btn.classList.add('bg-amber-500/20', 'text-amber-200', 'border-amber-400/40');
+        btn.classList.remove('bg-amber-400', 'text-stone-950', 'border-amber-300', 'ring-2', 'ring-amber-300/40');
+        label.textContent = '長輩大字';
       }
     }
 

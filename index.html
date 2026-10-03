@@ -1284,23 +1284,44 @@
     </nav>
 
     <!-- 全螢幕燈箱放大檢視 Modal -->
-    <div id="imageLightbox" class="hidden fixed inset-0 z-50 bg-stone-950/90 backdrop-blur-md flex flex-col items-center justify-between p-4 lightbox-backdrop opacity-0 transition-opacity duration-250 select-none">
-      <!-- 頂部列：標題與關閉按鈕 -->
-      <div class="w-full flex items-center justify-between text-stone-200 z-10 pt-safe">
-        <h4 id="lightboxTitle" class="text-xs font-serif font-bold text-amber-200 truncate pr-2">圖片檢視</h4>
-        <button onclick="closeLightbox()" class="tap-scale p-2 rounded-full bg-stone-800 text-stone-200 hover:bg-stone-700 hover:text-white transition">
+    <div id="imageLightbox" class="hidden fixed inset-0 z-50 bg-stone-950/95 backdrop-blur-md flex flex-col items-center justify-between p-3 select-none touch-none">
+      
+      <!-- 頂部列：標題、縮放控制工具列與關閉按鈕 -->
+      <div class="w-full flex items-center justify-between text-stone-200 z-10 pt-safe pb-2 border-b border-stone-800/80">
+        <h4 id="lightboxTitle" class="text-xs font-serif font-bold text-amber-200 truncate pr-2 max-w-[40%]">圖片檢視</h4>
+        
+        <!-- 縮放工具列（放大、倍率、縮小、重設） -->
+        <div class="flex items-center space-x-1.5 bg-stone-900/90 px-2 py-1 rounded-xl border border-stone-700/60 shadow-md">
+          <button onclick="zoomOut()" title="縮小" class="tap-scale w-7 h-7 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 flex items-center justify-center font-bold text-sm transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg>
+          </button>
+          
+          <span id="zoomPercentBadge" class="text-[11px] font-mono font-bold text-amber-300 min-w-[42px] text-center">100%</span>
+          
+          <button onclick="zoomIn()" title="放大" class="tap-scale w-7 h-7 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 flex items-center justify-center font-bold text-sm transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          </button>
+
+          <button onclick="resetZoom()" title="重設大小" class="tap-scale px-2 h-7 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-amber-200 text-[10px] font-bold flex items-center justify-center transition">
+            1:1
+          </button>
+        </div>
+
+        <!-- 關閉按鈕 -->
+        <button onclick="closeLightbox()" class="tap-scale p-1.5 rounded-full bg-stone-800 text-stone-200 hover:bg-stone-700 hover:text-white transition ml-2">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
 
-      <!-- 中間放大主圖 -->
-      <div class="flex-1 w-full flex items-center justify-center p-2 overflow-hidden" onclick="closeLightbox()">
-        <img id="lightboxTargetImg" src="" alt="放大檢視" class="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl scale-95 lightbox-img" onclick="event.stopPropagation()">
+      <!-- 中間放大主圖視區（支援拖曳、雙擊、滑鼠滾輪縮放與手勢） -->
+      <div id="lightboxViewport" class="flex-1 w-full flex items-center justify-center overflow-hidden relative cursor-default" onwheel="handleLightboxWheel(event)">
+        <img id="lightboxTargetImg" src="" alt="放大檢視" class="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl user-select-none pointer-events-auto" style="transform-origin: center center; will-change: transform;">
       </div>
 
       <!-- 底部提示文字 -->
-      <div class="text-[11px] text-stone-400 pb-safe z-10 flex items-center gap-1.5">
-        <span>點擊背景或右上角關閉</span>
+      <div class="text-[10px] text-stone-400 pb-safe z-10 flex items-center justify-center gap-2 pt-2">
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+        <span>可點選 ＋/－、滾輪或雙擊縮放；放大後可拖曳移動</span>
       </div>
     </div>
 
@@ -1889,12 +1910,78 @@
       }
     }
 
+    // 縮放與平移狀態管理
+    let currentZoom = 1;
+    let panX = 0;
+    let panY = 0;
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let initialPinchDistance = null;
+    let initialPinchZoom = 1;
+
+    function updateLightboxTransform(animate = true) {
+      const targetImg = document.getElementById('lightboxTargetImg');
+      const badge = document.getElementById('zoomPercentBadge');
+      const viewport = document.getElementById('lightboxViewport');
+
+      if (!targetImg) return;
+
+      if (animate) {
+        targetImg.style.transition = 'transform 0.18s cubic-bezier(0.2, 0, 0.2, 1)';
+      } else {
+        targetImg.style.transition = 'none';
+      }
+
+      targetImg.style.transform = `translate(${panX}px, ${panY}px) scale(${currentZoom})`;
+      
+      if (badge) {
+        badge.textContent = `${Math.round(currentZoom * 100)}%`;
+      }
+
+      if (viewport) {
+        viewport.style.cursor = currentZoom > 1.05 ? (isDragging ? 'grabbing' : 'grab') : 'default';
+      }
+    }
+
+    function zoomIn() {
+      currentZoom = Math.min(+(currentZoom + 0.35).toFixed(2), 4.0);
+      updateLightboxTransform(true);
+    }
+
+    function zoomOut() {
+      currentZoom = Math.max(+(currentZoom - 0.35).toFixed(2), 1.0);
+      if (currentZoom === 1.0) {
+        panX = 0;
+        panY = 0;
+      }
+      updateLightboxTransform(true);
+    }
+
+    function resetZoom() {
+      currentZoom = 1.0;
+      panX = 0;
+      panY = 0;
+      updateLightboxTransform(true);
+    }
+
+    function handleLightboxWheel(e) {
+      e.preventDefault();
+      if (e.deltaY < 0) {
+        zoomIn();
+      } else {
+        zoomOut();
+      }
+    }
+
     function openLightboxCustom(imgSrc, titleText) {
       const lightbox = document.getElementById('imageLightbox');
       const targetImg = document.getElementById('lightboxTargetImg');
       const title = document.getElementById('lightboxTitle');
 
       if (lightbox && targetImg) {
+        // 重設縮放與位置
+        resetZoom();
         targetImg.src = imgSrc;
         title.textContent = titleText || '影像放大檢視';
         lightbox.classList.remove('hidden');
@@ -1902,26 +1989,113 @@
         requestAnimationFrame(() => {
           lightbox.classList.remove('opacity-0');
           lightbox.classList.add('opacity-100');
-          targetImg.classList.remove('scale-95');
-          targetImg.classList.add('scale-100');
+          updateLightboxTransform(false);
         });
       }
     }
 
     function closeLightbox() {
       const lightbox = document.getElementById('imageLightbox');
-      const targetImg = document.getElementById('lightboxTargetImg');
       if (lightbox) {
         lightbox.classList.remove('opacity-100');
         lightbox.classList.add('opacity-0');
-        if (targetImg) {
-          targetImg.classList.remove('scale-100');
-          targetImg.classList.add('scale-95');
-        }
         setTimeout(() => {
           lightbox.classList.add('hidden');
-        }, 220);
+          resetZoom();
+        }, 200);
       }
+    }
+
+    // 燈箱滑鼠與觸控事件初始化（支援拖曳平移、雙指捏合縮放與雙擊放大）
+    function initLightboxInteractions() {
+      const viewport = document.getElementById('lightboxViewport');
+      const targetImg = document.getElementById('lightboxTargetImg');
+      if (!viewport || !targetImg) return;
+
+      // 滑鼠拖曳平移
+      viewport.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return; // 僅限左鍵
+        isDragging = true;
+        startX = e.clientX - panX;
+        startY = e.clientY - panY;
+        viewport.style.cursor = 'grabbing';
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        panX = e.clientX - startX;
+        panY = e.clientY - startY;
+        updateLightboxTransform(false);
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          if (viewport) viewport.style.cursor = currentZoom > 1 ? 'grab' : 'default';
+        }
+      });
+
+      // 雙擊 / 雙擊觸控快速切換放大/重設
+      let lastTapTime = 0;
+      viewport.addEventListener('click', (e) => {
+        // 若使用者正在拖曳則不觸發關閉
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTapTime;
+        if (tapLength < 300 && tapLength > 0) {
+          // 雙擊：切換 2.2x 與 1x
+          if (currentZoom > 1.2) {
+            resetZoom();
+          } else {
+            currentZoom = 2.2;
+            updateLightboxTransform(true);
+          }
+          e.preventDefault();
+        }
+        lastTapTime = currentTime;
+      });
+
+      // 手機觸控拖曳與雙指捏合縮放 (Pinch-to-zoom)
+      viewport.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          isDragging = true;
+          startX = e.touches[0].clientX - panX;
+          startY = e.touches[0].clientY - panY;
+        } else if (e.touches.length === 2) {
+          isDragging = false;
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          initialPinchDistance = Math.hypot(dx, dy);
+          initialPinchZoom = currentZoom;
+        }
+      }, { passive: true });
+
+      viewport.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 1 && isDragging) {
+          panX = e.touches[0].clientX - startX;
+          panY = e.touches[0].clientY - startY;
+          updateLightboxTransform(false);
+        } else if (e.touches.length === 2 && initialPinchDistance) {
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          const distance = Math.hypot(dx, dy);
+          const factor = distance / initialPinchDistance;
+          currentZoom = Math.min(Math.max(+(initialPinchZoom * factor).toFixed(2), 1.0), 4.0);
+          updateLightboxTransform(false);
+        }
+      }, { passive: false });
+
+      viewport.addEventListener('touchend', (e) => {
+        if (e.touches.length === 0) {
+          isDragging = false;
+          initialPinchDistance = null;
+          if (currentZoom <= 1.05) {
+            currentZoom = 1.0;
+            panX = 0;
+            panY = 0;
+            updateLightboxTransform(true);
+          }
+        }
+      });
     }
 
     // 鍵盤左右鍵快捷鍵切換繪本與 ESC 關閉燈箱
@@ -1996,6 +2170,7 @@
       updateStoryUI();
       updateMapUI();
       updatePhotoUI();
+      initLightboxInteractions();
     });
   </script>
 </body>
